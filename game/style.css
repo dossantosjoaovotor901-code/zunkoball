@@ -1,0 +1,2829 @@
+/* style.css - todos os estilos do jogo (ver README.md). Fontes/imagens base64 ficam em assets.css */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=swap"); @import url("https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap");
+
+* {
+    box-sizing: border-box
+}
+
+html,body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #9eaa8b;
+    font-family: Arial,"Helvetica Neue",sans-serif;
+    color: #fff
+}
+
+button,input {
+    font: inherit
+}
+
+button {
+    border: 1px solid #000;
+    color: #fff;
+    cursor: pointer
+}
+
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none
+}
+
+.screen.on {
+    display: flex
+}
+
+#menu {
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(#a7b394,#8e9f7b)
+}
+
+.menuCard {
+    width: min(92vw,520px);
+    background: rgba(66,48,42,.94);
+    padding: 22px;
+    border-radius: 5px;
+    box-shadow: 0 10px 35px #0006;
+    text-align: center
+}
+
+.title {
+    font-size: 34px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    text-shadow: 1px 2px #0008
+}
+
+.sub {
+    opacity: .8;
+    margin-bottom: 18px
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap
+}
+
+.mode,.field {
+    background: #766257;
+    padding: 13px 18px;
+    border-radius: 4px;
+    min-width: 190px;
+    box-shadow: inset 0 1px #ffffff20
+}
+
+.mode.sel,.field.sel {
+    background: #a7b98c;
+    color: #fff;
+    outline: 2px solid #dce7c9
+}
+
+.field {
+    min-width: 110px
+}
+
+.small {
+    font-size: 13px;
+    opacity: .8
+}
+
+#game {
+    background: #718c5a
+}
+
+#canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none
+}
+
+.hud {
+    text-shadow: 2px 2px 4px rgba(0,0,0,.78);
+    position: absolute;
+    left: 12px;
+    top: 9px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 27px;
+    text-shadow: 1px 2px #0008;
+    pointer-events: none
+}
+
+.dot {
+    width: 28px;
+    height: 28px
+}
+
+.red {
+    background: #f00;
+    border-radius: 50%
+}
+
+.blue {
+    background: #08f;
+    border-radius: 3px
+}
+
+.clock {
+    font-size: 18px;
+    margin-left: 4px
+}
+
+.performanceHud {
+    position: absolute;
+    z-index: 5;
+    top: 56px;
+    left: 12px;
+    display: flex;
+    gap: 8px;
+    padding: 4px 7px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 4px;
+    background: rgba(0,0,0,.52);
+    color: #fff;
+    font: 700 11px/1.2 Arial,"Helvetica Neue",sans-serif;
+    text-shadow: 0 1px 2px #000;
+    pointer-events: none;
+}
+
+.topBtns {
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    display: flex;
+    gap: 8px;
+    z-index: 120;
+    pointer-events: auto
+}
+
+.topBtns button,.kick,.pass {
+    background: #45494b;
+    border-radius: 50%;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px #0005;
+    font-size: 18px
+}
+
+.touch {
+    position: absolute;
+    bottom: 20px;
+    width: 142px;
+    height: 142px;
+    border-radius: 50%;
+    background: rgba(55,58,60,.82);
+    border: 2px solid rgba(220,225,225,.18);
+    box-shadow: inset 0 0 0 5px rgba(0,0,0,.10);
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.knob {
+    pointer-events: none;
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    left: 50%;
+    top: 50%;
+    background: var(--img-1) center/contain no-repeat
+}
+
+#pass {
+    position: absolute;
+    width: 142px;
+    height: 142px;
+    border: 0;
+    border-radius: 50%;
+    background: #3d4540!important;
+    color: #f0f3f0!important;
+    font-family: Arial,"Helvetica Neue",sans-serif;
+    font-weight: 800;
+    z-index: 6
+}
+
+#kick {
+    position: absolute;
+    width: 142px;
+    height: 142px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--img-2) center/contain no-repeat;
+    color: #fff;
+    font-weight: 700;
+    font-size: 22px;
+    text-shadow: 1px 2px #000;
+    touch-action: none
+}
+
+#kick span {
+    display: block
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: #0007;
+    z-index: 100;
+    pointer-events: auto
+}
+
+.overlay button {
+    pointer-events: auto;
+    touch-action: manipulation;
+    position: relative;
+    z-index: 130;
+    -webkit-tap-highlight-color: transparent
+}
+
+.overlay.on {
+    display: flex
+}
+
+.pause {
+    background: #493a34eF;
+    padding: 22px 35px;
+    border-radius: 5px;
+    text-align: center
+}
+
+.pause button {
+    background: #766257;
+    padding: 10px 24px;
+    border-radius: 4px;
+    margin: 5px
+}
+
+@media(max-width: 600px) {
+    .title {
+        font-size:27px
+    }
+
+    .menuCard {
+        padding: 17px
+    }
+
+    .mode {
+        min-width: 0;
+        width: 100%
+    }
+
+    .hud {
+        font-size: 22px
+    }
+
+    .touch {
+        width: 126px;
+        height: 126px
+    }
+
+    #joy {
+        left: 12px
+    }
+
+    #kick {
+        right: 12px;
+        width: 126px;
+        height: 126px
+    }
+
+    #pass {
+        width: 126px;
+        height: 126px
+    }
+
+    .knob {
+        width: 60px;
+        height: 60px;
+        left: 33px;
+        top: 33px
+    }
+}
+
+/* NIXBALL lobby recreation */
+body {
+    background: #a9b899;
+    color: #fff;
+    font-family: Arial,"Helvetica Neue",sans-serif
+}
+
+/* Gameplay sem arquibancada: fundo simples, sem asset de estádio. */
+#game {
+    background: #285f32!important
+}
+
+#game canvas {
+    background: #285f32!important
+}
+
+.screen.lobby {
+    align-items: stretch;
+    justify-content: stretch;
+    background: #3b2d28;
+    color: #fff
+}
+
+#nickScreen {
+    background: #a9b899;
+    align-items: center;
+    justify-content: center
+}
+
+#nickScreen .panel {
+    width: 324px;
+    max-width: calc(100vw - 30px);
+    box-sizing: border-box;
+    background: #49342e;
+    padding: 8px 6px 8px;
+    border-radius: 4px;
+    box-shadow: none
+}
+
+#nickScreen .panelTitle {
+    font-size: 18px;
+    line-height: 23px;
+    border-bottom: 1px solid #6e5147;
+    margin: 0 0 8px;
+    padding: 0 0 2px;
+    font-weight: 400;
+    text-align: left
+}
+
+#nickScreen .formRow {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 7px
+}
+
+#nickScreen .formRow label {
+    font-size: 13px;
+    text-align: left
+}
+
+#nickScreen input {
+    font-family: system-ui,-apple-system,"Segoe UI",Arial,sans-serif!important;
+    height: 26px;
+    box-sizing: border-box;
+    background: #343638;
+    color: #eee;
+    border: 0;
+    border-radius: 2px;
+    padding: 3px 6px;
+    font-size: 13px;
+    outline: 0
+}
+
+#nickScreen #play {
+    background: #766257;
+    border-radius: 5px;
+    padding: 7px 18px;
+    font-size: 13px;
+    color: #eee;
+    box-shadow: none
+}
+
+#lobbyScreen,#createScreen,#roomScreen,#settingsScreen {
+    overflow: auto
+}
+
+#lobbyScreen .panel,#createScreen .panel,#roomScreen .panel,#settingsScreen .panel {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    background: #3b2d28;
+    padding: 10px 14px;
+    border-radius: 0;
+    box-shadow: none
+}
+
+.panelTitle {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 25px;
+    border-bottom: 1px solid #6d554c;
+    padding-bottom: 3px;
+    margin-bottom: 9px
+}
+
+#lobbyScreen .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    height: 30px
+}
+
+#roomCount {
+    font-size: 13px;
+    white-space: nowrap
+}
+
+#lobbyScreen .panel>div:nth-of-type(2) {
+    font-size: 13px;
+    opacity: 1!important;
+    margin: 0 0 7px!important
+}
+
+#lobbyScreen .panel>div:nth-of-type(3) {
+    display: grid!important;
+    grid-template-columns: minmax(0,1fr) 91px!important;
+    gap: 8px!important
+}
+
+#lobbyScreen .panel>div:nth-of-type(3)>div:first-child {
+    border: 1px solid #806d63!important;
+    min-height: 306px!important;
+    background: #3b2d28
+}
+
+#lobbyScreen .panel>div:nth-of-type(3)>div:first-child>div:first-child {
+    display: grid!important;
+    grid-template-columns: 2.1fr 1fr 1fr 1fr 1fr!important;
+    background: #806d63!important;
+    padding: 7px 9px!important;
+    font-size: 12px!important;
+    line-height: 16px
+}
+
+#lobbyScreen .empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b5aaa5;
+    min-height: 265px;
+    font-size: 13px
+}
+
+#lobbyScreen .panel>div:nth-of-type(3)>div:last-child {
+    display: flex!important;
+    flex-direction: column;
+    gap: 8px
+}
+
+.btn {
+    background: #766257;
+    color: #eee;
+    border: 0;
+    border-radius: 5px;
+    padding: 7px 10px;
+    min-height: 31px;
+    font-size: 13px;
+    box-shadow: none
+}
+
+.btn:disabled {
+    opacity: .45
+}
+
+#lobbyScreen .btn {
+    width: 91px
+}
+
+#createScreen .panel {
+    padding: 13px 14px 12px
+}
+
+#createScreen .panelTitle {
+    margin-bottom: 15px
+}
+
+#createScreen .formRow {
+    display: grid;
+    grid-template-columns: 220px minmax(0,1fr);
+    align-items: center;
+    gap: 4px;
+    margin: 0 0 13px
+}
+
+#createScreen .formRow label {
+    font-size: 13px
+}
+
+#createScreen input,#createScreen select {
+    height: 29px;
+    background: #2f3032;
+    border: 0;
+    border-radius: 2px;
+    color: #eee;
+    padding: 4px 7px;
+    font-size: 13px;
+    box-sizing: border-box
+}
+
+#createScreen .row {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    display: flex!important;
+    gap: 13px!important
+}
+
+#createScreen .row .btn {
+    height: 54px;
+    flex: 1;
+    border-radius: 5px;
+    font-size: 13px
+}
+
+#roomScreen .panel {
+    padding: 9px 14px
+}
+
+#roomScreen .bar {
+    display: grid;
+    grid-template-columns: 90px 1fr 90px;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    height: 31px
+}
+
+#roomScreen #roomTitle {
+    font-size: 18px
+}
+
+#roomScreen .bar>div:last-child {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px
+}
+
+#roomScreen .bar .btn {
+    min-width: 40px;
+    padding: 5px 10px
+}
+
+#roomScreen .grid3 {
+    display: grid!important;
+    grid-template-columns: 1fr 1fr 1fr!important;
+    gap: 10px!important;
+    margin-top: 10px!important
+}
+
+#roomScreen .team {
+    background: #4b3932;
+    border: 1px solid #8a756b;
+    min-height: 270px
+}
+
+#roomScreen .team h4 {
+    margin: 0;
+    background: #806d63;
+    height: 23px;
+    line-height: 23px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400
+}
+
+#roomScreen .playerRow,#roomScreen .team .empty {
+    min-height: 35px;
+    background: #a8b88d;
+    color: #fff;
+    padding: 7px 9px;
+    box-sizing: border-box;
+    display: block;
+    text-align: center;
+    font-size: 15px
+}
+
+#roomScreen .blueTeam .empty,#roomScreen .spectators .empty {
+    background: #4b3932;
+    color: #b7aaa4
+}
+
+#roomScreen .roomInfo {
+    display: flex!important;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 70px;
+    margin-top: 11px;
+    font-size: 13px
+}
+
+#roomScreen .roomInfo .btn {
+    min-width: 90px
+}
+
+#settingsScreen .settingsGrid {
+    display: grid!important;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px
+}
+
+#settingsScreen .setting {
+    background: #493831;
+    padding: 10px;
+    border: 1px solid #6d554c
+}
+
+#settingsScreen .setting label {
+    display: block;
+    font-size: 12px;
+    margin-bottom: 5px
+}
+
+#settingsScreen select {
+    width: 100%;
+    height: 30px;
+    background: #2f3032;
+    color: #eee;
+    border: 0;
+    border-radius: 2px;
+    padding: 4px
+}
+
+#settingsScreen .hudMode {
+    margin-top: 10px;
+    padding: 9px;
+    background: #493831;
+    color: #c9bfbb;
+    font-size: 11px
+}
+
+#settingsScreen .row {
+    display: flex!important;
+    justify-content: space-between!important;
+    margin-top: 15px!important
+}
+
+@media(max-width: 700px) {
+    #lobbyScreen .panel,#createScreen .panel,#roomScreen .panel,#settingsScreen .panel {
+        padding-left:14px;
+        padding-right: 14px
+    }
+
+    #lobbyScreen .panel>div:nth-of-type(3) {
+        grid-template-columns: minmax(0,1fr) 91px!important
+    }
+
+    #createScreen .formRow {
+        grid-template-columns: 220px minmax(0,1fr)
+    }
+
+    #roomScreen .grid3 {
+        gap: 8px!important
+    }
+
+    #roomScreen .roomInfo {
+        gap: 28px
+    }
+}
+
+@media(max-width: 520px) {
+    #createScreen .formRow {
+        grid-template-columns:105px minmax(0,1fr)
+    }
+
+    #roomScreen .bar {
+        grid-template-columns: 72px 1fr 72px
+    }
+
+    #roomScreen .roomInfo {
+        justify-content: space-between;
+        gap: 8px
+    }
+
+    #settingsScreen .settingsGrid {
+        grid-template-columns: 1fr
+    }
+}
+
+@media (max-width: 900px) and (orientation:portrait) {
+    #game {
+        transform-origin:top left
+    }
+}
+
+#joy .knob {
+    transition: none!important;
+    will-change: transform
+}
+
+/* TOP_POST_FROM_BOTTOM_REFERENCE */
+@media (orientation: landscape) and (max-height:560px) {
+    .gameSettings {
+        top:8px;
+        right: 8px;
+        width: min(310px,42vw);
+        max-height: calc(100dvh - 16px);
+        overflow-y: auto;
+        padding: 8px
+    }
+
+    .gameSettings label {
+        font-size: 10px;
+        margin: 4px 0 1px
+    }
+
+    .moveControlBtn {
+        padding: 7px;
+        margin: 4px 0
+    }
+
+    .gameSettingsBtn {
+        right: 156px;
+        top: 8px;
+        width: 64px;
+        height: 64px
+    }
+
+    .touch,#kick,#pass {
+        max-width: 24vw;
+        max-height: 24vw
+    }
+}
+
+@media (max-height: 430px) {
+    .gameSettings {
+        width:min(300px,48vw);
+        font-size: 10px
+    }
+
+    .gameSettingsBtn {
+        right: 156px;
+        width: 64px;
+        height: 64px
+    }
+
+    .moveHint {
+        font-size: 9px;
+        line-height: 11px
+    }
+}
+
+#game {
+    overflow: hidden
+}
+
+#pass {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none
+}
+
+button,#joy,#kick {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent
+}
+
+.nickAvatarRow {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 78px;
+    gap: 10px;
+    align-items: end
+}
+
+.avatarPick {
+    display: flex;
+    flex-direction: column;
+    gap: 4px
+}
+
+.avatarPick label {
+    font-size: 11px;
+    text-align: center
+}
+
+.avatarPick input {
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+    width: 58px!important;
+    height: 42px!important;
+    margin: auto;
+    text-align: center;
+    font-size: 16px!important;
+    font-weight: 700
+}
+
+.avatarPick input {
+    border-radius: 50%!important;
+    width: 44px!important;
+    height: 44px!important;
+    padding: 0!important
+}
+
+.avatarHint {
+    font-size: 7px;
+    text-align: center;
+    opacity: .65;
+    line-height: 9px
+}
+
+.playerTag {
+    font: 700 .18px system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+    pointer-events: none
+}
+
+.playerTagBg {
+    opacity: .92
+}
+
+.gameSettingsBtn {
+    position: absolute;
+    right: 156px;
+    top: 8px;
+    width: 64px;
+    height: 64px;
+    border: 0;
+    border-radius: 50%;
+    background: #45494b;
+    color: #fff;
+    font-size: 18px;
+    z-index: 20;
+    box-shadow: 0 2px 5px #0005;
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
+.gameSettings {
+    position: absolute;
+    right: 10px;
+    top: 52px;
+    width: 190px;
+    background: #111e;
+    color: #fff;
+    border: 1px solid #ffffff33;
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 30;
+    backdrop-filter: blur(8px)
+}
+
+.gameSettings.hidden {
+    display: none
+}
+
+.gameSettings label {
+    display: block;
+    font-size: 11px;
+    margin: 6px 0 2px
+}
+
+.gameSettings input,.gameSettings select {
+    width: 100%;
+    box-sizing: border-box
+}
+
+.gameSettings .closeGs {
+    margin-top: 8px;
+    width: 100%;
+    border: 0;
+    border-radius: 6px;
+    padding: 7px;
+    background: #555;
+    color: #fff
+}
+
+.moveControlBtn {
+    display: block;
+    width: 100%;
+    margin: 6px 0;
+    padding: 9px;
+    border: 1px solid #ffffff33;
+    border-radius: 50px;
+    background: #45494b;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 2px 5px #0005
+}
+
+.moveControlBtn.active {
+    background: #fff;
+    color: #111
+}
+
+.moveHint {
+    font-size: 10px;
+    line-height: 13px;
+    padding: 6px 2px;
+    opacity: .85
+}
+
+.moveHint.hidden {
+    display: none
+}
+
+.hud,.topBtns,#joy,#kick,#pass {
+    opacity: var(--hud-opacity,1)
+}
+
+#shout {
+    display: none!important
+}
+
+.hud {
+    transform: scale(var(--hud-scale,1));
+    transform-origin: top center
+}
+
+.topBtns {
+    transform: scale(var(--hud-scale,1));
+    transform-origin: top right
+}
+
+#joy,#kick,#pass,#shout {
+    transform: scale(var(--hud-scale,1));
+    transform-origin: center
+}
+
+.hudPosLeft {
+    left: 18px!important;
+    right: auto!important
+}
+
+.hudPosCenter {
+    left: 50%!important;
+    right: auto!important;
+    transform: translateX(-50%) scale(var(--hud-scale,1))!important
+}
+
+.hudPosRight {
+    left: auto!important;
+    right: 18px!important;
+    transform: scale(var(--hud-scale,1))!important
+}
+
+/* [DESATIVADO - ver README, "Problemas conhecidos"]
+   No arquivo original esta regra vinha com um "<style>" solto na frente,
+   o que fazia o navegador IGNORAR a regra. Mantida desativada para o jogo
+   continuar idêntico. Para ativar, tire este comentário.
+.dragStage {
+    position: relative;
+    height: 150px;
+    margin-top: 6px;
+    border: 1px solid #ffffff2e;
+    border-radius: 10px;
+    background: #0008;
+    overflow: hidden;
+    touch-action: none
+}
+*/
+
+.dragHandle {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+    transform: translate(-50%,-50%);
+    touch-action: none;
+    user-select: none;
+    box-shadow: 0 2px 8px #0008
+}
+
+.joyHandle {
+    background: #444
+}
+
+.kickHandle {
+    background: #555;
+    font-size: 22px
+}
+
+.dragHint {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    transform: translateX(-50%);
+    font-size: 9px;
+    opacity: .65;
+    white-space: nowrap;
+    pointer-events: none
+}
+
+/* Visual pass */
+body,#menu,#nickScreen,#lobbyScreen,#createScreen,#roomScreen,#settingsScreen {
+    font-family: system-ui,-apple-system,"Segoe UI",Arial,sans-serif
+}
+
+body {
+    background: #0d2416;
+    color: #eef7ef
+}
+
+#menu,#nickScreen {
+    background: #102a1a!important
+}
+
+.screen.lobby,#lobbyScreen .panel,#createScreen .panel,#roomScreen .panel,#settingsScreen .panel {
+    background: #102a1a!important;
+    color: #eef7ef
+}
+
+#nickScreen .panel {
+    background: #153821!important
+}
+
+#nickScreen input,#createScreen input,#createScreen select,#settingsScreen select {
+    background: #0b1d12!important;
+    color: #eef7ef
+}
+
+.btn,#nickScreen #play,#lobbyScreen .btn,#createScreen .row .btn,#roomScreen .bar .btn,#settingsScreen .row .btn {
+    background: #244a30!important;
+    color: #eef7ef!important
+}
+
+.btn:hover,.btn:active {
+    background: #2d6040!important
+}
+
+#lobbyScreen .panel>div:nth-of-type(3)>div:first-child>div:first-child {
+    background: #1d472b!important
+}
+
+#roomScreen .team h4 {
+    background: #1d472b!important
+}
+
+#roomScreen .playerRow,#roomScreen .team .empty {
+    background: #183c25!important
+}
+
+#roomScreen .blueTeam .empty,#roomScreen .spectators .empty {
+    background: #102a1a!important
+}
+
+#settingsScreen .setting,#settingsScreen .hudMode {
+    background: #153821!important;
+    border-color: #255936
+}
+
+.panelTitle {
+    border-color: #255936
+}
+
+#game {
+    background: #0f2b18!important
+}
+
+.hud {
+    font-family: Arial,"Helvetica Neue",sans-serif;
+    font-weight: 800;
+    letter-spacing: .02em
+}
+
+.hud .dot.red,.hud .dot.blue {
+    border-radius: 3px!important
+}
+
+.hud .dot.red {
+    background: #e53935
+}
+
+.hud .dot.blue {
+    background: #2587d9
+}
+
+.hud #rs,.hud #bs {
+    font-family: Arial,"Helvetica Neue",sans-serif;
+    font-weight: 900;
+    font-size: 1.05em;
+    line-height: 1
+}
+
+.topBtns button {
+    background: #26352c!important;
+    color: #f2f5f2;
+    border: 1px solid #405046
+}
+
+.touch {
+    background: #3d4540!important;
+    border: 2px solid #56605a!important;
+    box-shadow: 0 5px 14px #0008!important
+}
+
+.knob {
+    background: #59625c!important;
+    border: 2px solid #747d76!important;
+    box-shadow: 0 3px 8px #0008!important;
+    border-radius: 50%!important;
+    aspect-ratio: 1/1;
+    clip-path: circle(50%)
+}
+
+.kick {
+    background: #3d4540!important;
+    border: 2px solid #56605a!important;
+    color: #f0f3f0!important;
+    font-family: Arial,"Helvetica Neue",sans-serif;
+    font-weight: 800
+}
+
+.moveControlBtn {
+    font-family: Arial,"Helvetica Neue",sans-serif!important;
+    background: #244a30!important;
+    color: #eef7ef!important
+}
+
+.gameSettings {
+    background: #102a1a!important;
+    color: #eef7ef!important;
+    border-color: #255936!important
+}
+
+.gameSettings label {
+    color: #d8e8dc
+}
+
+/* Tipografia padrão do jogo. */
+/* [DESATIVADO - ver README, "Problemas conhecidos"]
+   No arquivo original esta regra vinha com um "<style>" solto na frente,
+   o que fazia o navegador IGNORAR a regra. Mantida desativada para o jogo
+   continuar idêntico. Para ativar, tire este comentário.
+body,button,input,select,textarea,.hud,.topBtns,.gameSettings,.panelTitle,.btn {
+    font-family: Arial,"Helvetica Neue",sans-serif!important
+}
+*/
+
+.knob {
+    border-radius: 50%!important;
+    clip-path: circle(50%)!important
+}
+
+/* [DESATIVADO - ver README, "Problemas conhecidos"]
+   No arquivo original esta regra vinha com um "<style>" solto na frente,
+   o que fazia o navegador IGNORAR a regra. Mantida desativada para o jogo
+   continuar idêntico. Para ativar, tire este comentário.
+#restartRoomModal {
+    z-index: 80;
+    background: rgba(0,0,0,.68)
+}
+*/
+
+#restartRoomModal .pause {
+    background: #102a1a;
+    border: 1px solid #5b8065;
+    border-radius: 14px;
+    padding: 22px;
+    color: #eef7ef;
+    box-shadow: 0 12px 35px rgba(0,0,0,.45)
+}
+
+.roomDrop {
+    min-height: 270px!important;
+    transition: background .12s,outline .12s
+}
+
+.roomDrop.dropOver {
+    outline: 2px solid #fff;
+    outline-offset: -2px;
+    background: #214f30!important
+}
+
+.roomPlayer {
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    margin: 6px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #a8b88d;
+    color: #fff;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    font-size: 14px;
+    border: 1px solid rgba(255,255,255,.16)
+}
+
+.roomPlayer:active {
+    cursor: grabbing
+}
+
+.roomPlayer.self {
+    font-weight: 700
+}
+
+.roomPlayer.blue {
+    background: #2b83d6
+}
+
+.roomPlayer.red {
+    background: #d71920
+}
+
+.roomPlayer.spectator {
+    background: #59616a
+}
+
+.roomPlayer .miniRole {
+    font-size: 10px;
+    opacity: .78
+}
+#game.spectatorMode #joy,#game.spectatorMode #kick,#game.spectatorMode #pass,#game.spectatorMode #shout,#game.spectatorMode #gameSettingsBtn {
+    display: none!important
+}
+
+#game.spectatorMode .topBtns {
+    opacity: .85
+}
+
+
+/* =========================================================
+   TEMA LILÁS / LOBBY CLÁSSICO — baseado na referência visual
+   ========================================================= */
+
+:root {
+    --theme-purple: #7040b5;
+    --theme-purple-dark: #5f32a4;
+    --theme-purple-light: #eee8f8;
+    --theme-text: #5c5965;
+    --theme-border: #ddd8e4;
+    --theme-panel: rgba(255,255,255,.96);
+}
+
+html,
+body {
+    background-color: #faf9fd;
+    color: var(--theme-text);
+    font-family: Arial, "Helvetica Neue", sans-serif;
+}
+
+body,
+#menu,
+#nickScreen,
+#lobbyScreen,
+#createScreen,
+#roomScreen,
+#settingsScreen {
+    background-color: #fbfaff !important;
+    background-image: repeating-linear-gradient(
+        132deg,
+        #fbfaff 0,
+        #fbfaff 34px,
+        #f0ebf8 34px,
+        #f0ebf8 67px,
+        #fbfaff 67px,
+        #fbfaff 101px
+    ) !important;
+    color: var(--theme-text) !important;
+}
+
+.screen.lobby {
+    align-items: center;
+    justify-content: center;
+    padding: 30px 5vw;
+    overflow: auto;
+    background: transparent !important;
+}
+
+#lobbyScreen .panel,
+#createScreen .panel,
+#roomScreen .panel,
+#settingsScreen .panel {
+    width: min(920px, 100%);
+    height: min(430px, calc(100vh - 60px));
+    min-height: 360px;
+    padding: 10px;
+    border: 1px solid #dedbe5;
+    border-radius: 9px;
+    background: var(--theme-panel) !important;
+    color: var(--theme-text) !important;
+    box-shadow: 0 3px 14px rgba(72, 49, 106, .08);
+}
+
+.panelTitle {
+    color: var(--theme-purple);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 25px;
+    border-bottom: 2px solid var(--theme-purple);
+    padding-bottom: 7px;
+    margin: 0 0 11px;
+}
+
+#lobbyScreen .bar { height: 30px; }
+
+#roomCount,
+#lobbyScreen .panel > div:nth-of-type(2),
+#lobbyScreen .empty,
+#roomScreen .roomInfo,
+#settingsScreen .hudMode {
+    color: var(--theme-text);
+}
+
+#lobbyScreen .panel > div:nth-of-type(3) {
+    grid-template-columns: minmax(0, 1fr) 132px !important;
+    gap: 8px !important;
+}
+
+#lobbyScreen .panel > div:nth-of-type(3) > div:first-child {
+    min-height: 306px !important;
+    border: 0 !important;
+    background: #fff !important;
+}
+
+#lobbyScreen .panel > div:nth-of-type(3) > div:first-child > div:first-child {
+    grid-template-columns: 2.1fr 1fr 1fr 1fr 1fr !important;
+    padding: 7px 6px !important;
+    background: transparent !important;
+    color: #625f6b;
+    border-bottom: 1px solid var(--theme-border);
+    font-size: 12px !important;
+    font-weight: 700;
+}
+
+#lobbyScreen .empty {
+    min-height: 265px;
+    justify-content: flex-start;
+    padding: 0 6px;
+    font-size: 13px;
+}
+
+#lobbyScreen .panel > div:nth-of-type(3) > div:last-child { gap: 6px; }
+
+.btn,
+#nickScreen #play,
+#lobbyScreen .btn,
+#createScreen .row .btn,
+#roomScreen .bar .btn,
+#settingsScreen .row .btn {
+    width: 100%;
+    min-height: 32px;
+    padding: 7px 10px;
+    border-radius: 2px;
+    background: var(--theme-purple) !important;
+    color: #fff !important;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: none;
+}
+
+.btn:hover,
+.btn:active,
+#nickScreen #play:hover,
+#nickScreen #play:active {
+    background: var(--theme-purple-dark) !important;
+}
+
+.btn:disabled { opacity: .5; }
+
+#nickScreen .panel {
+    background: var(--theme-panel) !important;
+    border: 1px solid #dedbe5;
+    border-radius: 9px;
+    box-shadow: 0 3px 14px rgba(72, 49, 106, .08);
+}
+
+#nickScreen .panelTitle {
+    color: var(--theme-purple);
+    border-bottom-color: var(--theme-purple);
+}
+
+#nickScreen input,
+#createScreen input,
+#createScreen select,
+#settingsScreen select {
+    background: #fff !important;
+    color: var(--theme-text) !important;
+    border: 1px solid var(--theme-border);
+}
+
+#createScreen .panel,
+#roomScreen .panel,
+#settingsScreen .panel {
+    height: min(620px, calc(100vh - 60px));
+}
+
+#roomScreen .team,
+#settingsScreen .setting,
+#settingsScreen .hudMode {
+    background: #fff !important;
+    border-color: var(--theme-border) !important;
+}
+
+#roomScreen .team h4 {
+    background: var(--theme-purple-light) !important;
+    color: #625f6b;
+}
+
+#roomScreen .playerRow,
+#roomScreen .team .empty {
+    background: #faf9fd !important;
+    color: var(--theme-text);
+}
+
+#roomScreen .blueTeam .empty,
+#roomScreen .spectators .empty {
+    background: #fff !important;
+    color: #8a8692;
+}
+
+#roomScreen .roomPlayer.blue { background: #6e9bd4; }
+#roomScreen .roomPlayer.red { background: #d97979; }
+#roomScreen .roomPlayer.spectator { background: #9995a1; }
+
+@media (max-width: 700px) {
+    .screen.lobby { padding: 15px; }
+
+    #lobbyScreen .panel,
+    #createScreen .panel,
+    #roomScreen .panel,
+    #settingsScreen .panel {
+        height: calc(100vh - 30px);
+        min-height: 0;
+    }
+
+    #lobbyScreen .panel > div:nth-of-type(3) {
+        grid-template-columns: minmax(0, 1fr) 108px !important;
+    }
+
+    #lobbyScreen .btn { width: 108px; }
+}
+
+@media (max-width: 520px) {
+    #lobbyScreen .panel > div:nth-of-type(3) {
+        grid-template-columns: 1fr !important;
+    }
+
+    #lobbyScreen .panel > div:nth-of-type(3) > div:last-child {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #lobbyScreen .btn { width: 100%; }
+}
+
+#nickScreen {
+    padding: 24px;
+    overflow: auto;
+}
+
+#nickScreen .panel.loginCard {
+    width: min(420px, 100%);
+    max-width: 100%;
+    padding: 28px;
+    border-radius: 12px;
+    background: var(--theme-panel) !important;
+    box-shadow: 0 12px 35px rgba(72, 49, 106, .12);
+}
+
+#nickScreen .loginEyebrow {
+    margin-bottom: 6px;
+    color: var(--theme-purple);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+}
+
+#nickScreen .panelTitle {
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    font-size: 23px;
+}
+
+#nickScreen .loginDescription {
+    margin: 0 0 22px;
+    color: var(--theme-text);
+    font-size: 14px;
+}
+
+#nickScreen .loginForm {
+    display: grid;
+    gap: 17px;
+}
+
+#nickScreen .loginField {
+    display: grid;
+    gap: 7px;
+}
+
+#nickScreen .loginField label,
+#nickScreen .avatarPick label {
+    color: var(--theme-text);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+#nickScreen .loginField input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 11px;
+    border: 1px solid var(--theme-border);
+    border-radius: 6px;
+    background: #fff !important;
+    color: var(--theme-text) !important;
+    font-size: 14px;
+}
+
+#nickScreen .loginField input:focus {
+    border-color: var(--theme-purple);
+    outline: 3px solid rgba(112, 64, 181, .14);
+}
+
+#nickScreen .nickAvatarRow {
+    grid-template-columns: 1fr;
+}
+
+#nickScreen .avatarPick {
+    align-items: flex-start;
+}
+
+#nickScreen .avatarPick input {
+    margin: 0;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-purple-light) !important;
+    color: var(--theme-purple) !important;
+}
+
+#nickScreen .avatarHint {
+    margin-top: 2px;
+    color: var(--theme-text);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+#nickScreen #play {
+    min-height: 42px;
+    margin: 2px 0 0 !important;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+#nickScreen .loginFooter {
+    margin: 17px 0 0;
+    color: var(--theme-text);
+    font-size: 12px;
+    text-align: center;
+    opacity: .8;
+}
+
+@media (max-width: 520px) {
+    #nickScreen {
+        padding: 16px;
+    }
+
+    #nickScreen .panel.loginCard {
+        padding: 22px;
+    }
+}
+
+#settingsScreen .panel.settingsPanel {
+    width: min(680px, 100%);
+    height: auto;
+    min-height: 0;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    padding: 22px;
+}
+
+#settingsScreen .settingsHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+#settingsScreen .settingsHeader .panelTitle {
+    flex: 1;
+    margin: 0;
+    padding-bottom: 9px;
+}
+
+#settingsScreen .settingsTabs {
+    display: flex;
+    gap: 7px;
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--theme-border);
+    overflow-x: auto;
+}
+
+#settingsScreen .settingsTab {
+    flex: 1 0 auto;
+    min-height: 37px;
+    padding: 7px 15px;
+    border: 1px solid #e4dbee;
+    border-radius: 6px;
+    background: var(--theme-purple-light);
+    color: var(--theme-purple);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#settingsScreen .settingsTab.active {
+    border-color: var(--theme-purple);
+    background: var(--theme-purple);
+    color: #fff;
+}
+
+#settingsScreen .settingsTabPanel[hidden] {
+    display: none;
+}
+
+#settingsScreen .settingsTabPanel .settingsGrid {
+    display: grid;
+}
+
+#settingsScreen .personalizationBasics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px 12px;
+    margin-bottom: 12px;
+}
+
+#settingsScreen .personalizationBasics label {
+    margin: 0;
+    align-self: end;
+}
+
+#settingsScreen .personalizationBasics select {
+    grid-row: 2;
+}
+
+#settingsScreen .personalizationField {
+    margin-bottom: 12px;
+}
+
+#settingsScreen .personalizationLabel {
+    margin-bottom: 6px;
+    color: var(--theme-purple);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#settingsScreen .customizationPreview {
+    --preview-line: #fff;
+    --preview-ball-color: #fff;
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border: 1px solid #d7d2dc;
+    border-radius: 5px;
+    background-color: #72ae72;
+    background-image: repeating-linear-gradient(135deg, transparent 0 20px, rgba(40, 95, 50, .2) 20px 40px);
+}
+
+#settingsScreen .customizationPreview::before {
+    position: absolute;
+    inset: 7px;
+    border: 1px solid var(--preview-line);
+    content: "";
+}
+
+#settingsScreen .previewHalfway {
+    position: absolute;
+    top: 7px;
+    bottom: 7px;
+    left: 50%;
+    border-left: 1px solid var(--preview-line);
+}
+
+#settingsScreen .previewCenter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 62px;
+    height: 62px;
+    border: 1px solid var(--preview-line);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#settingsScreen .previewPlayer,
+#settingsScreen .previewBall {
+    position: absolute;
+    top: 50%;
+    width: 36px;
+    height: 36px;
+    border: 2px solid #252525;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#settingsScreen .previewPlayer {
+    left: 35%;
+    display: grid;
+    place-items: center;
+    background-color: #ed5a5a;
+    background-image: var(--preview-player-image);
+    background-position: var(--preview-player-x, 50%) var(--preview-player-y, 50%);
+    background-size: var(--preview-player-zoom, 100%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#settingsScreen .previewBall {
+    left: 62%;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+#settingsScreen .personalizationGrid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    align-items: start;
+}
+
+#settingsScreen .personalizationSetting {
+    display: grid;
+    gap: 6px;
+    min-width: 0;
+}
+
+#settingsScreen .personalizationSetting > label:not(.settingsCheck) {
+    margin: 2px 0 0;
+    font-size: 12px;
+}
+
+#settingsScreen .personalizationSetting input[type="color"] {
+    width: 42px;
+    height: 28px;
+    padding: 2px;
+    border: 1px solid #ddd2ed;
+    border-radius: 5px;
+    background: #fff;
+    cursor: pointer;
+}
+
+#settingsScreen .personalizationSetting input[type="range"] {
+    width: 100%;
+    margin: 0 0 5px;
+    accent-color: var(--theme-purple);
+}
+
+#settingsScreen .personalizationSetting .settingsCheck {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 6px;
+}
+
+#settingsScreen .personalizationSetting .settingsCheck input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--theme-purple);
+}
+
+#settingsScreen .personalizationSetting .customizationUpload,
+#settingsScreen .personalizationSetting .customizationRemove {
+    width: 100%;
+    min-width: 0;
+    min-height: 30px;
+    padding: 6px;
+    border-radius: 5px;
+    font-size: 11px;
+}
+
+#settingsScreen .personalizationSetting .customizationRemove {
+    background: #eee8f8 !important;
+    color: var(--theme-purple) !important;
+}
+
+#settingsScreen .customizationFile {
+    display: none;
+}
+
+#settingsScreen .colorPickerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+#settingsScreen .colorPickerRow label {
+    margin: 0;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+#settingsScreen .personalizationBasics select {
+    grid-column: auto;
+    grid-row: auto;
+}
+
+#settingsScreen .settingsHeader .btn {
+    width: auto;
+    min-width: 76px;
+    padding: 7px 14px;
+    border-radius: 5px;
+}
+
+#settingsScreen .settingsGrid {
+    gap: 12px;
+}
+
+#settingsScreen .ballSoundSetting {
+    grid-column: 1 / -1;
+}
+
+#settingsScreen .ballSoundActions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+#settingsScreen .ballSoundActions .btn {
+    flex: 1;
+    min-width: 0;
+}
+
+#settingsScreen .ballSoundStatus {
+    margin-top: 8px;
+    color: var(--theme-text);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+#settingsScreen .setting {
+    padding: 12px;
+    border: 1px solid #e4dbee !important;
+    border-radius: 7px;
+    background: #f3eef9 !important;
+}
+
+#settingsScreen .setting label {
+    margin-bottom: 7px;
+    color: #393342;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#settingsScreen .setting input[type="range"] {
+    width: 100%;
+    margin: 7px 0 3px;
+    accent-color: var(--theme-purple);
+}
+
+#settingsScreen .setting .settingsCheck {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+#settingsScreen .setting .settingsCheck input {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    accent-color: var(--theme-purple);
+}
+
+#settingsScreen select {
+    height: 38px;
+    padding: 7px 10px;
+    border: 1px solid #ddd2ed !important;
+    border-radius: 5px;
+    background-color: #fff !important;
+    color: #393342 !important;
+    font-size: 13px;
+}
+
+#settingsScreen select:focus {
+    border-color: var(--theme-purple) !important;
+    outline: 3px solid rgba(112, 64, 181, .14);
+}
+
+#settingsScreen .hudMode {
+    padding: 11px 12px;
+    border: 1px solid #e4dbee !important;
+    border-radius: 7px;
+    background: #f3eef9 !important;
+    color: var(--theme-text) !important;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+#settingsScreen .settingsActions {
+    gap: 10px;
+}
+
+#settingsScreen .settingsActions .btn {
+    width: auto;
+    min-width: 120px;
+    min-height: 38px;
+    border-radius: 5px;
+}
+
+@media (max-width: 700px) {
+    #settingsScreen .panel.settingsPanel {
+        max-height: calc(100vh - 30px);
+    }
+}
+
+@media (max-width: 520px) {
+    #settingsScreen .panel.settingsPanel {
+        padding: 17px;
+    }
+
+    #settingsScreen .settingsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    #settingsScreen .personalizationBasics {
+        grid-template-columns: 1fr;
+    }
+
+    #settingsScreen .personalizationGrid {
+        grid-template-columns: 1fr;
+    }
+
+    #settingsScreen .settingsActions .btn {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+body.custom-dark,
+body.custom-dark #menu,
+body.custom-dark #nickScreen,
+body.custom-dark #lobbyScreen,
+body.custom-dark #createScreen,
+body.custom-dark #roomScreen,
+body.custom-dark #settingsScreen {
+    --theme-text: #eee9f5;
+    --theme-border: #4b4058;
+    --theme-panel: rgba(35, 29, 43, .97);
+    background-color: #211a2b !important;
+    background-image: repeating-linear-gradient(
+        132deg,
+        #211a2b 0,
+        #211a2b 34px,
+        #2a2235 34px,
+        #2a2235 67px,
+        #211a2b 67px,
+        #211a2b 101px
+    ) !important;
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #lobbyScreen .panel,
+body.custom-dark #createScreen .panel,
+body.custom-dark #roomScreen .panel,
+body.custom-dark #settingsScreen .panel,
+body.custom-dark #nickScreen .panel {
+    border-color: #4b4058;
+    background: var(--theme-panel) !important;
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #settingsScreen .setting,
+body.custom-dark #settingsScreen .hudMode,
+body.custom-dark #settingsScreen .personalizationSetting {
+    border-color: #4b4058 !important;
+    background: #30273b !important;
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #settingsScreen .setting label,
+body.custom-dark #settingsScreen .colorPickerRow label {
+    color: var(--theme-text);
+}
+
+body.custom-dark #settingsScreen select,
+body.custom-dark #settingsScreen .customizationRemove {
+    border-color: #554966 !important;
+    background: #241e2d !important;
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #createScreen .formRow label {
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #createScreen input,
+body.custom-dark #createScreen select {
+    border: 1px solid #554966 !important;
+    background: #241e2d !important;
+    color: var(--theme-text) !important;
+    color-scheme: dark;
+}
+
+body.custom-dark #createScreen select option {
+    background: #241e2d;
+    color: var(--theme-text);
+}
+
+body.custom-dark #createScreen input::placeholder {
+    color: #aaa0b8;
+}
+
+body.custom-dark #nickScreen .loginField label,
+body.custom-dark #nickScreen .avatarPick label,
+body.custom-dark #nickScreen .avatarHint,
+body.custom-dark #nickScreen .loginFooter {
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #nickScreen .loginField input {
+    border-color: #554966 !important;
+    background: #241e2d !important;
+    color: var(--theme-text) !important;
+    caret-color: var(--theme-text);
+}
+
+body.custom-dark #nickScreen .loginField input::placeholder {
+    color: #aaa0b8;
+}
+
+body.custom-dark #nickScreen .avatarPick input {
+    border-color: #554966 !important;
+    background: #30273b !important;
+    color: #c9a9ff !important;
+}
+
+body.custom-dark #lobbyScreen .panel > div:nth-of-type(3) > div:first-child {
+    border-color: var(--theme-border) !important;
+    background: #30273b !important;
+}
+
+body.custom-dark #lobbyScreen .panel > div:nth-of-type(3) > div:first-child > div:first-child {
+    border-bottom-color: var(--theme-border) !important;
+    background: #382d44 !important;
+    color: var(--theme-text) !important;
+}
+
+body.custom-dark #lobbyScreen .panel > div:nth-of-type(3) > div:first-child .empty {
+    background: #30273b !important;
+    color: #d7cde2 !important;
+}
+
+#settingsScreen .settingsSectionTitle {
+    margin: 0 0 5px;
+    color: var(--theme-purple);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#settingsScreen .keyBindings {
+    margin-bottom: 18px;
+}
+
+#settingsScreen .keyBindingRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 37px;
+    padding: 4px 3px;
+    border-bottom: 1px solid var(--theme-border);
+    color: var(--theme-text);
+    font-size: 12px;
+}
+
+#settingsScreen .keyBindingButton {
+    width: 66px;
+    min-height: 29px;
+    border-radius: 5px;
+    background: var(--theme-purple);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+#settingsScreen .keyBindingButton.listening {
+    background: #38225d;
+    outline: 2px solid var(--theme-purple-light);
+}
+
+#settingsScreen .keyBindingHint {
+    margin-top: 7px;
+    color: var(--theme-text);
+    font-size: 10px;
+    opacity: .75;
+}
+
+.graphicsHint {
+    display: block;
+    margin-top: 6px;
+    color: var(--theme-text);
+    font-size: 10px;
+    line-height: 1.4;
+    opacity: .78;
+}
+
+#roomScreen {
+    padding: 30px 5vw;
+    background: transparent !important;
+}
+
+#roomScreen .panel.roomPanel {
+    width: min(810px, 100%);
+    height: min(570px, calc(100vh - 60px));
+    min-height: 430px;
+    padding: 12px 16px 16px;
+    border: 1px solid var(--theme-border);
+    border-radius: 9px;
+    background: var(--theme-panel) !important;
+    color: var(--theme-text) !important;
+    box-shadow: 0 3px 14px rgba(72, 49, 106, .08);
+    overflow-y: auto;
+}
+
+#roomScreen .roomHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 38px;
+    border-bottom: 2px solid var(--theme-purple);
+}
+
+#roomScreen #roomTitle {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--theme-purple);
+    font-size: 17px !important;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#roomScreen .roomHeaderActions {
+    display: flex;
+    gap: 7px;
+}
+
+#roomScreen .roomHeaderActions .btn {
+    width: auto;
+    min-width: 68px;
+    min-height: 30px;
+    border-radius: 5px;
+    background: var(--theme-purple) !important;
+    font-size: 12px;
+}
+
+#roomScreen .grid3.roomTeams {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    height: 190px;
+    min-height: 160px;
+    margin-top: 10px !important;
+}
+
+#roomScreen .team {
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+    border: 0;
+    border: 1px solid var(--theme-border);
+    border-radius: 6px;
+    background: #fff !important;
+}
+
+#roomScreen .team h4 {
+    height: 30px;
+    line-height: 30px;
+    background: var(--theme-purple-light) !important;
+    color: var(--theme-text) !important;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#roomScreen .team.redTeam h4 {
+    color: #b7354f !important;
+}
+
+#roomScreen .team.blueTeam h4 {
+    color: #355f9e !important;
+}
+
+#roomScreen .team .empty,
+#roomScreen .team .roomPlayer {
+    min-height: 36px;
+    padding: 9px 10px;
+    background: #fff !important;
+    color: var(--theme-text) !important;
+    font-size: 13px;
+    text-align: left;
+}
+
+#roomScreen .roomPlayer {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid var(--theme-border);
+}
+
+#roomScreen .roomPlayer .miniRole {
+    color: var(--theme-text);
+    font-size: 10px;
+}
+
+#roomScreen .roomTeamHint {
+    margin: 6px 0;
+    color: var(--theme-text);
+    font-size: 11px;
+    opacity: .8;
+}
+
+#roomScreen .roomChat {
+    display: flex;
+    flex-direction: column;
+    height: 170px;
+    min-height: 170px;
+    border: 1px solid rgba(180, 160, 205, .42);
+    border-radius: 7px;
+    overflow: hidden;
+    background: #241e2c;
+    box-shadow: 0 3px 12px rgba(12, 8, 18, .18);
+}
+
+#roomScreen .roomChatHeader {
+    padding: 8px 12px;
+    background: var(--theme-purple-dark);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+#roomScreen .roomChatMessages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 8px 12px;
+    color: #f2edf7;
+    font-size: 13px;
+    text-align: left;
+}
+
+#roomScreen .roomChatMessage {
+    display: flex;
+    gap: 8px;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+}
+
+#roomScreen .roomChatMessage strong {
+    flex: 0 0 auto;
+    color: #e2a0ff;
+}
+
+#roomScreen .roomChatForm {
+    display: flex;
+    gap: 8px;
+    padding: 7px;
+    border-top: 1px solid rgba(180, 160, 205, .25);
+    background: #1d1824;
+}
+
+#roomScreen .roomChatForm input {
+    flex: 1;
+    min-width: 0;
+    height: 38px;
+    padding: 7px 11px;
+    border: 1px solid rgba(180, 160, 205, .4);
+    border-radius: 5px;
+    background: #30283a;
+    color: #fff;
+    font-size: 13px;
+}
+
+#roomScreen .roomChatForm input::placeholder {
+    color: #bdb1c9;
+}
+
+#roomScreen .roomChatForm .btn {
+    width: auto;
+    min-width: 82px;
+    min-height: 38px;
+    padding: 7px 12px;
+    border-radius: 5px;
+    background: var(--theme-purple) !important;
+    font-size: 13px;
+}
+
+#roomScreen .roomInfo {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+    min-height: 55px;
+    margin-top: 9px;
+    color: var(--theme-text) !important;
+    font-size: 12px;
+}
+
+#roomScreen .roomInfo .btn {
+    width: auto;
+    min-width: 125px;
+    min-height: 35px;
+    border-radius: 5px;
+    background: var(--theme-purple) !important;
+}
+
+body.custom-dark #roomScreen .panel.roomPanel {
+    border-color: var(--theme-border);
+    background: var(--theme-panel) !important;
+}
+
+body.custom-dark #roomScreen .team,
+body.custom-dark #roomScreen .team .empty,
+body.custom-dark #roomScreen .team .roomPlayer {
+    border-color: var(--theme-border);
+    background: #30273b !important;
+    color: var(--theme-text) !important;
+}
+
+#roomScreen.teamWindow {
+    z-index: 200;
+    padding: 24px;
+    background: rgba(30, 24, 38, .42) !important;
+    backdrop-filter: blur(3px);
+}
+
+#roomScreen.teamWindow .panel.roomPanel {
+    width: min(810px, 100%);
+    height: min(570px, calc(100vh - 48px));
+    min-height: 430px;
+    box-shadow: 0 18px 55px rgba(19, 12, 30, .25);
+}
+
+#game.teamWindowOpen .topBtns,
+#game.teamWindowOpen .gameSettingsBtn,
+#game.teamWindowOpen .performanceHud,
+#game.teamWindowOpen #joy,
+#game.teamWindowOpen #kick,
+#game.teamWindowOpen #pass,
+#game.teamWindowOpen #shout,
+#game.teamWindowOpen #gameChat {
+    pointer-events: none;
+}
+
+.gameChat {
+    position: absolute;
+    z-index: 20;
+    width: min(var(--game-chat-width, 340px), 38vw);
+    pointer-events: auto;
+    color: #f5f5f5;
+    opacity: var(--game-chat-opacity, .76);
+}
+
+.gameChat.chatDisabled {
+    display: none !important;
+}
+
+.gameChatPanel {
+    display: flex;
+    height: 142px;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 4px;
+    background: rgba(20,22,23,.92);
+    box-shadow: 0 2px 9px rgba(0,0,0,.24);
+}
+
+.gameChatMessages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 6px 8px;
+    font: 12px/1.35 Arial,"Helvetica Neue",sans-serif;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.gameChatMessages:empty::before {
+    content: "Mensagens da partida aparecem aqui";
+    color: rgba(255,255,255,.62);
+}
+
+.gameChatMessage {
+    display: flex;
+    gap: 6px;
+}
+
+.gameChatMessage strong {
+    flex: 0 0 auto;
+    color: #f0f0f0;
+    background: transparent;
+}
+
+.gameChatMessage strong.red { color: #ff6a61; }
+.gameChatMessage strong.blue { color: #58aaff; }
+
+.gameChatForm {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    border-top: 1px solid rgba(255,255,255,.12);
+    background: rgba(8,10,10,.5);
+}
+
+.gameChatForm input {
+    flex: 1;
+    min-width: 0;
+    height: 30px;
+    padding: 5px 7px;
+    border: 0;
+    border-radius: 3px;
+    outline: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.38);
+    color: #fff;
+    font: 13px Arial,"Helvetica Neue",sans-serif;
+}
+
+.gameChatForm input::placeholder { color: rgba(255,255,255,.6); }
+
+.gameChatForm button {
+    width: 34px;
+    border: 0;
+    border-radius: 3px;
+    background: #293d31;
+    color: #fff;
+}
+
+#gameChatToggle { display: none; }
+
+@media (max-width: 700px), (pointer: coarse) {
+    .gameChat {
+        width: min(var(--game-chat-width, 340px), 72vw);
+    }
+
+    #gameChatToggle {
+        display: block;
+        min-height: 34px;
+        padding: 5px 10px;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 5px;
+        background: rgba(20,22,23,.84);
+        color: #fff;
+        box-shadow: 0 2px 7px #0006;
+        font-size: 12px;
+    }
+
+    .gameChatPanel {
+        display: none;
+        height: 160px;
+        margin-bottom: 5px;
+    }
+
+    #gameChat.open .gameChatPanel { display: flex; }
+
+    .gameChatForm input { font-size: 16px; }
+}
+
+@media (pointer: fine) {
+    #game #joy,
+    #game #kick,
+    #game #pass {
+        display: none !important;
+    }
+}
+
+@media (max-width: 700px), (pointer: coarse) {
+    #game.hideMobileControls #joy,
+    #game.hideMobileControls #kick,
+    #game.hideMobileControls #pass,
+    #game.hideMobileControls #shout {
+        display: none !important;
+    }
+}
+
+.topBtns {
+    gap: 6px;
+}
+
+.topBtns button,
+.gameSettingsBtn {
+    width: 42px !important;
+    height: 40px !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+}
+
+.topBtns button[hidden] {
+    display: none !important;
+}
+
+.gameSettingsBtn {
+    right: 156px;
+}
+
+@media (max-width: 600px) {
+    .topBtns button,
+    .gameSettingsBtn {
+        width: 40px !important;
+        height: 38px !important;
+    }
+
+    .gameSettingsBtn {
+        right: 150px;
+    }
+}
+
+@media (max-width: 600px) {
+    #roomScreen {
+        padding: 12px;
+    }
+
+    #roomScreen .panel.roomPanel {
+        height: calc(100vh - 24px);
+        max-height: none;
+        min-height: 0;
+        padding: 10px;
+    }
+
+    #roomScreen .grid3.roomTeams {
+        grid-template-columns: 1fr !important;
+        height: auto;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    #roomScreen .team {
+        min-height: 115px;
+    }
+
+    #roomScreen .roomChat {
+        height: 170px;
+        min-height: 170px;
+    }
+
+    #roomScreen .roomInfo {
+        gap: 8px 14px;
+        padding-top: 8px;
+    }
+
+    #roomScreen .roomInfo .btn {
+        width: 100%;
+    }
+
+    #roomScreen.teamWindow {
+        padding: 12px;
+    }
+
+    #roomScreen.teamWindow .panel.roomPanel {
+        height: min(620px, calc(100vh - 24px));
+        min-height: 0;
+    }
+}
+
+/* ===== Tela de nick + avatar (referência: círculo do avatar sobre cartão arredondado com "nick:") ===== */
+#nickScreen { display: none; align-items: center; justify-content: center; padding: 24px; overflow: auto; }
+#nickScreen.on { display: flex; }
+#nickScreen .profileCard {
+    position: relative;
+    width: min(380px, 100%);
+    margin-top: 80px;
+    padding: 96px 28px 24px;
+    border: 3px solid #000;
+    border-radius: 26px;
+    background: #fff !important;
+    color: #222 !important;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, .18);
+    text-align: center;
+}
+#nickScreen .profileAvatarWrap {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    pointer-events: none;
+}
+#nickScreen .profileAvatar {
+    pointer-events: auto;
+    box-sizing: border-box;
+    width: 156px;
+    height: 156px;
+    padding: 0 !important;
+    border: 16px solid #ff1f1f !important;
+    border-radius: 50% !important;
+    background: #000 !important;
+    color: #fff !important;
+    font: 800 54px/1 Roboto, Arial, sans-serif;
+    text-align: center;
+    text-shadow: 0 2px 0 #000;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, .3);
+    cursor: text;
+    caret-color: #fff;
+}
+#nickScreen .profileAvatar:focus { outline: 0; box-shadow: 0 0 0 5px rgba(255, 31, 31, .28), 0 8px 22px rgba(0, 0, 0, .3); }
+#nickScreen .profileAvatarHint {
+    margin-top: 8px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    background: #fff;
+    color: #666;
+    font-size: 11px;
+}
+#nickScreen .profileField { display: flex; align-items: center; gap: 10px; margin: 8px 0 18px; text-align: left; }
+#nickScreen .profileField label { flex: none; color: #111 !important; font-size: 17px; font-weight: 700; }
+#nickScreen .profileField input {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    padding: 0 12px;
+    border: 2px solid #000 !important;
+    border-radius: 12px;
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 17px;
+}
+#nickScreen .profileField input:focus { outline: 0; border-color: var(--theme-purple) !important; }
+#nickScreen .profileCard #play { min-height: 46px; border-radius: 12px; font-size: 15px; }
+#nickScreen .profileFooter { margin: 14px 0 0; color: #666; font-size: 12px; }
+@media (max-height: 560px) {
+    #nickScreen .profileCard { margin-top: 70px; padding-top: 88px; }
+    #nickScreen .profileAvatar { width: 132px; height: 132px; border-width: 13px !important; font-size: 44px; }
+}
+
+/* ===== Lista de salas (referência: cartão central com linha no topo + coluna de botões à direita) ===== */
+#lobbyScreen { padding: 24px 5vw; align-items: center; justify-content: center; }
+#lobbyScreen .lobbyLayout {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1100px;
+    height: min(560px, calc(100vh - 48px));
+}
+#lobbyScreen .roomListCard {
+    display: flex;
+    flex-direction: column;
+    width: min(720px, calc(100% - 110px));
+    padding: 18px 22px 20px;
+    border: 3px solid #000;
+    border-radius: 18px;
+    background: #fff !important;
+    color: #222 !important;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, .15);
+}
+#lobbyScreen .roomListHead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #000;
+}
+#lobbyScreen .roomListTitle { font-size: 22px; font-weight: 800; color: #111; }
+#lobbyScreen #roomCount { font-size: 13px; color: #666; }
+#lobbyScreen .roomListTip { margin: 10px 0; font-size: 13px; color: #666; }
+#lobbyScreen .roomListCols {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    padding: 9px 12px;
+    border-radius: 10px 10px 0 0;
+    background: #111;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+#lobbyScreen .roomListBody {
+    flex: 1;
+    overflow-y: auto;
+    border: 2px solid #111;
+    border-top: 0;
+    border-radius: 0 0 10px 10px;
+}
+#lobbyScreen .roomListBody .empty { padding: 36px 12px; text-align: center; color: #888; font-size: 14px; }
+#lobbyScreen .lobbySide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#lobbyScreen .lobbySideGroup { display: flex; flex-direction: column; gap: 14px; }
+#lobbyScreen .lobbyBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 84px;
+    height: 84px;
+    padding: 0;
+    border: 3px solid #000;
+    border-radius: 16px;
+    background: #fff !important;
+    color: #111 !important;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .14);
+    transition: transform .12s, background .12s;
+}
+#lobbyScreen .lobbyBtn b { font-size: 28px; line-height: 1; }
+#lobbyScreen .lobbyBtn span { font-size: 12px; font-weight: 700; }
+#lobbyScreen .lobbyBtn:hover:not(:disabled) { background: var(--theme-purple) !important; color: #fff !important; transform: translateY(-2px); }
+#lobbyScreen .lobbyBtn:disabled { opacity: .4; cursor: not-allowed; }
+@media (max-width: 640px) {
+    #lobbyScreen .roomListCard { width: calc(100% - 78px); padding: 14px; }
+    #lobbyScreen .lobbyBtn { width: 62px; height: 62px; border-radius: 13px; }
+    #lobbyScreen .lobbyBtn b { font-size: 22px; }
+    #lobbyScreen .lobbyBtn span { font-size: 9px; }
+    #lobbyScreen .lobbyLayout { justify-content: flex-start; }
+}
+#lobbyScreen .roomListBody .empty { text-align: center !important; width: 100%; }
+@media (max-width: 760px), (max-height: 520px) {
+    #lobbyScreen { padding: 12px 10px; }
+    #lobbyScreen .lobbyLayout { height: calc(100vh - 24px); justify-content: flex-start; }
+    #lobbyScreen .roomListCard { width: calc(100% - 66px); padding: 12px 14px; }
+    #lobbyScreen .lobbyBtn { width: 52px; height: 52px; border-radius: 12px; }
+    #lobbyScreen .lobbyBtn b { font-size: 20px; }
+    #lobbyScreen .lobbyBtn span { display: none; }
+    #lobbyScreen .lobbySideGroup { gap: 8px; }
+    #lobbyScreen .roomListTitle { font-size: 18px; }
+}
+#lobbyScreen .roomListBody { display: flex; flex-direction: column; }
+#lobbyScreen .roomListBody .empty { flex: 1; display: flex !important; align-items: center; justify-content: center; padding: 12px; }
+
+/* ===== Configuração da sala (referência: cartão arredondado com 5 campos) ===== */
+#createScreen { align-items: center; justify-content: center; padding: 24px; }
+#createScreen .createCard {
+    width: min(500px, 100%);
+    padding: 30px 30px 24px;
+    border: 3px solid #000;
+    border-radius: 24px;
+    background: #fff !important;
+    color: #222 !important;
+    box-shadow: 0 14px 36px rgba(0, 0, 0, .15);
+}
+#createScreen .createGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 22px; }
+#createScreen .createField { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+#createScreen .createFieldWide { grid-column: 1 / -1; align-items: center; }
+#createScreen .createFieldWide select { width: 50%; }
+#createScreen .createField label { color: #111 !important; font-size: 14px; font-weight: 700; }
+#createScreen .createField input,
+#createScreen .createField select {
+    box-sizing: border-box;
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 2px solid #000 !important;
+    border-radius: 12px;
+    background: #fff !important;
+    color: #111 !important;
+    font: 15px inherit;
+    font-family: inherit;
+}
+#createScreen .createField input:focus,
+#createScreen .createField select:focus { outline: 0; border-color: var(--theme-purple) !important; }
+#createScreen .createActions { display: flex; gap: 12px; margin-top: 26px; }
+#createScreen .createBtn {
+    flex: 1;
+    height: 46px;
+    border: 3px solid #000;
+    border-radius: 12px;
+    background: var(--theme-purple) !important;
+    color: #fff !important;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+#createScreen .createBtn:hover { background: var(--theme-purple-dark) !important; }
+#createScreen .createBtnGhost { background: #fff !important; color: #111 !important; }
+#createScreen .createBtnGhost:hover { background: #eee !important; }
+@media (max-width: 480px) {
+    #createScreen .createCard { padding: 22px 18px; }
+    #createScreen .createGrid { grid-template-columns: 1fr; gap: 14px; }
+    #createScreen .createFieldWide { align-items: stretch; }
+    #createScreen .createFieldWide select { width: 100%; }
+}
+@media (max-height: 520px) {
+    #createScreen { align-items: flex-start; overflow: auto; padding: 10px; }
+    #createScreen .createCard { padding: 16px 20px; }
+    #createScreen .createGrid { gap: 10px 16px; }
+    #createScreen .createActions { margin-top: 14px; }
+}
+#createScreen .createField.createFieldWide select { width: 50%; }
+@media (max-width: 480px) { #createScreen .createField.createFieldWide select { width: 100%; } }

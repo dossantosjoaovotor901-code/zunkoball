@@ -1,0 +1,13 @@
+/* FutHub - janelas de aviso dentro do jogo */
+.fhDlg{position:fixed;inset:0;z-index:100050;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;background:rgba(0,0,0,.7);font-family:'Poppins',Arial,sans-serif;color:#fff}
+.fhDlgCard{width:min(420px,100%);max-height:100%;overflow:auto;box-sizing:border-box;padding:clamp(14px,3vmin,22px);border:3px solid var(--ac-edge,#6b46d6);border-radius:18px;background:#0a0a0c;box-shadow:0 6px 0 #050506,0 24px 60px rgba(0,0,0,.6)}
+.fhDlgMsg{margin:0 0 clamp(12px,2.6vmin,18px);font-weight:700;font-size:clamp(14px,2.8vmin,18px);line-height:1.35;white-space:pre-line}
+.fhDlgInput{width:100%;box-sizing:border-box;height:42px;margin:0 0 clamp(12px,2.6vmin,18px);padding:0 12px;border:2px solid var(--ac-edge,#6b46d6);border-radius:10px;background:#141417;color:#fff;font:700 16px 'Poppins',Arial,sans-serif;outline:0}
+.fhDlgInput:focus{box-shadow:0 0 0 2px #fff}
+.fhDlgBtns{display:flex;gap:10px;justify-content:flex-end}
+.fhDlgBtn{min-width:96px;height:clamp(38px,7vmin,46px);padding:0 16px;border:3px solid #050506;border-radius:12px;font:900 clamp(13px,2.5vmin,16px) 'Poppins',Arial,sans-serif;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.fhDlgBtn.no{background:#1b1b20;color:#fff;border-color:var(--ac-edge,#6b46d6)}
+.fhDlgBtn.ok{background:linear-gradient(var(--ac1,#ffd34d),var(--ac2,#f5a300) 60%,var(--ac3,#c67f00));color:#1a1200;box-shadow:0 4px 0 #050506}
+.fhDlgBtn.ok.danger{background:linear-gradient(#ff6a5c,#d6291a);color:#fff}
+.fhDlgBtn:focus-visible{box-shadow:0 0 0 3px #fff;outline:0}
+.fhDlgBtn:active{transform:translateY(2px)}

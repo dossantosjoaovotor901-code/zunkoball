@@ -1,0 +1,50 @@
+/* FutHub - Lista de salas, no estilo da tela inicial. Carregado por ultimo. */
+#lobbyScreen.screen.lobby{padding:0!important;align-items:stretch;justify-content:stretch;position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#060607 0,color-mix(in srgb,var(--ac2) 8%,#0f0f12) 36%)!important}
+#lobbyScreen.screen.lobby::before{content:"";position:absolute;left:0;right:0;top:36%;bottom:0;pointer-events:none;border-top:6px solid var(--ac2);
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 80px,transparent 80px 160px),linear-gradient(#1d4a2a,#0e2a17);z-index:0}
+#lobbyScreen.screen.lobby::after{content:"";position:absolute;left:0;right:0;top:12%;height:24%;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle,var(--ac2) 2.2px,transparent 3px) 0 0/22px 18px,
+    radial-gradient(circle,var(--ac1) 2.2px,transparent 3px) 9px 7px/22px 18px,
+    radial-gradient(circle,var(--ac3) 2.2px,transparent 3px) 4px 12px/22px 18px,
+    linear-gradient(color-mix(in srgb,var(--ac2) 10%,#141417),color-mix(in srgb,var(--ac2) 6%,#0c0c0f))}
+#lobbyScreen .lobbyLayout{position:relative;z-index:1;width:100%!important;max-width:none!important;height:100%!important;
+  padding:clamp(8px,1.8vmin,20px);box-sizing:border-box;gap:clamp(8px,1.8vmin,18px)!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) clamp(150px,22vw,230px)!important;grid-template-rows:minmax(0,1fr)!important}
+#lobbyScreen .roomListCard{background:rgba(10,10,12,.9)!important;border:3px solid #050506!important;border-radius:14px!important;
+  box-shadow:0 6px 0 #050506,0 14px 28px rgba(0,0,0,.4)!important;color:#fff;min-height:0;display:flex;flex-direction:column}
+#lobbyScreen .roomListHead{border-bottom:3px solid var(--ac2)!important}
+#lobbyScreen .roomListTitle{font-weight:900!important;text-transform:uppercase;letter-spacing:.5px;color:#fff}
+#lobbyScreen .roomListTip{color:var(--ac-muted)!important}
+#lobbyScreen .roomListCols{border-bottom:2px solid var(--ac-edge)!important}
+#lobbyScreen .roomListCols span{color:var(--ac1)!important;text-transform:uppercase;font-size:clamp(10px,1.5vmin,12px)!important;letter-spacing:.5px}
+#lobbyScreen .roomListBody{flex:1;min-height:0;overflow-y:auto}
+#lobbyScreen .roomListBody > .roomRow,#lobbyScreen .roomListBody > .roomItem,#lobbyScreen .roomListBody > .room{
+  height:auto;min-height:40px;margin:6px 0;padding:0 8px;border:2px solid #050506;border-radius:10px;background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013));color:#fff;font-weight:700}
+#lobbyScreen .roomListBody > .roomRow:nth-child(even),#lobbyScreen .roomListBody > .roomItem:nth-child(even),#lobbyScreen .roomListBody > .room:nth-child(even){background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013))}
+#lobbyScreen .roomListBody > .selected,#lobbyScreen .roomListBody > .active,#lobbyScreen .roomListBody > .on{background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3))!important;color:var(--ac-ink);box-shadow:0 0 0 3px #fff}
+#lobbyScreen .roomListBody .empty{color:var(--ac-muted)}
+/* botoes laterais */
+#lobbyScreen .lobbySide{width:100%!important;margin:0!important;justify-self:stretch;position:relative;z-index:1;justify-content:space-between;gap:clamp(8px,1.8vmin,16px)!important;min-height:0}
+#lobbyScreen .lobbySideGroup{display:flex;flex-direction:column;gap:clamp(6px,1.4vmin,12px)!important}
+#lobbyScreen .lobbyBtn{height:clamp(38px,8vmin,52px)!important;justify-content:flex-start;gap:12px!important;padding:0 14px!important;
+  border:3px solid #050506!important;border-radius:12px!important;background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013))!important;color:#fff!important;
+  box-shadow:0 4px 0 #050506!important;transition:transform .1s,filter .1s}
+#lobbyScreen .lobbyBtn b{color:#fff!important;font-size:clamp(16px,3vmin,22px)!important}
+#lobbyScreen .lobbyBtn span{font-weight:900!important;text-transform:uppercase;font-size:clamp(11px,2.1vmin,15px)!important}
+#lobbyScreen .lobbyBtn:hover:not(:disabled){filter:brightness(1.12);background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013))!important}
+#lobbyScreen .lobbyBtn:active:not(:disabled){transform:scale(.96)}
+#lobbyScreen #lobbyHome,#lobbyScreen #refresh{background:linear-gradient(color-mix(in srgb,var(--ac2) 28%,#18181b),color-mix(in srgb,var(--ac2) 18%,#141417))!important}
+#lobbyScreen #join{background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3))!important;color:var(--ac-ink)!important}
+#lobbyScreen #join b,#lobbyScreen #join span{color:var(--ac-ink)!important}
+#lobbyScreen #join:disabled{background:linear-gradient(#59607f,#3d4361)!important;opacity:.7}
+#lobbyScreen #join:disabled b,#lobbyScreen #join:disabled span{color:#c9cfe8!important}
+#lobbyScreen #createBtn{background:linear-gradient(var(--ac1),var(--ac2) 55%,var(--ac3))!important}
+@media (max-width:640px) and (orientation:portrait){#lobbyScreen .lobbyLayout{grid-template-columns:1fr!important;grid-template-rows:minmax(0,1fr) auto!important}
+  #lobbyScreen .lobbySide{flex-direction:column}#lobbyScreen .lobbySideGroup{flex-direction:row;flex-wrap:wrap}#lobbyScreen .lobbyBtn{flex:1 1 120px}}
+@media (max-height:420px){#lobbyScreen .roomListTip{display:none}#lobbyScreen .lobbyBtn{height:34px!important;padding:0 10px!important}}
+#lobbyScreen.screen.lobby.on{height:100dvh!important;min-height:100dvh!important;box-sizing:border-box}
+#lobbyScreen .lobbyBtn span{display:inline!important}
+#lobbyScreen .lobbyBtn{min-width:0}
+@media (max-height:420px){#lobbyScreen .lobbySide{gap:6px!important}#lobbyScreen .lobbySideGroup{gap:5px!important}#lobbyScreen .lobbyBtn{height:30px!important;border-width:2px!important;box-shadow:0 3px 0 #050506!important}#lobbyScreen .lobbyBtn span{font-size:11px!important}}

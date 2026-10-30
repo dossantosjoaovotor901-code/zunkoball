@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+    <title>ZunkoBall</title>
+    <link rel="icon" type="image/png" href="logo-icon.png">
+    <script src="theme-custom.js"></script>
+    <script src="dialog.js"></script>
+    <link rel="stylesheet" href="assets.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="redesign.css">
+    <link rel="stylesheet" href="menus.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="inventory.css">
+    <link rel="stylesheet" href="lobby.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="gamemenu.css">
+    <link rel="stylesheet" href="account.css">
+    <link rel="stylesheet" href="room.css">
+    <link rel="stylesheet" href="create.css">
+    <link rel="stylesheet" href="orient.css">
+    <link rel="stylesheet" href="theme-dark.css">
+    <link rel="stylesheet" href="replay.css">
+    <link rel="stylesheet" href="dialog.css">
+    <link rel="stylesheet" href="exclusives.css">
+</head>
+<body>
+    <div id="orientWarn" role="alert"><div class="owPhone"></div><h2>Gire o celular</h2><p>O ZunkoBall só funciona com o celular deitado (na horizontal). Vire a tela para jogar.</p><div class="owTap">Toque para tela cheia</div></div>
+    <audio id="crowdAudio" preload="auto" loop src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Festival_concert_people_crowd.ogg"></audio>
+    <audio id="gameMusic" preload="none" loop></audio>
+    <div id="authScreen" class="screen on lobby">
+        <div class="nbBrand"><img src="logo.png" alt="ZunkoBall"></div>
+        <form id="authForm" class="authCard" autocomplete="on" novalidate>
+            <div class="authTabs" role="tablist">
+                <button type="button" role="tab" id="tabLogin" class="on" aria-selected="true">Entrar</button>
+                <button type="button" role="tab" id="tabRegister" aria-selected="false">Criar conta</button>
+            </div>
+            <div class="authField"><label for="authUser">Usuário</label>
+                <input id="authUser" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" maxlength="16" placeholder="ex.: craque10"></div>
+            <div class="authField"><label for="authPass">Senha</label>
+                <input id="authPass" name="password" type="password" autocomplete="current-password" maxlength="72" placeholder="mínimo 6 caracteres"></div>
+            <div class="authField authRegOnly" hidden><label for="authNick">Apelido no jogo</label>
+                <input id="authNick" maxlength="16" placeholder="como você aparece no campo"></div>
+            <p id="authMsg" class="authMsg" role="alert"></p>
+            <button id="authSubmit" class="btn" type="submit">Entrar</button>
+            <div class="authDivider"><span>ou</span></div>
+            <button id="authGuest" class="authGuest" type="button">Jogar como convidado</button>
+            <p class="authNote">Convidados jogam normalmente, mas só contas entram no ranking.</p>
+        </form>
+    </div>
+    <div id="nickScreen" class="screen lobby">
+        <div class="nbBrand"><img src="logo.png" alt="ZunkoBall"></div>
+        <button id="nickFull" class="fsFloat" type="button" aria-label="Tela cheia" title="Tela cheia">⛶</button>
+        <form id="loginForm" class="profileCard">
+            <div class="profileAvatarWrap">
+                <input id="avatar" class="profileAvatar" name="avatar" maxlength="2" value="P1" autocomplete="off" spellcheck="false" aria-label="Escolha o avatar (2 letras, números ou emoji)">
+                <span class="profileAvatarHint">Toque no círculo para trocar o avatar</span>
+            </div>
+            <div class="profileField">
+                <label for="nick">nick:</label>
+                <input id="nick" name="nickname" maxlength="16" value="Player" autocomplete="nickname" spellcheck="false">
+            </div>
+            <button id="play" class="btn" type="submit">Entrar para jogar</button>
+            <p class="profileFooter">Seu perfil fica salvo neste dispositivo.</p>
+            <div id="accountBox" class="accountBox"></div>
+        </form>
+    </div>
+    <div id="homeScreen" class="screen lobby">
+        <div class="homeStage">
+            <svg class="homeBg" viewBox="0 0 1300 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                <defs>
+                    <linearGradient id="hbSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060607"/><stop offset="1" stop-color="#1d1a12"/></linearGradient>
+                    <linearGradient id="hbStand" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2210"/><stop offset="1" stop-color="#15120b"/></linearGradient>
+                    <linearGradient id="hbGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d4a2a"/><stop offset="1" stop-color="#0e2a17"/></linearGradient>
+                    <radialGradient id="hbLight"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient>
+                    <pattern id="hbCrowd" width="26" height="22" patternUnits="userSpaceOnUse">
+                        <rect width="26" height="22" fill="none"/>
+                        <circle cx="4" cy="5" r="3" fill="#F6B800"/><circle cx="15" cy="4" r="3" fill="#FFE98A"/><circle cx="22" cy="12" r="3" fill="#B87800"/>
+                        <circle cx="9" cy="14" r="3" fill="#7a5a10"/><circle cx="17" cy="19" r="3" fill="#ffffff"/><circle cx="3" cy="20" r="3" fill="#ff9a3c"/>
+                    </pattern>
+                </defs>
+                <rect width="1300" height="600" fill="url(#hbSky)"/>
+                <g fill="#fff"><circle cx="120" cy="40" r="1.6"/><circle cx="300" cy="90" r="1.3"/><circle cx="760" cy="30" r="1.6"/><circle cx="1010" cy="70" r="1.4"/><circle cx="1180" cy="25" r="1.8"/><circle cx="640" cy="80" r="1.2"/></g>
+                <circle cx="470" cy="10" r="38" fill="#f3e3a6"/><circle cx="458" cy="2" r="9" fill="#d6bf6e"/><circle cx="486" cy="22" r="6" fill="#d6bf6e"/>
+                <path d="M-20 330 Q650 120 1320 330 L1320 380 L-20 380 Z" fill="url(#hbStand)"/>
+                <path d="M-20 330 Q650 120 1320 330 L1320 380 L-20 380 Z" fill="url(#hbCrowd)" opacity=".75"/>
+                <path d="M-20 335 Q650 145 1320 335" fill="none" stroke="#F6B800" stroke-width="10"/>
+                <path d="M-20 352 Q650 162 1320 352" fill="none" stroke="#8a6200" stroke-width="5"/>
+                <g><rect x="415" y="120" width="85" height="42" rx="6" fill="#2a2418"/><rect x="421" y="126" width="73" height="30" rx="4" fill="#dff4ff"/>
+                   <rect x="805" y="120" width="85" height="42" rx="6" fill="#2a2418"/><rect x="811" y="126" width="73" height="30" rx="4" fill="#dff4ff"/>
+                   <circle cx="457" cy="141" r="80" fill="url(#hbLight)" opacity=".45"/><circle cx="847" cy="141" r="80" fill="url(#hbLight)" opacity=".45"/></g>
+                <rect y="372" width="1300" height="228" fill="url(#hbGrass)"/>
+                <g fill="#fff" opacity=".07"><path d="M0 372H1300V420H0Z"/><path d="M0 470H1300V530H0Z"/><path d="M0 575H1300V600H0Z"/></g>
+                <ellipse cx="650" cy="490" rx="560" ry="70" fill="none" stroke="#fff" stroke-width="7" opacity=".9"/>
+                <path d="M-20 440 Q650 400 1320 440" fill="none" stroke="#fff" stroke-width="7" opacity=".9"/>
+                <rect x="0" y="0" width="1300" height="600" fill="#000" opacity=".12"/>
+            </svg>
+            <button id="homeProfile" class="homeProfile" type="button" aria-label="Editar perfil">
+                <span id="homeAvatar" class="homeAvatar">P1</span>
+                <span class="homeProfileText"><small>Perfil do jogador</small><b id="homeNick">Jogador</b></span>
+            </button>
+            <button id="homeFull" class="homeGear homeFull" type="button" aria-label="Tela cheia" title="Tela cheia">⛶</button>
+            <button id="homeConfig" class="homeGear" type="button" aria-label="Configurações">⚙</button>
+            <div class="homeSide">
+                <button id="homeSocial" class="homeMini" type="button"><i aria-hidden="true">💬</i><span>Social</span></button>
+                <button id="homeRanking" class="homeMini" type="button"><i aria-hidden="true">🏆</i><span>Ranking</span></button>
+                <button id="homeReplays" class="homeMini" type="button"><i aria-hidden="true">🎬</i><span>Replays</span></button>
+                <button id="homeFriends" class="homeMini" type="button"><i aria-hidden="true">👥</i><span>Amigos</span></button>
+            </div>
+            <div class="homeHero">
+                <canvas id="homeHero" aria-label="Seu jogador e a bola"></canvas>
+            </div>
+            <div class="homeBottomLeft">
+                <button id="homeCommunity" class="homeTile tileBlue" type="button"><i aria-hidden="true">💬</i><span>Comunidade</span></button>
+                <button id="homeInventory" class="homeTile tileOrange" type="button"><i aria-hidden="true">🎒</i><span>Inventário</span></button>
+                <button id="homeGuild" class="homeTile tileBlue" type="button"><i aria-hidden="true">🛡</i><span>Clube</span></button>
+            </div>
+            <div class="homeBottomRight">
+                <div class="homeTopRow">
+                    <button id="homeRooms" class="homeRooms" type="button"><i aria-hidden="true">☰</i><span>Salas</span></button>
+                    <button id="homeRankBadge" class="homeRankBadge" type="button" aria-label="Minha patente" title="Minha patente"><img id="homeRankImg" alt="" draggable="false" src="ranks/r01.png"></button>
+                </div>
+                <div class="homeSelRow">
+                    <label class="homeModePicker" for="homeModality"><span>Modalidade</span>
+                        <select id="homeModality" aria-label="Escolher modalidade">
+                            <option value="quick" selected>Partida rápida</option>
+                            <option value="ranked">Ranqueado</option>
+                        </select>
+                    </label>
+                    <label class="homeModePicker" for="homeModeSelect"><span>Formato</span>
+                        <select id="homeModeSelect" aria-label="Formato da partida">
+                            <optgroup label="Futsal">
+                                <option value="v1">Futsal 1v1</option><option value="v2">Futsal 2v2</option>
+                                <option value="v3" selected>Futsal 3v3</option><option value="v4">Futsal 4v4</option>
+                            </optgroup>
+                            <optgroup label="Real Soccer">
+                                <option value="r4">Real 4v4</option><option value="r5">Real 5v5</option>
+                                <option value="r7">Real 7v7</option><option value="r9">Real 9v9</option><option value="r11">Real 11v11</option>
+                            </optgroup>
+                        </select>
+                    </label>
+                </div>
+                <button id="homeQuick" class="homeQuick" type="button"><i id="homeQuickIcon" aria-hidden="true">⚽</i><span class="homeQuickTxt"><b id="homeQuickLabel">Partida rápida</b><small id="homeRankedTier"></small></span></button>
+            </div>
+            <div class="homeTicker">Bem-vindo ao ZunkoBall!</div>
+            <div id="homeToast" class="homeToast" role="status" aria-live="polite"></div>
+        </div>
+    </div>
+    <div id="rankingScreen" class="screen lobby">
+        <div class="rkWrap">
+            <header class="rkHead">
+                <button id="rkBack" class="rkIconBtn" type="button" aria-label="Voltar">‹</button>
+                <h2>Ranking</h2>
+                <button id="rkPlay" class="rkPlay" type="button">🏅 Jogar ranqueada</button>
+            </header>
+            <div id="rkModes" class="rkModes" role="tablist" aria-label="Modo"></div>
+            <div id="rkMe" class="rkMe"></div>
+            <div id="rkList" class="rkList" aria-live="polite"></div>
+        </div>
+    </div>
+    <div id="patentScreen" class="screen lobby">
+        <div class="rkWrap">
+            <header class="rkHead">
+                <button id="ptBack" class="rkIconBtn" type="button" aria-label="Voltar">‹</button>
+                <h2>Patente</h2>
+                <button id="ptAllBtn" class="rkPlay" type="button">Todas as patentes</button>
+            </header>
+            <div id="ptModes" class="rkModes" role="tablist" aria-label="Modo"></div>
+            <div id="ptBody" class="ptBody"></div>
+        </div>
+    </div>
+    <div id="replaysScreen" class="screen lobby">
+        <div class="rpPage">
+            <header class="rpTop">
+                <button id="replaysBack" class="rpBack" type="button" aria-label="Voltar">&#8249;</button>
+                <h2>Replays</h2>
+                <div class="rpTabs" role="tablist" aria-label="Origem dos replays">
+                    <button id="rpTabAcc" class="rpTab on" type="button" role="tab" aria-selected="true">Minha conta</button>
+                    <button id="rpTabDev" class="rpTab" type="button" role="tab" aria-selected="false">Neste dispositivo</button>
+                </div>
+                <div class="rpHeadBtns">
+                    <button id="replaysImport" class="rpGold" type="button">&#128194; Importar</button>
+                    <input id="replaysFile" type="file" accept=".fhreplay,application/json" hidden>
+                </div>
+            </header>
+            <div class="rpFilters">
+                <input id="rpQ" type="search" placeholder="Pesquisar partidas..." autocomplete="off" aria-label="Pesquisar partidas">
+                <input id="rpPlayer" type="search" placeholder="Jogador" autocomplete="off" aria-label="Filtrar por jogador">
+                <select id="rpMode" aria-label="Modalidade"><option value="">Todas as modalidades</option></select>
+                <select id="rpDate" aria-label="Data">
+                    <option value="">Qualquer data</option><option value="today">Hoje</option>
+                    <option value="7">Últimos 7 dias</option><option value="30">Últimos 30 dias</option>
+                </select>
+                <select id="rpSort" aria-label="Ordem">
+                    <option value="new">Mais recentes</option><option value="old">Mais antigos</option>
+                    <option value="long">Mais longas</option><option value="goals">Mais gols</option>
+                </select>
+            </div>
+            <div class="rpScroll">
+                <div id="replaysList" class="rpList" aria-live="polite"></div>
+                <p class="rpFoot">Partidas online são gravadas automaticamente. O servidor guarda um número limitado de replays: baixe (&#11015;) os que quiser manter. Arquivos .fhreplay abrem sem internet.</p>
+            </div>
+        </div>
+    </div>
+    <div id="lobbyScreen" class="screen lobby">
+        <div class="lobbyLayout">
+            <section class="roomListCard">
+                <header class="roomListHead">
+                    <div id="roomListTitle" class="roomListTitle roomListTitleBrand"><img src="logo-icon.png" alt="" class="roomTitleLogo">Lista de salas</div>
+                    <div id="roomCount">0 jogadores em 0 salas.</div>
+                </header>
+                <div class="roomListTip">Entre em salas próximas para reduzir o ping e melhorar a qualidade da partida.</div>
+                <div class="roomListCols">
+                    <span>Nome da sala</span>
+                    <span>Limite</span>
+                    <span>Senha</span>
+                    <span>Distância</span>
+                    <span>País</span>
+                </div>
+                <div id="roomListBody" class="roomListBody">
+                    <div class="empty">Nenhuma sala disponível</div>
+                </div>
+            </section>
+            <aside class="lobbySide">
+                <div class="lobbySideGroup">
+                    <button id="lobbyHome" class="lobbyBtn" type="button"><b>⌂</b><span>Início</span></button>
+                    <button id="refresh" class="lobbyBtn" type="button"><b>↻</b><span>Atualizar</span></button>
+                    <button id="join" class="lobbyBtn" type="button" disabled><b>➜</b><span>Entrar</span></button>
+                    <button id="createBtn" class="lobbyBtn" type="button"><b>+</b><span>Criar sala</span></button>
+                </div>
+                <div class="lobbySideGroup">
+                    <button id="config" class="lobbyBtn" type="button"><b>⚙</b><span>Configurar</span></button>
+                    <button id="uniformsBtn" class="lobbyBtn" type="button"><b>👕</b><span>Uniformes</span></button>
+                    <button id="profileBtn" class="lobbyBtn" type="button"><b>☺</b><span>Perfil</span></button>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <div id="createScreen" class="screen lobby">
+        <div class="createCard">
+            <div class="mapPicker">
+                <aside id="mapInfo" class="mapInfo" aria-live="polite"></aside>
+                <div id="mapViewer" class="mapViewer" aria-label="Visualizador dos mapas">
+                    <button id="mapPrev" class="mapArrow mapArrowPrev" type="button" aria-label="Mapa anterior">‹</button>
+                    <div id="mapTrack" class="mapTrack"></div>
+                    <button id="mapNext" class="mapArrow mapArrowNext" type="button" aria-label="Próximo mapa">›</button>
+                    <div id="mapDots" class="mapDots"></div>
+                </div>
+            </div>
+            <div id="courtPicker" class="courtPicker">
+                <span class="courtLabel">Cor da quadra</span>
+                <div id="courtSwatches" class="courtSwatches" role="radiogroup" aria-label="Cor da quadra"></div>
+            </div>
+            <input type="hidden" id="fieldVariant" value="v3">
+            <input type="hidden" id="roomMode" value="local">
+            <div class="createGrid">
+                <div class="createField">
+                    <label for="roomName">Nome da sala</label>
+                    <input id="roomName" value="Sala do jogador" maxlength="30" autocomplete="off">
+                </div>
+                <div class="createField">
+                    <label for="roomPass">Senha</label>
+                    <input id="roomPass" type="password" placeholder="Opcional" autocomplete="new-password">
+                </div>
+                <div class="createField">
+                    <label for="maxPlayers">Máx. jogadores</label>
+                    <select id="maxPlayers">
+                        <option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option>
+                        <option>7</option><option>8</option><option>9</option><option>10</option><option>11</option>
+                        <option>12</option><option>13</option><option>14</option><option>15</option><option>16</option>
+                        <option>17</option><option>18</option><option>19</option><option>20</option><option>21</option>
+                        <option>22</option><option>23</option><option>24</option><option>25</option><option>26</option>
+                        <option>27</option><option>28</option><option>29</option><option>30</option>
+                    </select>
+                </div>
+                <div class="createField">
+                    <label for="roomType">Tipo de sala</label>
+                    <select id="roomType">
+                        <option value="online">Online</option>
+                        <option value="local">Local (contra IA)</option>
+                    </select>
+                </div>
+                <div class="createField">
+                    <label for="roomStyle">Modo de jogo</label>
+                    <select id="roomStyle">
+                        <option value="futsal">Futsal</option>
+                        <option value="real">Real Soccer</option>
+                    </select>
+                </div>
+                <div class="createField">
+                    <label for="roomArbitration">Arbitragem</label>
+                    <select id="roomArbitration">
+                        <option value="off">Tradicional</option>
+                        <option value="on">Automática</option>
+                    </select>
+                </div>
+                <div class="createField">
+                    <label for="roomOvertime">Prorrogação</label>
+                    <select id="roomOvertime">
+                        <option value="0">Desativada</option>
+                        <option value="2" selected>2 minutos</option>
+                        <option value="5">5 minutos</option>
+                    </select>
+                </div>
+                <div class="createField">
+                    <label for="roomGoldenGoal">Gol de ouro</label>
+                    <select id="roomGoldenGoal">
+                        <option value="on" selected>Ativado</option>
+                        <option value="off">Desativado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="createActions">
+                <button id="cancelCreate" class="createBtn createBtnGhost" type="button">Cancelar</button>
+                <button id="doCreate" class="createBtn" type="button">Criar sala</button>
+            </div>
+        </div>
+    </div>
+    <div id="settingsScreen" class="screen lobby">
+        <div class="panel settingsPanel">
+            <div class="settingsHeader">
+                <div class="panelTitle">Configurações</div>
+                <button id="settingsFull" class="btn" type="button">⛶ Tela cheia</button>
+                <button id="settingsBack" class="btn" type="button">Voltar</button>
+            </div>
+            <div class="settingsTabs" role="tablist" aria-label="Categorias de configurações">
+                <button class="settingsTab" type="button" role="tab" aria-selected="false" aria-controls="settingsControls" data-settings-tab="settingsControls">Controles</button>
+                <button class="settingsTab" type="button" role="tab" aria-selected="false" aria-controls="settingsSound" data-settings-tab="settingsSound">Som</button>
+                <button class="settingsTab active" type="button" role="tab" aria-selected="true" aria-controls="settingsPersonalize" data-settings-tab="settingsPersonalize">Personalizar</button>
+                <button class="settingsTab" type="button" role="tab" aria-selected="false" aria-controls="settingsGraphics" data-settings-tab="settingsGraphics">Gráficos</button>
+            </div>
+            <section id="settingsControls" class="settingsTabPanel" role="tabpanel" hidden>
+                <div class="keyBindings">
+                    <div class="settingsSectionTitle">Controles do teclado</div>
+                    <div class="keyBindingRow"><span>Mover para cima</span><button class="keyBindingButton" type="button" data-key-binding="up"></button></div>
+                    <div class="keyBindingRow"><span>Mover para baixo</span><button class="keyBindingButton" type="button" data-key-binding="down"></button></div>
+                    <div class="keyBindingRow"><span>Mover para esquerda</span><button class="keyBindingButton" type="button" data-key-binding="left"></button></div>
+                    <div class="keyBindingRow"><span>Mover para direita</span><button class="keyBindingButton" type="button" data-key-binding="right"></button></div>
+                    <div class="keyBindingRow"><span>Chutar</span><button class="keyBindingButton" type="button" data-key-binding="kick"></button></div>
+                    <div class="keyBindingRow"><span>Passar</span><button class="keyBindingButton" type="button" data-key-binding="pass"></button></div>
+                    <div class="keyBindingHint">Clique em uma tecla para editar; depois pressione a nova tecla.</div>
+                </div>
+                <div class="settingsGrid">
+                    <div class="setting">
+                        <label class="settingsCheck" for="setHideMobileControls">
+                            <input id="setHideMobileControls" type="checkbox">
+                            Esconder botões na tela em dispositivos móveis
+                        </label>
+                    </div>
+                    <div class="setting">
+                        <label for="setGamepad">Tipo de controle</label>
+                        <select id="setGamepad">
+                            <option value="dynamic">Dinâmico</option>
+                            <option value="static">Fixo</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="setKick">Tipo do botão de chute</label>
+                        <select id="setKick">
+                            <option value="static">Visão fixa</option>
+                            <option value="half">Metade da tela</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="setSize">Tamanho do controle</label>
+                        <select id="setSize">
+                            <option value="small">Pequeno</option>
+                            <option value="medium" selected>Médio</option>
+                            <option value="big">Grande</option>
+                            <option value="huge">Enorme</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="setPos">Posição do analógico</label>
+                        <select id="setPos">
+                            <option value="left">Analógico à esquerda / chute à direita</option>
+                            <option value="right">Analógico à direita / chute à esquerda</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="pageJoySize">Tamanho do analógico</label>
+                        <input id="pageJoySize" type="range" min="85" max="210" step="1">
+                    </div>
+                    <div class="setting">
+                        <label for="pageStickSize">Tamanho do stick</label>
+                        <input id="pageStickSize" type="range" min="0.55" max="1.25" step="0.01">
+                    </div>
+                    <div class="setting">
+                        <label for="pageKickSize">Tamanho do botão de chute e passe</label>
+                        <input id="pageKickSize" type="range" min="0.65" max="1.5" step="0.01">
+                    </div>
+                </div>
+                <div class="hudMode">Durante a partida, use os botões “Mover analógico”, “Mover chute” e “Mover passe” no painel ⚙ para ajustar a posição na tela.</div>
+            </section>
+            <section id="settingsSound" class="settingsTabPanel" role="tabpanel" hidden>
+                <div class="settingsGrid">
+                    <div class="setting">
+                        <label for="setSound">Efeitos sonoros do jogo</label>
+                        <select id="setSound">
+                            <option value="on">Ligados</option>
+                            <option value="off">Desligados</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="pageMasterVolume">Volume geral: <b id="pageMasterVolumeVal">100%</b></label>
+                        <input id="pageMasterVolume" type="range" min="0" max="100" step="1" value="100">
+                        <div class="ballSoundStatus">Diminui o volume de tudo que faz som: efeitos, bola, apito, torcida e música.</div>
+                    </div>
+                    <div class="setting">
+                        <label for="pageBallVolume">Volume do som da bola: <b id="pageBallVolumeVal">100%</b></label>
+                        <input id="pageBallVolume" type="range" min="0" max="100" step="1" value="100">
+                    </div>
+                    <div class="setting">
+                        <label for="pageGoalVolume">Volume do som de gol (apito): <b id="pageGoalVolumeVal">100%</b></label>
+                        <input id="pageGoalVolume" type="range" min="0" max="100" step="1" value="100">
+                    </div>
+                    <div class="setting">
+                        <label class="settingsCheck" for="pageCrowdEnabled">
+                            <input id="pageCrowdEnabled" type="checkbox">
+                            Som ambiente da torcida
+                        </label>
+                        <label for="pageCrowdVolume">Volume da torcida</label>
+                        <input id="pageCrowdVolume" type="range" min="0" max="0.45" step="0.01">
+                    </div>
+                    <div class="setting ballSoundSetting">
+                        <label for="ballSoundPreset">Som da bola</label>
+                        <select id="ballSoundPreset">
+                            <option value="original">Original</option>
+                            <option value="seco">Chute seco</option>
+                            <option value="grave">Chute grave</option>
+                            <option value="estalo">Estalo</option>
+                            <option value="praia">Bola de praia</option>
+                            <option value="basquete">Quicar (basquete)</option>
+                            <option value="retro">Retrô 8-bit</option>
+                            <option value="bolha">Bolha (pop)</option>
+                            <option value="custom" disabled>Personalizado (meu áudio)</option>
+                        </select>
+                        <input id="customBallSoundFile" class="customizationFile" type="file" accept="audio/mpeg,audio/wav,audio/ogg,audio/webm,audio/mp4">
+                        <button id="chooseBallSound" class="btn" type="button">Escolher áudio</button>
+                        <div class="ballSoundActions">
+                            <button id="testBallSound" class="btn" type="button">Testar som</button>
+                            <button id="removeBallSound" class="btn customizationRemove" type="button">Usar som original</button>
+                        </div>
+                        <div id="ballSoundStatus" class="ballSoundStatus" role="status" aria-live="polite">O volume e a duração serão ajustados ao som original.</div>
+                    </div>
+                </div>
+            </section>
+            <section id="settingsPersonalize" class="settingsTabPanel active" role="tabpanel">
+                <div id="themeBox" class="themeBox">
+                    <h3>Tema do jogo</h3>
+                    <div class="themeRow"><span class="themeLbl">Cor de destaque</span><div id="themeAccents" class="themeSw"></div><input id="themeAccent" type="color" value="#F6B800" aria-label="Cor de destaque personalizada"></div>
+                    <div class="themeRow"><span class="themeLbl">Cor do fundo</span><div id="themeBgs" class="themeSw"></div><input id="themeBg" type="color" value="#09090c" aria-label="Cor do fundo personalizada"></div>
+                    <div id="themeWcRow" class="themeRow"><span class="themeLbl">Cor das ondas (2ª cor)</span><div id="themeWcs" class="themeSw"></div><input id="themeWc" type="color" value="#2a2a33" aria-label="Cor das ondas personalizada"></div>
+                    <div class="themeRow"><label for="themeMode">Estilo do fundo</label>
+                        <select id="themeMode"><option value="wave">Ondulado</option><option value="solid">Liso</option><option value="gradient">Degradê</option></select></div>
+                    <div id="themeWaveRow" class="themeRow"><label for="themeWave">Intensidade das ondas</label><input id="themeWave" type="range" min="10" max="100" value="100"></div>
+                    <div class="themeRow"><label for="themePanel">Opacidade dos painéis</label><input id="themePanel" type="range" min="50" max="100" value="90"></div>
+                    <button id="themeReset" class="themeReset" type="button">Restaurar tema padrão</button>
+                </div>
+                <div class="settingsGrid personalizationBasics">
+                    <div class="setting">
+                        <label for="setPlayer">Número do jogador</label>
+                        <select id="setPlayer">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
+                            <option>7</option>
+                            <option>8</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="setKeyboard">Teclado ao abrir o chat</label>
+                        <select id="setKeyboard">
+                            <option value="on">Ligado</option>
+                            <option value="off">Desligado</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="setShout">Botões de grito</label>
+                        <select id="setShout">
+                            <option value="on">Ligados (Gol, Passe, Droga)</option>
+                            <option value="off">Desligados</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="personalizationField">
+                    <div class="personalizationLabel">Prévia do campo</div>
+                    <div id="customizationPreview" class="customizationPreview" aria-label="Prévia das personalizações">
+                        <div class="previewHalfway"></div>
+                        <div class="previewCenter"></div>
+                        <div class="previewPlayer">1</div>
+                        <canvas class="previewBall" width="40" height="40" aria-label="Prévia da imagem da bola"></canvas>
+                    </div>
+                </div>
+                <div class="personalizationGrid">
+                    <div class="setting personalizationSetting">
+                        <label class="settingsCheck" for="customDark">
+                            <input id="customDark" type="checkbox">
+                            Tema escuro
+                        </label>
+                        <label for="customThemeColor">Cor do tema</label>
+                        <input id="customThemeColor" type="color" value="#7040b5">
+                        <label for="customLineColor">Cor da linha da quadra</label>
+                        <input id="customLineColor" type="color" value="#ffffff">
+                    </div>
+                    <div class="setting personalizationSetting">
+                        <label for="customBallImage">Imagem da bola</label>
+                        <button id="chooseBallImage" class="btn customizationUpload" type="button">Escolher imagem</button>
+                        <input id="customBallImage" class="customizationFile" type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+                        <div class="colorPickerRow">
+                            <label for="customBallColor">Ou escolher cor sólida</label>
+                            <input id="customBallColor" type="color" value="#ffffff">
+                        </div>
+                        <label for="customBallZoom">Zoom</label>
+                        <input id="customBallZoom" type="range" min="50" max="200" value="100">
+                        <label for="customBallX">Posição horizontal</label>
+                        <input id="customBallX" type="range" min="0" max="100" value="50">
+                        <label for="customBallY">Posição vertical</label>
+                        <input id="customBallY" type="range" min="0" max="100" value="50">
+                        <button id="removeBallImage" class="btn customizationRemove" type="button">Remover imagem</button>
+                    </div>
+                    <div class="setting personalizationSetting">
+                        <label for="customPlayerImage">Imagem do jogador</label>
+                        <button id="choosePlayerImage" class="btn customizationUpload" type="button">Escolher imagem</button>
+                        <input id="customPlayerImage" class="customizationFile" type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+                        <label for="customPlayerZoom">Zoom</label>
+                        <input id="customPlayerZoom" type="range" min="50" max="200" value="100">
+                        <label for="customPlayerX">Posição horizontal</label>
+                        <input id="customPlayerX" type="range" min="0" max="100" value="50">
+                        <label for="customPlayerY">Posição vertical</label>
+                        <input id="customPlayerY" type="range" min="0" max="100" value="50">
+                        <button id="removePlayerImage" class="btn customizationRemove" type="button">Remover imagem</button>
+                    </div>
+                </div>
+            </section>
+            <section id="settingsGraphics" class="settingsTabPanel" role="tabpanel" hidden>
+                <div class="settingsGrid">
+                    <div class="setting">
+                        <label for="graphicsPreset">Perfil gráfico</label>
+                        <select id="graphicsPreset">
+                            <option value="low">Leve — PC/celular fraco</option>
+                            <option value="balanced" selected>Equilibrado</option>
+                            <option value="high">Qualidade</option>
+                            <option value="custom">Personalizado</option>
+                        </select>
+                        <label for="renderScale">Resolução de renderização</label>
+                        <input id="renderScale" type="range" min="60" max="125" step="5" value="100">
+                        <output id="renderScaleValue" for="renderScale">100%</output>
+                    </div>
+                    <div class="setting">
+                        <label for="fpsLimit">Limite de FPS</label>
+                        <select id="fpsLimit">
+                            <option value="0" selected>Sem limite (máximo do dispositivo)</option>
+                            <option value="30">30 FPS — economiza bateria</option>
+                            <option value="45">45 FPS</option>
+                            <option value="60">60 FPS</option>
+                            <option value="90">90 FPS</option>
+                            <option value="120">120 FPS</option>
+                        </select>
+                        <small class="graphicsHint">“Sem limite” usa toda a velocidade que o navegador e a tela permitirem; não ultrapassa a taxa máxima do dispositivo.</small>
+                    </div>
+                    <div class="setting">
+                        <label class="settingsCheck" for="showBallGuide">
+                            <input id="showBallGuide" type="checkbox" checked>
+                            Mostrar indicador da bola
+                        </label>
+                        <label class="settingsCheck" for="showGoalSprites">
+                            <input id="showGoalSprites" type="checkbox" checked>
+                            Detalhes visuais dos gols
+                        </label>
+                        <label class="settingsCheck" for="showPlayerShadows">
+                            <input id="showPlayerShadows" type="checkbox" checked>
+                            Sombras dos jogadores e nomes
+                        </label>
+                    </div>
+                    <div class="setting">
+                        <label for="ballStyle3d">Estilo da bola</label>
+                        <select id="ballStyle3d">
+                            <option value="3d" selected>Bola 3D (com relação de volume e brilho)</option>
+                            <option value="2d">Bola 2D (plana, mais leve)</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="pageGameZoom">Zoom da câmera</label>
+                        <input id="pageGameZoom" type="range" min="0.55" max="3" step="0.01">
+                    </div>
+                    <div class="setting">
+                        <label for="pageCameraStyle">Estilo da câmera</label>
+                        <select id="pageCameraStyle">
+                            <option value="1">Foco no jogador — mostra a bola quando ela aparece na tela</option>
+                            <option value="0">Clássica — entre jogador e bola</option>
+                        </select>
+                    </div>
+                    <div class="setting">
+                        <label for="pageCameraOffset">Deslocamento da câmera</label>
+                        <input id="pageCameraOffset" type="range" min="-100" max="100" step="1">
+                    </div>
+                    <div class="setting">
+                        <label for="pageHudOpacity">Opacidade dos controles</label>
+                        <input id="pageHudOpacity" type="range" min="0.25" max="1" step="0.01">
+                    </div>
+                    <div class="setting">
+                        <label class="settingsCheck" for="pageChatEnabled">
+                            <input id="pageChatEnabled" type="checkbox">
+                            Mostrar chat durante a partida
+                        </label>
+                        <label for="pageChatWidth">Largura do chat</label>
+                        <input id="pageChatWidth" type="range" min="220" max="500" step="10">
+                        <label for="pageChatOpacity">Transparência do chat</label>
+                        <input id="pageChatOpacity" type="range" min="0.2" max="1" step="0.05">
+                    </div>
+                    <div class="setting">
+                        <label for="pageChatX">Posição horizontal do chat</label>
+                        <input id="pageChatX" type="range" min="0" max="100" step="1">
+                        <label for="pageChatY">Posição vertical do chat</label>
+                        <input id="pageChatY" type="range" min="0" max="100" step="1">
+                    </div>
+                </div>
+            </section>
+            <div class="row settingsActions" style="justify-content:space-between;margin-top:15px">
+                <button id="defaultSettings" class="btn">Padrão</button>
+                <button id="applySettings" class="btn">Aplicar</button>
+            </div>
+        </div>
+    </div>
+    <div id="uniformScreen" class="screen lobby">
+        <div class="uniformLayout">
+            <section class="uniformStage" aria-label="Visualização">
+                <button id="uniformBack" class="uniformBackBtn" type="button" aria-label="Voltar">←</button>
+                <div class="uniformStageTitle">
+                    <small id="uniKind">Bola</small>
+                    <b id="uniName">Normal</b>
+                </div>
+                <canvas id="uniformPreview" aria-label="Visualização do item selecionado"></canvas>
+                <div class="uniformStageHint" id="uniHint">Arraste para girar a bola</div>
+                <div class="uniformStageTools">
+                    <button id="uniSpin" class="uniTool" type="button" aria-pressed="true" title="Ligar/desligar o giro automático">⟳ <span>Girando</span></button>
+                    <button id="uniEditCur" class="uniTool uniToolMain" type="button" title="Modificar este item">✎ <span>Personalizar</span></button>
+                </div>
+            </section>
+            <section class="uniformStrip" aria-label="Uniformes e bolas">
+                <div class="uniformTabs" role="tablist">
+                    <button type="button" role="tab" data-uniform-target="player" class="active" aria-selected="true"><i aria-hidden="true">👕</i> Jogador</button>
+                    <button type="button" role="tab" data-uniform-target="ball" aria-selected="false"><i aria-hidden="true">⚽</i> Bola 3D</button>
+                    <button type="button" role="tab" data-uniform-target="fx" aria-selected="false"><i aria-hidden="true">✨</i> Efeito de gol</button>
+                </div>
+                <div id="uniformList" class="uniformList"></div>
+            </section>
+            <div id="uniformEditor" class="uniformEditor" hidden>
+                <div class="uniformEditorCard" role="dialog" aria-labelledby="uniEdTitle">
+                    <div id="uniEdTitle" class="uniformEditorTitle">Novo uniforme</div>
+                    <div class="uniformEditorBody">
+                        <div class="uniformEditorPreviewBox">
+                            <canvas id="uniEdPreview" width="300" height="300" aria-label="Prévia"></canvas>
+                        </div>
+                        <div class="uniformEditorFields">
+                            <input id="uniEdName" type="text" maxlength="20" placeholder="Nome (opcional)" autocomplete="off">
+                            <div class="uniformMode">
+                                <button type="button" data-uni-mode="color" class="active">Cores</button>
+                                <button type="button" data-uni-mode="image">Imagem</button>
+                            </div>
+                            <div id="uniEdColor" class="uniformEditorGroup">
+                                <label for="uniEdPattern">Padrão</label>
+                                <select id="uniEdPattern"></select>
+                                <div class="uniColors">
+                                    <div class="uniRow"><label for="uniEdBase">Cor 1</label><input id="uniEdBase" type="color" value="#ffffff"></div>
+                                    <div id="uniEdAccentRow" class="uniRow"><label for="uniEdAccent">Cor 2</label><input id="uniEdAccent" type="color" value="#2563eb"></div>
+                                    <div id="uniEdLineRow" class="uniRow"><label for="uniEdLine" id="uniEdLineLabel">Linhas</label><input id="uniEdLine" type="color" value="#1d2025"></div>
+                                    <div id="uniEdTextRow" class="uniRow"><label for="uniEdText">Texto</label><input id="uniEdText" type="color" value="#ffffff"></div>
+                                </div>
+                                <div id="uniEdGlossRow" class="uniSlider">
+                                    <label for="uniEdGloss">Brilho <b id="uniEdGlossVal">60</b></label>
+                                    <input id="uniEdGloss" type="range" min="0" max="100" value="60">
+                                </div>
+                            </div>
+                            <div id="uniEdImage" class="uniformEditorGroup" hidden>
+                                <button id="uniEdChoose" class="btn customizationUpload" type="button">Escolher imagem</button>
+                                <input id="uniEdFile" class="customizationFile" type="file" accept="image/png,image/jpeg,image/gif,image/webp">
+                                <label for="uniEdZoom">Zoom</label>
+                                <input id="uniEdZoom" type="range" min="50" max="200" value="100">
+                                <label for="uniEdX">Posição horizontal</label>
+                                <input id="uniEdX" type="range" min="0" max="100" value="50">
+                                <label for="uniEdY">Posição vertical</label>
+                                <input id="uniEdY" type="range" min="0" max="100" value="50">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uniformEditorActions">
+                        <button id="uniEdCancel" class="btn" type="button">Cancelar</button>
+                        <button id="uniEdSave" class="btn" type="button">Salvar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="roomScreen" class="screen lobby">
+        <div class="rmWrap">
+            <header class="rmBar">
+                <button id="leaveRoom" class="rmLeave" type="button" aria-label="Sair da sala">&#8249; Sair</button>
+                <div id="roomTitle" class="rmTitle">Sala do jogador</div>
+                <span id="roomCountPill" class="rmPill" title="Jogadores na sala">&#128101; 1</span>
+                <div class="rmBarBtns">
+                    <button id="roomCopyLink" class="rmIcon" type="button" aria-label="Copiar link da sala" title="Copiar link da sala">&#128279;</button>
+                    <button id="roomPause" class="rmIcon" type="button" aria-label="Configurar controles" title="Configurar controles">&#127918;</button>
+                    <button id="roomChatToggle" class="rmIcon" type="button" aria-label="Chat da sala" title="Chat da sala">&#128172;<i class="rmDot" hidden></i></button>
+                </div>
+            </header>
+            <main class="rmTeams">
+                <section class="rmCol rmRed">
+                    <div class="rmHead">
+                        <button type="button" class="rmTeamBtn" data-join-team="red">Time Vermelho</button>
+                        <button type="button" class="rmArrow" data-shift-team="1" aria-label="Mover meu jogador para a direita" title="Mover para a direita">&#9654;</button>
+                    </div>
+                    <div id="redList" class="roomDrop rmList" data-drop-team="red"></div>
+                    <div id="redBench" class="rmBench" data-drop-team="red-bench" title="Banco de reservas"></div>
+                </section>
+                <section class="rmCol rmSpec">
+                    <div class="rmHead">
+                        <button type="button" class="rmTeamBtn" data-join-team="spectator">Espectadores</button>
+                    </div>
+                    <div id="spectatorList" class="roomDrop rmList" data-drop-team="spectator"></div>
+                </section>
+                <section class="rmCol rmBlue">
+                    <div class="rmHead">
+                        <button type="button" class="rmArrow" data-shift-team="-1" aria-label="Mover meu jogador para a esquerda" title="Mover para a esquerda">&#9664;</button>
+                        <button type="button" class="rmTeamBtn" data-join-team="blue">Time Azul</button>
+                    </div>
+                    <div id="blueList" class="roomDrop rmList" data-drop-team="blue"></div>
+                    <div id="blueBench" class="rmBench" data-drop-team="blue-bench" title="Banco de reservas"></div>
+                </section>
+            </main>
+            <footer class="rmFoot">
+                <div class="rmTools" aria-label="Organizar times">
+                    <button id="roomAuto" class="rmTool" type="button" title="Equilibrar os times automaticamente">Auto</button>
+                    <button id="roomShuffle" class="rmTool" type="button" title="Sortear os jogadores entre os times">Sortear</button>
+                    <button id="roomClear" class="rmTool" type="button" title="Mover todos para espectadores">Zerar</button>
+                </div>
+                <div class="rmCfg">
+                    <label class="rmField"><span>Tempo (min)</span>
+                        <select id="roomTimeLimit"><option value="1">1 min</option><option value="2">2 min</option><option value="3">3 min</option><option value="4">4 min</option><option value="5" selected>5 min</option><option value="6">6 min</option><option value="7">7 min</option><option value="8">8 min</option><option value="9">9 min</option><option value="10">10 min</option><option value="11">11 min</option><option value="12">12 min</option><option value="13">13 min</option><option value="14">14 min</option><option value="15">15 min</option><option value="16">16 min</option><option value="17">17 min</option><option value="18">18 min</option><option value="19">19 min</option><option value="20">20 min</option><option value="21">21 min</option><option value="22">22 min</option><option value="23">23 min</option><option value="24">24 min</option><option value="25">25 min</option><option value="26">26 min</option><option value="27">27 min</option><option value="28">28 min</option><option value="29">29 min</option><option value="30">30 min</option></select></label>
+                    <label class="rmField"><span>Gols</span>
+                        <select id="roomScoreLimit"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5" selected>5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option></select></label>
+                    <label class="rmField rmFieldWide"><span>Campo</span>
+                        <select id="roomFieldVariant">
+                            <optgroup label="Futsal">
+                                <option value="v1">Futsal 1v1</option>
+                                <option value="v2">Futsal 2v2</option>
+                                <option value="v3" selected>Futsal 3v3</option>
+                                <option value="v4">Futsal 4v4</option>
+                            </optgroup>
+                            <optgroup label="Real Soccer">
+                                <option value="r4">Real 4v4</option>
+                                <option value="r5">Real 5v5</option>
+                                <option value="r7">Real 7v7</option>
+                                <option value="r9">Real 9v9</option>
+                                <option value="r11">Real 11v11</option>
+                            </optgroup>
+                        </select></label>
+                </div>
+                <button id="stopRoom" class="rmTool rmStop" type="button" hidden>Parar partida</button>
+                <button id="startRoom" class="rmStart" type="button">Iniciar partida</button>
+            </footer>
+            <section id="roomChatPanel" class="rmChat" aria-label="Chat da sala" hidden>
+                <div id="roomChatMessages" class="rmMsgs" role="log" aria-live="polite"></div>
+                <form id="roomChatForm" class="rmChatForm">
+                    <input id="roomChatInput" type="text" maxlength="240" autocomplete="off" placeholder="Escreva uma mensagem..." aria-label="Mensagem do chat">
+                    <button class="rmSend" type="submit">Enviar</button>
+                </form>
+            </section>
+        </div>
+    </div>
+    <div id="game" class="screen">
+    <div id="benchDrawer" class="benchDrawer" hidden>
+        <button id="benchHandle" class="benchHandle" type="button" aria-label="Banco de reservas">🪑<b id="benchCount">0</b></button>
+        <div id="benchPanel" class="benchPanel" hidden>
+            <div class="benchCol benchRed"><h4>Vermelho</h4><div id="benchRedList"></div></div>
+            <div class="benchCol benchBlue"><h4>Azul</h4><div id="benchBlueList"></div></div>
+        </div>
+    </div>
+
+        <canvas id="canvas"></canvas>
+        <button id="gameSettingsBtn" class="gameSettingsBtn">⚙</button>
+        <div id="gameSettings" class="gameSettings hidden" role="dialog" aria-label="Menu">
+            <div class="gmHead">
+                <button type="button" id="gmBack" class="gmIconBtn" aria-label="Voltar" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg></button>
+                <h2 id="gmTitle">Menu</h2>
+                <button class="closeGs gmIconBtn" id="closeGameSettings" type="button" aria-label="Fechar menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            <div class="gmBody">
+                <div class="gmView" id="gmMain" data-title="Menu">
+                <button type="button" class="gmItem" data-go="gmCamera"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></span><span class="gmLbl">Câmera</span><span class="gmNext"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></span></button>
+                <button type="button" class="gmItem" data-go="gmControls"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z"/></svg></span><span class="gmLbl">Controles</span><span class="gmNext"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></span></button>
+                <button type="button" class="gmItem" id="gmEdit"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></span><span class="gmLbl">Editar HUD</span></button>
+                <button type="button" class="gmItem" data-go="gmSound"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg></span><span class="gmLbl">Som</span><span class="gmNext"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></span></button>
+                <button type="button" class="gmItem" id="gmChat"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></span><span class="gmLbl">Chat</span></button>
+                <button type="button" class="gmItem" id="gmPause"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></span><span class="gmLbl">Pausar partida</span></button>
+                <button type="button" class="gmItem" id="gmTeams"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></span><span class="gmLbl">Trocar de time</span></button>
+                <button type="button" class="gmItem" id="gmCopyLink" hidden><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg></span><span class="gmLbl">Copiar link da sala</span></button>
+                <button type="button" class="gmItem" id="gmRestart"><span class="gmIco"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg></span><span class="gmLbl">Reiniciar partida</span></button>
+                </div>
+                <div class="gmView" id="gmCamera" data-title="Câmera" hidden>
+                    <div class="gmField"><label for="gameZoom">Zoom da câmera</label>
+                        <input id="gameZoom" type="range" min="0.55" max="3.00" step="0.01" value="1"></div>
+                    <div class="gmField"><label for="cameraStyle">Estilo da câmera</label>
+                        <select id="cameraStyle">
+                            <option value="1">Foco no jogador</option>
+                            <option value="0">Clássica (jogador + bola)</option>
+                        </select></div>
+                    <div class="gmField"><label for="cameraOffset">Deslocamento da câmera</label>
+                        <input id="cameraOffset" type="range" min="-100" max="100" step="1" value="0"></div>
+                </div>
+                <div class="gmView" id="gmControls" data-title="Controles" hidden>
+                    <div class="gmGroup">Zona do analógico</div>
+                    <div class="gmField gmSwitchRow"><label for="zoneEnabled">Zona de toque</label>
+                        <input id="zoneEnabled" type="checkbox" class="gmSwitch"></div>
+                    <div class="gmField gmSwitchRow"><label for="joyFixed">Analógico fixo</label>
+                        <input id="joyFixed" type="checkbox" class="gmSwitch"></div>
+                    <div class="gmField gmSwitchRow"><label for="zoneShow">Mostrar zona na tela</label>
+                        <input id="zoneShow" type="checkbox" class="gmSwitch"></div>
+                    <div class="gmField gmSwitchRow"><label for="joyShow">Mostrar analógico</label>
+                        <input id="joyShow" type="checkbox" class="gmSwitch"></div>
+                    <div class="gmField gmSwitchRow"><label for="joyTouchShow">Mostrar ao tocar (analógico oculto)</label>
+                        <input id="joyTouchShow" type="checkbox" class="gmSwitch"></div>
+                    <p class="gmNote">Com a zona ligada, o analógico vai para onde você tocar dentro dela e volta ao lugar quando soltar. Com “Analógico fixo”, ele não sai do lugar: tocar em qualquer ponto da zona move o stick na direção do toque. Desligando o analógico você joga só com a zona. Para mover e redimensionar a zona, use Editar HUD.</p>
+                    <div class="gmGroup">Tamanhos</div>
+                    <div class="gmField"><label for="joySize">Analógico</label>
+                        <input id="joySize" type="range" min="85" max="210" step="1" value="142"></div>
+                    <div class="gmField"><label for="stickSize">Stick</label>
+                        <input id="stickSize" type="range" min="0.55" max="1.25" step="0.01" value="1"></div>
+                    <div class="gmField"><label for="kickSize">Chute e passe</label>
+                        <input id="kickSize" type="range" min="0.65" max="1.5" step="0.01" value="1"></div>
+                    <div class="gmField"><label for="hudOpacity">Opacidade dos controles</label>
+                        <input id="hudOpacity" type="range" min="0.25" max="1" step="0.01" value="1"></div>
+                </div>
+                <div class="gmView" id="gmSound" data-title="Som" hidden>
+                    <div class="gmField gmSwitchRow"><label for="crowdEnabled">Som ambiente</label>
+                        <input id="crowdEnabled" type="checkbox" class="gmSwitch"></div>
+                    <div class="gmField"><label for="crowdVolume">Volume da torcida</label>
+                        <input id="crowdVolume" type="range" min="0" max="0.45" step="0.01" value="0.16"></div>
+                    <div class="gmField"><label for="gameMasterVolume">Volume geral <b id="gameMasterVolumeVal">100%</b></label>
+                        <input id="gameMasterVolume" type="range" min="0" max="100" step="1" value="100"></div>
+                    <div class="gmField"><label for="gameBallVolume">Som da bola <b id="gameBallVolumeVal">100%</b></label>
+                        <input id="gameBallVolume" type="range" min="0" max="100" step="1" value="100"></div>
+                    <div class="gmField"><label for="gameGoalVolume">Som de gol <b id="gameGoalVolumeVal">100%</b></label>
+                        <input id="gameGoalVolume" type="range" min="0" max="100" step="1" value="100"></div>
+                    <p class="gmNote">Torcida: “Live Stadium Crowd Roar”, BudgetPixel AI — CC BY 4.0 (crédito obrigatório).</p>
+                </div>
+            </div>
+            <div class="gmLegacy" hidden>
+                <button type="button" id="moveJoyBtn" class="moveControlBtn"></button>
+                <button type="button" id="moveKickBtn" class="moveControlBtn"></button>
+                <button type="button" id="movePassBtn" class="moveControlBtn"></button>
+                <div id="moveHint" class="moveHint hidden"></div>
+                <button type="button" id="saveHudBtn" class="moveControlBtn"></button>
+                <input id="joyX" type="hidden" value="10">
+                <input id="joyY" type="hidden" value="70">
+                <input id="kickX" type="hidden" value="80">
+                <input id="kickY" type="hidden" value="78">
+                <input id="passX" type="hidden" value="93">
+                <input id="passY" type="hidden" value="78">
+            </div>
+        </div>
+        <div class="hud">
+            <span class="dot red"></span>
+            <span id="rs">0</span>
+            - <span id="bs">0</span>
+            <span class="dot blue"></span>
+            <span id="time" class="clock">05:00</span>
+        </div>
+        <div id="performanceHud" class="performanceHud" aria-label="Desempenho da partida">
+            <span id="pingDisplay" title="Ping indisponível: esta partida não está conectada a um servidor">Ping: N/D</span>
+            <span id="fpsDisplay">FPS: —</span>
+        </div>
+        <div class="topBtns">
+            <button id="pauseGame" type="button" aria-label="Pausar partida" title="Pausar partida">⏸</button>
+            <button id="pause" aria-label="Abrir equipes para trocar de time" title="Trocar de time">👥</button>
+            <button id="exit" aria-label="Reiniciar partida" title="Reiniciar partida">↻</button>
+        </div>
+        <section id="gameChat" class="gameChat" aria-label="Chat da partida">
+            <button id="gameChatToggle" type="button" aria-expanded="false" aria-controls="gameChatPanel">💬 Chat</button>
+            <div id="gameChatPanel" class="gameChatPanel">
+                <div id="gameChatMessages" class="gameChatMessages" role="log" aria-live="polite"></div>
+                <form id="gameChatForm" class="gameChatForm">
+                    <input id="gameChatInput" type="text" maxlength="240" autocomplete="off" placeholder="Digite uma mensagem..." aria-label="Mensagem do chat da partida">
+                    <button type="submit" aria-label="Enviar mensagem">➤</button>
+                </form>
+            </div>
+        </section>
+        <div id="joy" class="touch">
+            <div class="knob"></div>
+        </div>
+        <button id="pass" class="pass">
+            <span><svg viewBox="0 0 24 24" class="hudIco" aria-hidden="true"><path d="M4.5 19C5 12 10 8.5 18 8.5"/><path d="M14 4.5l4.5 4-4.2 4.2"/><circle cx="4.5" cy="19" r="1.2"/></svg></span>
+        </button>
+        <button id="kick" class="kick">
+            <span><svg viewBox="0 0 24 24" class="hudIco" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.8l4 3.1-1.5 4.7h-5L8 10.9z"/><path d="M12 7.8V2.5M16 10.9l5.2-1.8M14.5 15.6l3.2 4.4M9.5 15.6l-3.2 4.4M8 10.9L2.8 9.1"/></svg></span>
+        </button>
+        <div id="shout" class="shout">
+            <button id="shGoal">GOL!</button>
+            <button id="shPass">PASSE</button>
+            <button id="shShit">DROGA</button>
+        </div>
+        <div id="pauseOv" class="overlay">
+            <div class="pause">
+                <h2>PAUSADO</h2>
+                <button id="resume">Continuar</button>
+                <button id="back">Menu</button>
+            </div>
+        </div>
+        <div id="restartRoomModal" class="overlay">
+            <div class="pause" style="max-width:320px;text-align:center">
+                <h2 style="font-size:20px;margin-bottom:18px">Reiniciar a partida agora?</h2>
+                <div style="display:flex;justify-content:center;gap:12px">
+                    <button id="restartNo" class="btn" style="background:#238b45!important;min-width:100px">Cancelar</button>
+                    <button id="restartYes" class="btn" style="background:#c92a2a!important;min-width:100px">Reiniciar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ordem importa: cada arquivo usa o que o anterior define. -->
+    <script src="storage.js"></script>
+    <script src="assets.js"></script>
+    <script src="maps.js"></script>
+    <script src="ball3d.js"></script>
+    <script src="sim.js"></script>
+    <script src="proto.js"></script>
+    <script src="netclient.js"></script>
+    <script src="exclusives.js"></script>
+    <script src="goalfx.js"></script>
+    <script src="game.js"></script>
+    <script src="online.js"></script>
+    <script src="replaystats.js"></script>
+    <script src="replay.js"></script>
+    <div id="rankedMenu" class="fhModal" hidden>
+        <div class="fhCard rmCard" role="dialog" aria-modal="true" aria-labelledby="rmTitle">
+            <header class="fhCardHead"><h2 id="rmTitle">Ranqueada</h2><button type="button" class="rkIconBtn" id="rmClose" aria-label="Fechar">×</button></header>
+            <p class="rmIntro">Só as partidas ranqueadas contam pontos. Sair no meio da partida conta como derrota.</p>
+            <div id="rmBody" class="rmBody"></div>
+            <footer class="rmFoot"><button type="button" id="rmRanking" class="rmLink">🏆 Ver ranking</button></footer>
+        </div>
+    </div>
+    <div id="ptAll" class="fhModal" hidden>
+        <div class="fhCard ptAllCard" role="dialog" aria-modal="true" aria-labelledby="ptAllTitle">
+            <header class="fhCardHead"><h2 id="ptAllTitle">Todas as patentes</h2><button type="button" class="rkIconBtn" id="ptAllClose" aria-label="Fechar">×</button></header>
+            <div id="ptAllGrid" class="ptAllGrid"></div>
+        </div>
+    </div>
+    <div id="searchScreen" class="fhModal searchModal" hidden role="dialog" aria-modal="true" aria-label="Procurando jogador">
+        <div id="searchBody" class="searchBody"></div>
+    </div>
+    <div id="rankedResult" class="fhModal" hidden>
+        <div class="fhCard rrCard" role="dialog" aria-modal="true" aria-labelledby="rrTitle">
+            <div id="rrBody"></div>
+        </div>
+    </div>
+    <div id="fhToast" class="fhToast" role="status" aria-live="polite"></div>
+    <script src="gamemenu.js"></script>
+    <script src="account.js"></script>
+    <script src="room-ui.js"></script>
+    <script src="orient.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "futhub",
+  "version": "12.3.19",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/exclusives.js && node test/goalfx.js && node test/unit.js && node test/arbitration.js && node test/room-config.js && node test/replay.js && node test/replay-ui.js && node test/e2e.js && node test/e2e-ranked.js && node test/e2e-ranked-edge.js && node test/e2e-room.js",
+    "test:unit": "node test/exclusives.js && node test/goalfx.js && node test/unit.js && node test/arbitration.js && node test/room-config.js && node test/replay.js && node test/replay-ui.js",
+    "bench": "node --expose-gc test/bench.js --json test/bench-results.json | tee test/bench-results.txt"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.0"
+  }
+}

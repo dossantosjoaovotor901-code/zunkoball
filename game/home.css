@@ -1,0 +1,76 @@
+/* FutHub - Tela inicial (estadio). Carregado por ultimo. */
+#homeScreen.screen.lobby{padding:0!important;display:none;align-items:stretch;justify-content:stretch;background:#060607!important}
+#homeScreen.screen.lobby.on{display:flex}
+.homeStage{position:relative;flex:1;min-height:0;overflow:hidden;font-family:'Poppins',Arial,sans-serif;color:#fff}
+.homeBg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.homeStage button{font-family:inherit;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .1s,filter .1s}
+.homeStage button:hover,.homeStage button:focus-visible{filter:brightness(1.12);outline:none}
+.homeStage button:focus-visible{box-shadow:0 0 0 3px #fff}
+.homeStage button:active{transform:scale(.96)}
+/* perfil */
+.homeProfile{position:absolute;left:clamp(8px,1.6vmin,18px);top:clamp(8px,1.6vmin,18px);display:flex;align-items:center;gap:10px;
+  padding:clamp(6px,1.2vmin,10px) clamp(14px,2.2vmin,22px) clamp(6px,1.2vmin,10px) clamp(6px,1.2vmin,10px);
+  background:rgba(10,10,12,.82);border:2px solid var(--ac-edge);border-radius:14px;text-align:left}
+.homeAvatar{width:clamp(38px,7.4vmin,56px);aspect-ratio:1;border-radius:50%;background:#000;border:4px solid #000;
+  display:grid;place-items:center;font:700 clamp(14px,2.6vmin,21px) Arial,sans-serif;flex:none}
+.homeProfileText{display:flex;flex-direction:column;min-width:0}
+.homeProfileText small{color:var(--ac-muted);font-size:clamp(10px,1.7vmin,12px)}
+.homeProfileText b{font-size:clamp(15px,2.9vmin,22px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:24vw}
+/* engrenagem + lateral direita */
+.homeGear{position:absolute;right:clamp(8px,1.6vmin,18px);top:clamp(8px,1.6vmin,18px);width:clamp(40px,7.6vmin,56px);aspect-ratio:1;
+  border:2px solid var(--ac-edge);border-radius:12px;background:rgba(10,10,12,.82);font-size:clamp(18px,3.6vmin,28px)}
+.homeSide{position:absolute;right:clamp(8px,1.6vmin,18px);top:clamp(58px,11vmin,84px);display:flex;flex-direction:column;gap:clamp(6px,1.2vmin,10px)}
+.homeMini{width:clamp(64px,13vmin,94px);padding:clamp(6px,1.2vmin,10px) 4px;border:2px solid var(--ac-edge);border-radius:12px;background:rgba(10,10,12,.78);
+  display:flex;flex-direction:column;align-items:center;gap:2px;font-weight:800;font-size:clamp(10px,1.9vmin,13px);letter-spacing:.5px;text-transform:uppercase}
+.homeMini i{font-style:normal;font-size:clamp(18px,3.8vmin,28px);line-height:1}
+/* personagem */
+.homeHero{position:absolute;left:20%;right:calc(clamp(230px,34vw,330px) + 18px);top:6%;bottom:6%}
+.homeHero canvas{cursor:pointer}
+.homeHero canvas{width:100%;height:100%;display:block}
+.homeNameplate{position:absolute;left:50%;bottom:-2%;transform:translateX(-50%);min-width:clamp(150px,28vmin,240px);padding:clamp(6px,1.2vmin,10px) 26px;
+  background:#0e0e11;border:0;clip-path:polygon(6% 0,94% 0,100% 100%,0 100%);font-size:clamp(15px,3vmin,22px)}
+.homeNameplate:active{transform:translateX(-50%) scale(.96)}
+/* tiles esquerda */
+.homeBottomLeft{position:absolute;left:clamp(8px,1.6vmin,18px);bottom:clamp(22px,5vmin,40px);display:grid;grid-template-columns:repeat(2,auto);gap:clamp(6px,1.2vmin,10px)}
+.homeTile{width:clamp(78px,17vmin,120px);height:clamp(66px,14vmin,96px);border:3px solid #050506;border-radius:12px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-weight:800;font-size:clamp(10px,1.9vmin,13px);text-transform:uppercase;
+  box-shadow:0 5px 0 #050506,0 10px 18px rgba(0,0,0,.35)}
+.homeTile i{font-style:normal;font-size:clamp(22px,4.6vmin,36px);line-height:1}
+.tileBlue{background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013))}
+.tileOrange{background:linear-gradient(var(--ac1),var(--ac2) 55%,var(--ac3))}
+/* direita embaixo */
+/* faixa e aviso */
+.homeTicker{position:absolute;left:50%;bottom:0;transform:translateX(-50%);padding:6px 40px;background:#0a0a0c;border:2px solid var(--ac-edge);border-bottom:0;
+  border-radius:12px 12px 0 0;font-weight:700;font-size:clamp(10px,1.9vmin,13px);white-space:nowrap}
+.homeToast{position:absolute;left:50%;top:14%;transform:translate(-50%,-10px);padding:10px 18px;border-radius:999px;background:#0e0e11;border:2px solid var(--ac2);font-weight:700;opacity:0;pointer-events:none;transition:.2s}
+.homeToast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:640px) and (orientation:portrait){.homeHero{left:6%;right:6%;top:14%;bottom:36%}.homeBottomLeft{bottom:60px}.homeBottomRight{left:8px;right:8px;bottom:12px;width:auto}.homeHero{right:6%}.homeTicker{display:none}}
+@media (max-height:440px){.homeSide{top:52px;gap:4px}.homeMini{width:58px;padding:3px 2px;border-radius:9px}.homeMini i{font-size:16px}.homeMini span{font-size:9px}.homeGear{width:36px}}
+.tileOrange,.homeQuick{color:#1a1200}
+.tileOrange span,.tileOrange i{color:#1a1200}
+.homeStage button.homeMini,.homeStage .homeTile.tileBlue,.homeStage .homeGear,.homeStage .homeProfile,.homeStage .homeModes button{border-color:var(--ac-edge)}
+.homeStage .homeTile.tileBlue{color:var(--ac1)}
+
+/* ===== painel de jogar (canto inferior direito) ===== */
+.homeBottomRight{position:absolute;right:clamp(8px,1.6vmin,18px);bottom:clamp(22px,5vmin,40px);width:clamp(230px,34vw,330px);box-sizing:border-box;
+  display:flex;flex-direction:column;gap:clamp(5px,1.1vmin,9px)}
+.homeTopRow{display:flex;gap:clamp(5px,1.1vmin,9px);align-items:stretch}
+.homeTopRow .homeRooms{flex:1;min-width:0}
+.homeRooms{height:clamp(36px,7vmin,50px);border:3px solid var(--ac-edge);border-radius:12px;color:var(--ac1);
+  background:linear-gradient(color-mix(in srgb,var(--ac2) 28%,#18181b),color-mix(in srgb,var(--ac2) 18%,#141417));
+  display:flex;align-items:center;justify-content:center;gap:10px;font-weight:900;font-size:clamp(13px,2.6vmin,19px);text-transform:uppercase;box-shadow:0 4px 0 #050506}
+.homeRooms i{font-style:normal}
+.homeTopRow .homeRankBadge{height:auto;width:clamp(38px,7vmin,50px)}
+.homeSelRow{display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(5px,1.1vmin,9px)}
+.homeModePicker{display:flex;flex-direction:column;gap:3px;min-width:0;color:#fff}
+.homeModePicker>span{font-size:clamp(9px,1.7vmin,11px);font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.85;padding-left:3px}
+.homeModePicker select{width:100%;min-width:0;height:clamp(32px,6.4vmin,40px);padding:0 18px 0 7px;box-sizing:border-box;border:2px solid var(--ac-edge);border-radius:10px;
+  background-color:rgba(10,10,12,.92);color:#fff;font:700 clamp(12px,2.2vmin,15px) 'Poppins',Arial,sans-serif;outline:0;text-overflow:ellipsis}
+.homeModePicker select:focus{box-shadow:0 0 0 2px #fff}
+.homeQuick{width:100%;height:clamp(46px,10vmin,64px);border:3px solid #050506;border-radius:12px;background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3));color:#1a1200;
+  display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 5px 0 #050506,0 10px 18px rgba(0,0,0,.35)}
+.homeQuick i{font-style:normal;font-size:clamp(22px,4.6vmin,34px);line-height:1}
+.homeQuickTxt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.1;min-width:0}
+.homeQuickTxt b{font-weight:900;font-size:clamp(15px,3.1vmin,24px);text-transform:uppercase;white-space:nowrap}
+.homeQuickTxt small{font-weight:800;font-size:clamp(10px,1.8vmin,12px);opacity:.8}
+.homeQuickTxt small:empty{display:none}

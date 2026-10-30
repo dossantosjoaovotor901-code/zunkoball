@@ -1,0 +1,1396 @@
+/* ============================================================
+   FutHub - Redesign dos menus (carregado DEPOIS de style.css)
+   Tema: pitch escuro + dourado (logo), vidro, layout fluido.
+   Tudo em clamp() para encaixar em qualquer resolucao.
+   ============================================================ */
+
+:root {
+    --nb-gold: var(--ac2);
+    --nb-gold-2: #e0a419;
+    --nb-gold-soft: rgba(var(--ac2-rgb), .16);
+    --nb-ink: #0c1310;
+    --nb-ink-2: #121c18;
+    --nb-card: rgba(21, 28, 25, .82);
+    --nb-card-2: rgba(28, 37, 33, .9);
+    --nb-line: rgba(var(--ac2-rgb), .28);
+    --nb-line-soft: rgba(255, 255, 255, .08);
+    --nb-text: #eef2ee;
+    --nb-muted: #9fb0a6;
+    --nb-radius: clamp(14px, 2.4vw, 22px);
+    --nb-radius-sm: clamp(9px, 1.6vw, 13px);
+    --nb-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+    --nb-glow: 0 0 0 1px rgba(var(--ac2-rgb), .25), 0 14px 40px rgba(0, 0, 0, .45);
+}
+
+/* ---------- Fundo geral dos menus ---------- */
+body,
+#menu,
+#nickScreen,
+#lobbyScreen,
+#createScreen,
+#roomScreen,
+#settingsScreen {
+    background-color: #0a100d !important;
+    background-image:
+        radial-gradient(1100px 620px at 50% -10%, rgba(var(--ac2-rgb), .16), transparent 60%),
+        radial-gradient(900px 700px at 100% 120%, rgba(32, 120, 86, .18), transparent 55%),
+        linear-gradient(160deg, #0f1814 0%, #0a100d 55%, #090d0b 100%) !important;
+    color: var(--nb-text) !important;
+    font-family: 'Poppins', 'Clash Display', Arial, sans-serif !important;
+}
+
+.screen.lobby {
+    align-items: center;
+    justify-content: center;
+    padding: clamp(14px, 3vw, 34px);
+    overflow: auto;
+    background: transparent !important;
+}
+
+/* Marca FutHub reutilizavel */
+.nbBrand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 1.4vw, 14px);
+    margin: 0 0 clamp(10px, 1.8vw, 18px);
+}
+.nbBrand img {
+    width: auto;
+    height: clamp(46px, 8vw, 78px);
+    max-width: 86vw;
+    object-fit: contain;
+    background: none;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .55)) drop-shadow(0 0 18px rgba(var(--ac2-rgb), .35));
+}
+.nbBrand span {
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    font-weight: 700;
+    letter-spacing: .14em;
+    font-size: clamp(20px, 3.2vw, 30px);
+    background: linear-gradient(180deg, #fff 0%, var(--nb-gold) 70%, var(--nb-gold-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ================= TELA DE NICK / LOGIN ================= */
+#nickScreen { padding: clamp(16px, 4vw, 40px) !important; }
+#nickScreen .profileCard {
+    position: relative;
+    width: min(400px, 100%);
+    margin-top: clamp(66px, 11vh, 92px);
+    padding: clamp(78px, 13vw, 100px) clamp(20px, 4vw, 30px) clamp(20px, 3.4vw, 28px);
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius);
+    background: var(--nb-card) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: var(--nb-text) !important;
+    box-shadow: var(--nb-shadow);
+    text-align: center;
+}
+#nickScreen .profileCard::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(var(--ac2-rgb), .55), transparent 45%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+#nickScreen .profileAvatar {
+    width: clamp(120px, 20vw, 150px) !important;
+    height: clamp(120px, 20vw, 150px) !important;
+    border: clamp(9px, 1.6vw, 13px) solid var(--nb-gold) !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle at 50% 36%, #1c2622, #0b0f0d) !important;
+    color: #fff !important;
+    font: 800 clamp(38px, 7vw, 52px)/1 'Clash Display', Roboto, Arial, sans-serif !important;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, .6);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .5), 0 0 0 5px rgba(var(--ac2-rgb), .12);
+}
+#nickScreen .profileAvatar:focus {
+    outline: 0;
+    box-shadow: 0 0 0 6px rgba(var(--ac2-rgb), .3), 0 10px 28px rgba(0, 0, 0, .5) !important;
+}
+#nickScreen .profileAvatarHint {
+    margin-top: 9px;
+    background: rgba(255, 255, 255, .06) !important;
+    color: var(--nb-muted) !important;
+    border: 1px solid var(--nb-line-soft);
+}
+#nickScreen .profileField label { color: var(--nb-text) !important; }
+#nickScreen .profileField input {
+    height: clamp(42px, 6vw, 48px);
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .05) !important;
+    color: var(--nb-text) !important;
+    font-size: clamp(15px, 2.2vw, 17px);
+    transition: border-color .15s, box-shadow .15s;
+}
+#nickScreen .profileField input:focus {
+    outline: 0;
+    border-color: var(--nb-gold) !important;
+    box-shadow: 0 0 0 3px var(--nb-gold-soft);
+}
+#nickScreen .profileCard #play {
+    min-height: clamp(46px, 6.5vw, 52px);
+    border: 0 !important;
+    border-radius: var(--nb-radius-sm);
+    background: linear-gradient(180deg, var(--nb-gold), var(--nb-gold-2)) !important;
+    color: #1a1205 !important;
+    font-weight: 800 !important;
+    font-size: clamp(14px, 2.1vw, 16px) !important;
+    letter-spacing: .02em;
+    box-shadow: 0 10px 24px rgba(224, 164, 25, .35);
+    transition: transform .12s, box-shadow .12s, filter .12s;
+}
+#nickScreen .profileCard #play:hover { transform: translateY(-2px); filter: brightness(1.05); }
+#nickScreen .profileCard #play:active { transform: translateY(0); }
+#nickScreen .profileFooter { color: var(--nb-muted) !important; }
+
+/* ================= LOBBY / LISTA DE SALAS ================= */
+#lobbyScreen { padding: clamp(14px, 3vw, 32px) !important; }
+#lobbyScreen .lobbyLayout {
+    gap: clamp(12px, 1.6vw, 20px);
+    width: 100%;
+    max-width: 1080px;
+    height: min(600px, calc(100dvh - clamp(28px, 6vh, 64px)));
+}
+#lobbyScreen .roomListCard {
+    width: min(760px, calc(100% - clamp(78px, 11vw, 118px)));
+    padding: clamp(14px, 2.2vw, 24px);
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius);
+    background: var(--nb-card) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: var(--nb-text) !important;
+    box-shadow: var(--nb-shadow);
+}
+#lobbyScreen .roomListHead {
+    padding-bottom: clamp(9px, 1.4vw, 13px);
+    border-bottom: 1px solid var(--nb-line) !important;
+}
+#lobbyScreen .roomListTitle {
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    font-size: clamp(18px, 2.8vw, 24px) !important;
+    font-weight: 700 !important;
+    color: var(--nb-text) !important;
+}
+#lobbyScreen #roomCount { color: var(--nb-muted) !important; }
+#lobbyScreen .roomListTip { color: var(--nb-muted) !important; }
+#lobbyScreen .roomListCols {
+    padding: clamp(8px, 1.2vw, 11px) clamp(10px, 1.6vw, 14px);
+    border-radius: var(--nb-radius-sm) var(--nb-radius-sm) 0 0;
+    background: rgba(var(--ac2-rgb), .1) !important;
+    color: var(--nb-gold) !important;
+    border: 1px solid var(--nb-line);
+    border-bottom: 0;
+    font-size: clamp(10px, 1.4vw, 12px);
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+#lobbyScreen .roomListBody {
+    border: 1px solid var(--nb-line) !important;
+    border-top: 0 !important;
+    border-radius: 0 0 var(--nb-radius-sm) var(--nb-radius-sm);
+    background: rgba(0, 0, 0, .18);
+}
+#lobbyScreen .roomListBody .empty { color: var(--nb-muted) !important; }
+#lobbyScreen .lobbyBtn {
+    width: clamp(62px, 9vw, 86px);
+    height: clamp(62px, 9vw, 86px);
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius-sm);
+    background: var(--nb-card-2) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--nb-text) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .35);
+    transition: transform .14s, background .14s, border-color .14s, box-shadow .14s;
+}
+#lobbyScreen .lobbyBtn b { font-size: clamp(20px, 3vw, 28px); color: var(--nb-gold); }
+#lobbyScreen .lobbyBtn span { font-size: clamp(9px, 1.3vw, 12px); color: var(--nb-muted); }
+#lobbyScreen .lobbyBtn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    border-color: var(--nb-gold) !important;
+    background: rgba(var(--ac2-rgb), .14) !important;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, .45);
+}
+#lobbyScreen .lobbyBtn:hover:not(:disabled) b,
+#lobbyScreen .lobbyBtn:hover:not(:disabled) span { color: var(--nb-gold) !important; }
+#lobbyScreen .lobbyBtn:disabled { opacity: .4; }
+
+/* ================= CRIAR SALA ================= */
+#createScreen { padding: clamp(16px, 4vw, 40px) !important; }
+#createScreen .createCard {
+    width: min(520px, 100%);
+    padding: clamp(22px, 3.4vw, 34px) clamp(22px, 3.4vw, 32px) clamp(18px, 2.8vw, 26px);
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius);
+    background: var(--nb-card) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: var(--nb-text) !important;
+    box-shadow: var(--nb-shadow);
+}
+#createScreen .createGrid { gap: clamp(14px, 2vw, 22px); }
+#createScreen .createField label { color: var(--nb-text) !important; }
+#createScreen .createField input,
+#createScreen .createField select {
+    height: clamp(42px, 6vw, 48px);
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .05) !important;
+    color: var(--nb-text) !important;
+    font-size: clamp(14px, 2vw, 15px);
+    transition: border-color .15s, box-shadow .15s;
+}
+#createScreen .createField select option { background: #16211c; color: var(--nb-text); }
+#createScreen .createField input:focus,
+#createScreen .createField select:focus {
+    outline: 0;
+    border-color: var(--nb-gold) !important;
+    box-shadow: 0 0 0 3px var(--nb-gold-soft);
+}
+#createScreen .createBtn {
+    height: clamp(44px, 6vw, 50px);
+    border: 0 !important;
+    border-radius: var(--nb-radius-sm);
+    background: linear-gradient(180deg, var(--nb-gold), var(--nb-gold-2)) !important;
+    color: #1a1205 !important;
+    font-weight: 800;
+    box-shadow: 0 10px 22px rgba(224, 164, 25, .32);
+    transition: transform .12s, filter .12s;
+}
+#createScreen .createBtn:hover { transform: translateY(-2px); filter: brightness(1.05); background: linear-gradient(180deg, var(--nb-gold), var(--nb-gold-2)) !important; }
+#createScreen .createBtnGhost {
+    background: rgba(255, 255, 255, .06) !important;
+    color: var(--nb-text) !important;
+    border: 1px solid var(--nb-line-soft) !important;
+    box-shadow: none;
+}
+#createScreen .createBtnGhost:hover { background: rgba(255, 255, 255, .12) !important; }
+
+/* ================= CONFIGURACOES ================= */
+#settingsScreen .panel.settingsPanel {
+    width: min(720px, 100%);
+    max-height: calc(100dvh - clamp(28px, 7vh, 60px));
+    padding: clamp(16px, 2.6vw, 24px);
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius);
+    background: var(--nb-card) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: var(--nb-text) !important;
+    box-shadow: var(--nb-shadow);
+}
+#settingsScreen .panelTitle {
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    color: var(--nb-gold) !important;
+    border-bottom: 1px solid var(--nb-line) !important;
+}
+#settingsScreen .settingsTabs { border-bottom: 1px solid var(--nb-line) !important; }
+#settingsScreen .settingsTab {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .05) !important;
+    color: var(--nb-muted) !important;
+    font-weight: 600;
+    transition: all .14s;
+}
+#settingsScreen .settingsTab:hover { color: var(--nb-text) !important; border-color: var(--nb-line) !important; }
+#settingsScreen .settingsTab.active {
+    border-color: var(--nb-gold) !important;
+    background: rgba(var(--ac2-rgb), .16) !important;
+    color: var(--nb-gold) !important;
+}
+#settingsScreen label,
+#settingsScreen .settingsSectionTitle,
+#settingsScreen .personalizationLabel,
+#settingsScreen .graphicsHint,
+#settingsScreen .hudMode,
+#settingsScreen small { color: var(--nb-text) !important; }
+#settingsScreen .graphicsHint,
+#settingsScreen .hudMode,
+#settingsScreen .keyBindingHint { color: var(--nb-muted) !important; }
+#settingsScreen select,
+#settingsScreen input[type=text],
+#settingsScreen .keyBindingButton {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: rgba(255, 255, 255, .05) !important;
+    color: var(--nb-text) !important;
+}
+#settingsScreen select option { background: #16211c; color: var(--nb-text); }
+#settingsScreen select:focus,
+#settingsScreen input[type=text]:focus {
+    outline: 0;
+    border-color: var(--nb-gold) !important;
+    box-shadow: 0 0 0 3px var(--nb-gold-soft);
+}
+#settingsScreen .keyBindingButton:hover { border-color: var(--nb-gold) !important; color: var(--nb-gold) !important; }
+#settingsScreen input[type=range] { accent-color: var(--nb-gold); }
+#settingsScreen input[type=checkbox] { accent-color: var(--nb-gold); }
+#settingsScreen .customizationPreview { border: 1px solid var(--nb-line) !important; }
+
+/* ================= SALA (lobby da partida) ================= */
+#roomScreen .panel.roomPanel {
+    width: min(840px, 100%);
+    height: min(600px, calc(100dvh - clamp(28px, 7vh, 60px)));
+    padding: clamp(12px, 2vw, 18px);
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius);
+    background: var(--nb-card) !important;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    color: var(--nb-text) !important;
+    box-shadow: var(--nb-shadow);
+}
+#roomScreen .roomHeader { border-bottom: 1px solid var(--nb-line) !important; }
+#roomScreen #roomTitle {
+    font-family: 'Clash Display', 'Poppins', sans-serif;
+    color: var(--nb-gold) !important;
+}
+#roomScreen .roomHeaderActions .btn {
+    background: rgba(255, 255, 255, .06) !important;
+    border: 1px solid var(--nb-line-soft) !important;
+    color: var(--nb-text) !important;
+    border-radius: var(--nb-radius-sm);
+}
+#roomScreen .roomHeaderActions .btn:hover { border-color: var(--nb-gold) !important; color: var(--nb-gold) !important; }
+#roomScreen .team {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(0, 0, 0, .2) !important;
+}
+#roomScreen .team h4 { background: rgba(255, 255, 255, .05) !important; color: var(--nb-text) !important; }
+#roomScreen .team.redTeam h4 { color: #ff8095 !important; background: rgba(255, 60, 90, .12) !important; }
+#roomScreen .team.blueTeam h4 { color: #8fb6ff !important; background: rgba(70, 120, 255, .12) !important; }
+#roomScreen .team .empty,
+#roomScreen .team .roomPlayer {
+    background: transparent !important;
+    color: var(--nb-text) !important;
+    border-bottom: 1px solid var(--nb-line-soft);
+}
+#roomScreen .roomPlayer .miniRole { color: var(--nb-muted); }
+#roomScreen .roomTeamHint { color: var(--nb-muted) !important; }
+#roomScreen .roomChat {
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(0, 0, 0, .28) !important;
+}
+#roomScreen .roomChatHeader { background: rgba(var(--ac2-rgb), .12) !important; color: var(--nb-gold) !important; }
+#roomScreen .roomChatMessages { color: var(--nb-text) !important; }
+#roomScreen .roomChatMessage strong { color: var(--nb-gold) !important; }
+#roomScreen .roomChatForm { background: rgba(0, 0, 0, .25) !important; border-top: 1px solid var(--nb-line-soft) !important; }
+#roomScreen .roomChatForm input {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .05) !important;
+    color: var(--nb-text) !important;
+}
+#roomScreen .roomChatForm input:focus { outline: 0; border-color: var(--nb-gold) !important; box-shadow: 0 0 0 3px var(--nb-gold-soft); }
+#roomScreen .roomInfo { color: var(--nb-text) !important; }
+#roomScreen .roomInfo b { color: var(--nb-gold); }
+
+/* Botoes de acao primarios (Entrar, Iniciar, Aplicar, Enviar...) */
+#roomScreen .roomChatForm .btn,
+#roomScreen #startRoom,
+#settingsScreen #applySettings,
+#settingsScreen #settingsBack {
+    border: 0 !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: linear-gradient(180deg, var(--nb-gold), var(--nb-gold-2)) !important;
+    color: #1a1205 !important;
+    font-weight: 800;
+    box-shadow: 0 8px 18px rgba(224, 164, 25, .3);
+    transition: transform .12s, filter .12s;
+}
+#roomScreen .roomChatForm .btn:hover,
+#roomScreen #startRoom:hover,
+#settingsScreen #applySettings:hover,
+#settingsScreen #settingsBack:hover { transform: translateY(-2px); filter: brightness(1.05); }
+#settingsScreen #defaultSettings {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: rgba(255, 255, 255, .06) !important;
+    color: var(--nb-text) !important;
+}
+#settingsScreen #defaultSettings:hover { border-color: var(--nb-gold) !important; color: var(--nb-gold) !important; }
+
+/* ================= AJUSTES RESPONSIVOS ================= */
+/* Telas estreitas (celular em pe) */
+@media (max-width: 760px), (max-height: 520px) {
+    #lobbyScreen .lobbyLayout { height: calc(100dvh - 24px); }
+    #lobbyScreen .roomListCard { width: calc(100% - clamp(62px, 15vw, 76px)); }
+    #lobbyScreen .lobbyBtn span { display: none; }
+    #lobbyScreen .roomListTitle { font-size: 17px !important; }
+}
+/* Celular muito estreito */
+@media (max-width: 420px) {
+    .nbBrand span { font-size: 18px; }
+    #createScreen .createGrid { grid-template-columns: 1fr; }
+    #createScreen .createFieldWide select { width: 100%; }
+}
+/* Paisagem baixa (celular deitado) */
+@media (orientation: landscape) and (max-height: 560px) {
+    #nickScreen .profileCard { margin-top: clamp(54px, 16vh, 72px); }
+    #settingsScreen .panel.settingsPanel,
+    #roomScreen .panel.roomPanel { max-height: calc(100dvh - 20px); }
+    .nbBrand { margin-bottom: 8px; }
+    .nbBrand img { height: 40px; width: auto; }
+}
+/* Telas grandes: nao esticar demais, manter nitido */
+@media (min-width: 1500px) {
+    #lobbyScreen .lobbyLayout { max-width: 1160px; }
+}
+
+/* ================= MARCA NAS TELAS ================= */
+#nickScreen { flex-direction: column; }
+#nickScreen .nbBrand { margin-bottom: clamp(2px, 1vh, 10px); }
+/* a marca fica acima do cartao; compensa o avatar sobreposto */
+#nickScreen .profileCard { margin-top: clamp(58px, 10vh, 84px); }
+.roomListTitleBrand { display: flex; align-items: center; gap: 10px; }
+.roomTitleLogo {
+    width: clamp(22px, 3vw, 30px);
+    height: clamp(22px, 3vw, 30px);
+    filter: drop-shadow(0 3px 8px rgba(var(--ac2-rgb), .4));
+}
+
+/* ============================================================
+   CONFIGURACOES - revisao completa (blocos internos no tema escuro)
+   Corrige texto claro sobre fundo claro e padroniza os cartoes.
+   ============================================================ */
+#settingsScreen .settingsTabPanel { padding: 2px 0 4px; }
+#settingsScreen .settingsGrid { gap: clamp(10px, 1.6vw, 14px); }
+
+/* Cartao de cada opcao */
+#settingsScreen .setting {
+    padding: clamp(12px, 1.8vw, 16px) !important;
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: var(--nb-card-2) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+}
+#settingsScreen .setting label,
+#settingsScreen .setting .settingsCheck,
+#settingsScreen .settingsCheck,
+#settingsScreen .personalizationSetting > label,
+#settingsScreen .colorPickerRow label,
+#settingsScreen .ballSoundStatus,
+#settingsScreen .keyBindingRow,
+#settingsScreen .keyBindingRow span {
+    color: var(--nb-text) !important;
+}
+
+/* Titulos de secao e previa em dourado */
+#settingsScreen .settingsSectionTitle,
+#settingsScreen .personalizationLabel {
+    color: var(--nb-gold) !important;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-size: clamp(11px, 1.5vw, 13px);
+}
+
+/* Dica/instrucao no rodape de cada aba */
+#settingsScreen .hudMode,
+#settingsScreen .keyBindingHint,
+#settingsScreen .graphicsHint {
+    padding: clamp(9px, 1.4vw, 12px) !important;
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: rgba(var(--ac2-rgb), .07) !important;
+    color: var(--nb-muted) !important;
+    opacity: 1 !important;
+}
+#settingsScreen .keyBindingHint,
+#settingsScreen .graphicsHint { background: transparent !important; border: 0 !important; }
+
+/* Selects dentro das configuracoes */
+#settingsScreen select {
+    height: clamp(38px, 5.4vw, 44px) !important;
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background-color: rgba(255, 255, 255, .06) !important;
+    color: var(--nb-text) !important;
+}
+#settingsScreen select:focus {
+    border-color: var(--nb-gold) !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 3px var(--nb-gold-soft) !important;
+}
+
+/* Bloco de atalhos de teclado */
+#settingsScreen .keyBindingRow { border-bottom: 1px solid var(--nb-line-soft) !important; }
+#settingsScreen .keyBindingButton {
+    min-width: 66px;
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: rgba(var(--ac2-rgb), .14) !important;
+    color: var(--nb-gold) !important;
+    font-weight: 800 !important;
+    transition: all .14s;
+}
+#settingsScreen .keyBindingButton:hover {
+    background: var(--nb-gold) !important;
+    color: #1a1205 !important;
+}
+#settingsScreen .keyBindingButton.listening {
+    background: var(--nb-gold) !important;
+    color: #1a1205 !important;
+    outline: 2px solid rgba(var(--ac2-rgb), .4) !important;
+}
+
+/* Aba Personalizar: previa, cores, botoes de imagem */
+#settingsScreen .personalizationBasics { gap: clamp(8px, 1.4vw, 14px); }
+#settingsScreen .customizationPreview {
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
+}
+#settingsScreen .personalizationSetting {
+    padding: clamp(12px, 1.8vw, 16px);
+    border: 1px solid var(--nb-line-soft);
+    border-radius: var(--nb-radius-sm);
+    background: var(--nb-card-2);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .25);
+}
+#settingsScreen input[type="color"] {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, .06) !important;
+}
+#settingsScreen .personalizationSetting input[type="range"],
+#settingsScreen .setting input[type="range"],
+#settingsScreen input[type="range"] { accent-color: var(--nb-gold) !important; }
+#settingsScreen input[type="checkbox"] { accent-color: var(--nb-gold) !important; }
+
+/* Botoes "Escolher imagem/audio" e "Remover/Usar original" */
+#settingsScreen .customizationUpload,
+#settingsScreen .ballSoundSetting .btn:not(.customizationRemove),
+#settingsScreen #chooseBallSound,
+#settingsScreen #testBallSound {
+    border: 1px solid var(--nb-line) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: rgba(var(--ac2-rgb), .14) !important;
+    color: var(--nb-gold) !important;
+    font-weight: 700 !important;
+}
+#settingsScreen .customizationUpload:hover,
+#settingsScreen #chooseBallSound:hover,
+#settingsScreen #testBallSound:hover {
+    background: var(--nb-gold) !important;
+    color: #1a1205 !important;
+}
+#settingsScreen .customizationRemove {
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm) !important;
+    background: rgba(255, 255, 255, .06) !important;
+    color: var(--nb-text) !important;
+}
+#settingsScreen .customizationRemove:hover { background: rgba(255, 255, 255, .12) !important; }
+
+/* output da escala de render */
+#settingsScreen output#renderScaleValue { color: var(--nb-gold) !important; font-weight: 700; }
+
+/* Rodape: Padrao / Aplicar com min-width fluido */
+#settingsScreen .settingsActions { gap: clamp(8px, 1.4vw, 12px); }
+#settingsScreen .settingsActions .btn { min-width: clamp(100px, 24vw, 140px); }
+
+/* Grades que empilham em telas estreitas */
+@media (max-width: 620px) {
+    #settingsScreen .personalizationBasics { grid-template-columns: 1fr; }
+    #settingsScreen .personalizationGrid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+    #settingsScreen .settingsGrid { grid-template-columns: 1fr !important; }
+}
+
+/* ================= UNIFORMES / BOLAS 3D (v3) ================= */
+#uniformScreen [hidden] { display: none !important; }
+#uniformScreen .uniformLayout {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.6vmin, 14px);
+    width: min(1040px, 100%);
+    height: min(720px, calc(100dvh - 2 * clamp(8px, 2vmin, 24px)));
+    color: var(--nb-text);
+}
+#uniformScreen.screen.lobby { padding: clamp(8px, 2vmin, 24px) !important; box-sizing: border-box; }
+/* ---- palco ---- */
+#uniformScreen .uniformStage {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    border: 1px solid var(--nb-line);
+    border-radius: var(--nb-radius);
+    background:
+        radial-gradient(70% 60% at 50% 38%, rgba(255, 244, 200, .26), transparent 70%),
+        repeating-linear-gradient(90deg, rgba(255, 255, 255, .035) 0 56px, rgba(0, 0, 0, .06) 56px 112px),
+        linear-gradient(180deg, #1c4a36 0%, #133726 62%, #0d2619 100%);
+    box-shadow: var(--nb-shadow), inset 0 0 90px rgba(0, 0, 0, .45);
+    overflow: hidden;
+}
+#uniformScreen .uniformStage::before {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: min(70%, 520px); aspect-ratio: 1;
+    transform: translate(-50%, -48%);
+    border: 2px solid rgba(255, 255, 255, .07);
+    border-radius: 50%;
+    pointer-events: none;
+}
+#uniformScreen .uniformStage::after {
+    content: "";
+    position: absolute; inset: auto 0 0 0; height: 26%;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, .35));
+    pointer-events: none;
+}
+#uniformScreen #uniformPreview {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    touch-action: none; z-index: 1;
+}
+#uniformScreen #uniformPreview.draggable { cursor: grab; }
+#uniformScreen #uniformPreview.grabbing { cursor: grabbing; }
+#uniformScreen .uniformBackBtn {
+    position: absolute; z-index: 3;
+    top: clamp(8px, 1.8vmin, 16px); left: clamp(8px, 1.8vmin, 16px);
+    width: clamp(36px, 5.4vmin, 46px); height: clamp(36px, 5.4vmin, 46px);
+    display: grid; place-items: center;
+    border: 1px solid var(--nb-line); border-radius: 12px;
+    background: rgba(8, 14, 11, .72); backdrop-filter: blur(6px);
+    color: var(--nb-gold); font-size: clamp(18px, 2.8vmin, 24px); line-height: 1; cursor: pointer;
+    transition: transform .12s, background .12s;
+}
+#uniformScreen .uniformBackBtn:hover { background: rgba(var(--ac2-rgb), .18); transform: translateX(-2px); }
+#uniformScreen .uniformStageTitle {
+    position: absolute; z-index: 2;
+    top: clamp(8px, 1.8vmin, 16px); left: calc(clamp(36px, 5.4vmin, 46px) + clamp(16px, 3.2vmin, 28px));
+    right: 12px;
+    display: flex; flex-direction: column; justify-content: center;
+    min-height: clamp(36px, 5.4vmin, 46px);
+    pointer-events: none; min-width: 0;
+}
+#uniformScreen .uniformStageTitle small {
+    color: var(--nb-gold); font-size: clamp(10px, 1.4vmin + 2px, 12px); font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+}
+#uniformScreen .uniformStageTitle b {
+    font-size: clamp(17px, 3vmin + 4px, 26px); font-weight: 800; line-height: 1.1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 2px 12px rgba(0, 0, 0, .55);
+}
+#uniformScreen .uniformStageHint {
+    position: absolute; z-index: 2; left: 50%; bottom: clamp(10px, 2vmin, 18px); transform: translateX(-50%);
+    padding: 5px 12px; border-radius: 999px; background: rgba(8, 14, 11, .55);
+    color: var(--nb-muted); font-size: clamp(11px, 1.4vmin + 2px, 13px); font-weight: 600; white-space: nowrap; pointer-events: none;
+}
+#uniformScreen .uniformStageTools {
+    position: absolute; z-index: 3; right: clamp(8px, 1.8vmin, 16px); bottom: clamp(8px, 1.8vmin, 16px);
+    display: flex; gap: 8px;
+}
+#uniformScreen .uniTool {
+    display: inline-flex; align-items: center; gap: 6px;
+    min-height: clamp(34px, 5vmin, 42px); padding: 6px clamp(10px, 1.8vmin, 16px);
+    border: 1px solid var(--rm-green-line, rgba(255, 255, 255, .12)); border-radius: 10px;
+    background: rgba(8, 14, 11, .72); backdrop-filter: blur(6px);
+    color: #fff; font-family: 'Poppins', Arial, sans-serif; font-weight: 700; font-size: clamp(12px, 1.5vmin + 3px, 14px); cursor: pointer;
+    transition: transform .12s, border-color .12s, background .12s;
+}
+#uniformScreen .uniTool:hover { border-color: var(--nb-gold); transform: translateY(-1px); }
+#uniformScreen .uniTool.off { color: var(--nb-muted); }
+#uniformScreen .uniToolMain { background: linear-gradient(180deg, var(--ac2), #e0a419); border-color: transparent; color: var(--ac-ink); }
+#uniformScreen .uniToolMain:hover { filter: brightness(1.08); border-color: transparent; }
+/* ---- faixa de itens ---- */
+#uniformScreen .uniformStrip {
+    flex: 0 0 auto;
+    border: 1px solid var(--nb-line); border-radius: var(--nb-radius);
+    background: var(--nb-card);
+    backdrop-filter: blur(8px);
+    padding: clamp(8px, 1.6vmin, 14px);
+    box-shadow: var(--nb-shadow);
+    min-width: 0;
+}
+#uniformScreen .uniformTabs { display: flex; gap: 8px; margin-bottom: clamp(6px, 1.2vmin, 10px); }
+#uniformScreen .uniformTabs button {
+    flex: 1 1 0; max-width: 220px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: clamp(34px, 5vmin, 42px); padding: 6px 12px;
+    border: 1px solid var(--nb-line-soft); border-radius: 12px;
+    background: rgba(255, 255, 255, .04); color: var(--nb-muted);
+    font-family: 'Poppins', Arial, sans-serif; font-weight: 700; font-size: clamp(12px, 1.5vmin + 3px, 14px); cursor: pointer;
+    transition: all .15s;
+}
+#uniformScreen .uniformTabs button i { font-style: normal; }
+#uniformScreen .uniformTabs button:hover { color: var(--nb-text); border-color: var(--nb-line); }
+#uniformScreen .uniformTabs button.active {
+    background: var(--nb-gold-soft); border-color: var(--nb-gold); color: var(--nb-gold);
+    box-shadow: 0 0 18px rgba(var(--ac2-rgb), .18);
+}
+#uniformScreen .uniformList {
+    position: relative;
+    display: flex; gap: clamp(8px, 1.4vmin, 12px);
+    overflow-x: auto; overflow-y: hidden;
+    padding: 6px 4px 8px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin; scrollbar-color: rgba(var(--ac2-rgb), .4) transparent;
+}
+#uniformScreen .uniformList::-webkit-scrollbar { height: 8px; }
+#uniformScreen .uniformList::-webkit-scrollbar-thumb { background: rgba(var(--ac2-rgb), .4); border-radius: 8px; }
+#uniformScreen .uniformList::-webkit-scrollbar-track { background: transparent; }
+#uniformScreen .uniformCardWrap { position: relative; flex: 0 0 auto; scroll-snap-align: center; }
+#uniformScreen .uniformCard {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    width: clamp(78px, 11vmin + 22px, 112px);
+    padding: clamp(6px, 1.2vmin, 10px) 4px 8px;
+    border: 1px solid var(--nb-line-soft); border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
+    color: var(--nb-text); cursor: pointer;
+    font-family: 'Poppins', Arial, sans-serif;
+    transition: transform .14s, border-color .14s, box-shadow .14s, background .14s;
+}
+#uniformScreen .uniformCard canvas { width: clamp(48px, 8vmin + 14px, 82px); height: clamp(48px, 8vmin + 14px, 82px); display: block; }
+#uniformScreen .uniformCard span {
+    max-width: 100%; font-size: clamp(10px, 1.3vmin + 2px, 12px); font-weight: 700; text-align: center; line-height: 1.15;
+    overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
+#uniformScreen .uniformCard:hover { transform: translateY(-3px); border-color: var(--nb-line); }
+#uniformScreen .uniformCard.active {
+    border-color: var(--nb-gold); color: var(--nb-gold);
+    background: linear-gradient(180deg, rgba(var(--ac2-rgb), .2), rgba(var(--ac2-rgb), .06));
+    box-shadow: 0 0 0 1px rgba(var(--ac2-rgb), .4), 0 10px 26px rgba(var(--ac2-rgb), .16);
+    transform: translateY(-3px);
+}
+#uniformScreen .uniformAdd { border-style: dashed; border-color: var(--nb-line); color: var(--nb-gold); min-height: 100%; }
+#uniformScreen .uniformAdd b { font-size: clamp(26px, 4vmin + 8px, 38px); line-height: 1; font-weight: 600; }
+#uniformScreen .uniformDel {
+    position: absolute; top: -4px; right: -4px; z-index: 2;
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .25); background: #7f1d1d; color: #fff;
+    font-size: 14px; line-height: 1; cursor: pointer; display: grid; place-items: center;
+}
+/* ---- editor (modal) ---- */
+#uniformScreen .uniformEditor {
+    position: fixed; inset: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: center;
+    padding: clamp(10px, 3vmin, 30px);
+    background: rgba(3, 7, 5, .72); backdrop-filter: blur(6px);
+}
+#uniformScreen .uniformEditorCard {
+    width: min(760px, 100%); max-height: 100%; overflow-y: auto;
+    display: flex; flex-direction: column; gap: clamp(10px, 1.8vmin, 16px);
+    padding: clamp(14px, 2.4vmin, 22px);
+    border: 1px solid var(--nb-line); border-radius: var(--nb-radius);
+    background: linear-gradient(180deg, #17211c, #0f1713);
+    box-shadow: var(--nb-shadow);
+    scrollbar-width: thin; scrollbar-color: rgba(var(--ac2-rgb), .4) transparent;
+}
+#uniformScreen .uniformEditorTitle { color: var(--nb-gold); font-weight: 800; font-size: clamp(16px, 2.4vmin + 4px, 20px); }
+#uniformScreen .uniformEditorBody { display: flex; gap: clamp(12px, 2.4vmin, 22px); align-items: flex-start; }
+#uniformScreen .uniformEditorPreviewBox {
+    flex: 0 0 clamp(150px, 34%, 280px);
+    aspect-ratio: 1;
+    border-radius: 16px; border: 1px solid var(--nb-line-soft);
+    background: radial-gradient(70% 60% at 50% 38%, rgba(255, 244, 200, .22), transparent 70%), linear-gradient(180deg, #1c4a36, #0f2c1f);
+    display: grid; place-items: center; overflow: hidden;
+}
+#uniformScreen #uniEdPreview { width: 100%; height: 100%; display: block; }
+#uniformScreen .uniformEditorFields { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+#uniformScreen .uniformEditorGroup { display: flex; flex-direction: column; gap: 8px; }
+#uniformScreen .uniformEditorFields label { color: var(--nb-muted); font-size: 12px; font-weight: 600; }
+#uniformScreen .uniformEditorFields input[type="text"],
+#uniformScreen .uniformEditorFields select {
+    width: 100%; box-sizing: border-box; height: clamp(36px, 5vmin, 42px); padding: 6px 10px;
+    border: 1px solid var(--nb-line-soft); border-radius: 10px;
+    background: rgba(255, 255, 255, .05); color: var(--nb-text);
+    font-family: 'Poppins', Arial, sans-serif; font-size: 14px; font-weight: 600;
+}
+#uniformScreen .uniformEditorFields select option { background: #121c18; color: var(--nb-text); }
+#uniformScreen .uniformEditorFields input:focus, #uniformScreen .uniformEditorFields select:focus {
+    outline: 0; border-color: var(--nb-gold); box-shadow: 0 0 0 3px var(--nb-gold-soft);
+}
+#uniformScreen .uniformMode { display: flex; gap: 6px; }
+#uniformScreen .uniformMode button {
+    flex: 1; min-height: 36px; border: 1px solid var(--nb-line-soft); border-radius: 10px;
+    background: rgba(255, 255, 255, .04); color: var(--nb-muted); font-weight: 700; font-family: 'Poppins', Arial, sans-serif; cursor: pointer;
+}
+#uniformScreen .uniformMode button.active { background: var(--nb-gold-soft); color: var(--nb-gold); border-color: var(--nb-gold); }
+#uniformScreen .uniColors { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+#uniformScreen .uniRow { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 8px; border: 1px solid var(--nb-line-soft); border-radius: 10px; background: rgba(255, 255, 255, .03); }
+#uniformScreen .uniRow input[type="color"] { width: 36px; height: 28px; padding: 0; border: 0; border-radius: 6px; background: none; cursor: pointer; }
+#uniformScreen .uniSlider { display: flex; flex-direction: column; gap: 4px; }
+#uniformScreen .uniSlider b { color: var(--nb-gold); }
+#uniformScreen .uniformEditorFields input[type="range"] { width: 100%; accent-color: var(--nb-gold); }
+#uniformScreen .uniformEditorActions { display: flex; gap: 8px; }
+#uniformScreen .uniformEditorActions .btn { flex: 1; min-height: 44px; width: auto !important; }
+#uniformScreen .uniformEditorActions #uniEdSave { background: linear-gradient(180deg, var(--ac2), #e0a419) !important; color: var(--ac-ink) !important; border: 0 !important; }
+#uniformScreen .uniformEditorActions #uniEdCancel { background: rgba(255, 255, 255, .07) !important; color: #fff !important; border: 1px solid var(--nb-line-soft) !important; box-shadow: none !important; }
+#uniformScreen .uniformEditorActions .btn:disabled { opacity: .4; }
+
+/* ---- responsivo ---- */
+@media (max-width: 640px) {
+    #uniformScreen .uniformEditorBody { flex-direction: column; align-items: stretch; }
+    #uniformScreen .uniformEditorPreviewBox { flex-basis: auto; width: min(220px, 70%); align-self: center; }
+    #uniformScreen .uniformTabs button { max-width: none; }
+    #uniformScreen .uniTool span { display: none; }
+    #uniformScreen .uniToolMain span { display: inline; }
+    #uniformScreen .uniformStageHint { display: none; }
+}
+@media (max-height: 520px) {
+    #uniformScreen .uniformLayout { height: calc(100dvh - 2 * clamp(8px, 2vmin, 24px)); gap: 6px; }
+    #uniformScreen .uniformStrip { padding: 6px 8px; display: flex; align-items: center; gap: 8px; }
+    #uniformScreen .uniformTabs { flex-direction: column; margin: 0; flex: 0 0 auto; }
+    #uniformScreen .uniformTabs button { min-height: 30px; padding: 4px 10px; }
+    #uniformScreen .uniformList { flex: 1 1 auto; min-width: 0; padding: 4px 2px 6px; }
+    #uniformScreen .uniformCard { width: 62px; padding: 4px 2px 4px; gap: 2px; }
+    #uniformScreen .uniformCard canvas { width: 38px; height: 38px; }
+    #uniformScreen .uniformCard span { font-size: 9px; -webkit-line-clamp: 1; }
+    #uniformScreen .uniformStageHint { display: none; }
+    #uniformScreen .uniformStageTitle b { font-size: 16px; }
+}
+@media (min-width: 1500px) and (min-height: 860px) {
+    #uniformScreen .uniformLayout { width: min(1240px, 100%); height: min(860px, calc(100dvh - 2 * clamp(8px, 2vmin, 24px))); }
+}
+
+/* ============================================================
+   SALA DE ESPERA - layout do design (sidebar + config + chat)
+   ============================================================ */
+#roomScreen .panel.roomPanel {
+    width: min(900px, 100%) !important;
+    height: min(640px, calc(100dvh - clamp(28px, 7vh, 60px))) !important;
+    display: flex !important;
+    flex-direction: column;
+    gap: clamp(10px, 1.6vw, 16px);
+    overflow: hidden !important;
+}
+#roomScreen .roomHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: clamp(8px, 1.2vw, 12px);
+    flex: 0 0 auto;
+}
+#roomScreen .roomBody {
+    display: flex;
+    gap: clamp(10px, 1.6vw, 16px);
+    flex: 1 1 auto;
+    min-height: 0;
+}
+#roomScreen .roomSidebar {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vw, 12px);
+    flex: 0 0 clamp(78px, 11vw, 104px);
+}
+#roomScreen .roomSideBtn {
+    width: 100%;
+    min-height: clamp(42px, 6vh, 52px);
+    padding: 8px 6px;
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .06) !important;
+    color: var(--nb-text) !important;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: clamp(12px, 1.4vw, 14px);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .12s, border-color .12s, color .12s, background .12s;
+}
+#roomScreen .roomSideBtn:hover {
+    border-color: var(--nb-gold) !important;
+    color: var(--nb-gold) !important;
+    background: var(--nb-gold-soft) !important;
+    transform: translateY(-1px);
+}
+#roomScreen .roomMain {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vw, 12px);
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 0;
+}
+#roomScreen .grid3.roomTeams {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(8px, 1.2vw, 12px) !important;
+    flex: 1 1 auto;
+    height: auto !important;
+    min-height: 120px !important;
+    margin: 0 !important;
+}
+#roomScreen .team {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+#roomScreen .team .roomDrop {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+#roomScreen .roomTeamHint {
+    margin: 0 !important;
+    flex: 0 0 auto;
+    text-align: center;
+}
+#roomScreen .roomConfig {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: clamp(10px, 2vw, 22px);
+    flex: 0 0 auto;
+    padding: clamp(8px, 1.2vw, 12px) 0 0;
+}
+#roomScreen .roomConfigField {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 120px;
+}
+#roomScreen .roomConfigField label {
+    color: var(--nb-muted);
+    font-size: clamp(11px, 1.3vw, 13px);
+    font-weight: 600;
+}
+#roomScreen .roomConfigField input,
+#roomScreen .roomConfigField select {
+    height: clamp(34px, 5vh, 40px);
+    padding: 6px 10px;
+    border: 1px solid var(--nb-line-soft) !important;
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .05) !important;
+    color: var(--nb-text) !important;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-size: clamp(13px, 1.5vw, 15px);
+    font-weight: 600;
+}
+#roomScreen .roomConfigField input:focus,
+#roomScreen .roomConfigField select:focus {
+    outline: 0;
+    border-color: var(--nb-gold) !important;
+    box-shadow: 0 0 0 3px var(--nb-gold-soft);
+}
+#roomScreen .roomConfigField select option {
+    background: #121c18;
+    color: var(--nb-text);
+}
+#roomScreen .roomStartWrap {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 auto;
+    padding-top: clamp(2px, 0.6vw, 6px);
+}
+#roomScreen #startRoom {
+    width: auto;
+    min-width: clamp(200px, 32vw, 280px);
+    min-height: clamp(42px, 6vh, 50px);
+    padding: 10px 24px;
+    font-size: clamp(14px, 1.6vw, 16px);
+}
+#roomScreen .roomChat {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+    height: clamp(120px, 20vh, 160px) !important;
+    min-height: 110px !important;
+    overflow: hidden;
+}
+#roomScreen .roomChatMessages { flex: 1; min-height: 0; overflow-y: auto; }
+
+@media (max-width: 560px) {
+    #roomScreen .roomBody { flex-direction: column; }
+    #roomScreen .roomSidebar {
+        flex-direction: row;
+        flex: 0 0 auto;
+    }
+    #roomScreen .roomSideBtn { min-height: 40px; }
+    #roomScreen .grid3.roomTeams { min-height: 150px !important; }
+    #roomScreen .roomConfigField { min-width: 100px; flex: 1; }
+}
+
+/* ============================================================
+   SALA - visual do design 2 (botoes verdes, pills de time com setas,
+   config em linhas, chat simples) + responsivo para qualquer tela.
+   Este bloco fica por ultimo de proposito.
+   ============================================================ */
+#roomScreen {
+    --rm-green: #1f4a39;
+    --rm-green-2: #285c47;
+    --rm-green-line: rgba(255, 255, 255, .09);
+    --rm-red: #9a3a4b;
+    --rm-blue: #4876b4;
+    --rm-grey: #4c5651;
+    --rm-box: #050807;
+    align-items: safe center !important;
+    justify-content: center !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    padding: clamp(10px, 2.4vmin, 30px) !important;
+}
+#roomScreen .panel.roomPanel {
+    width: min(780px, 100%) !important;
+    height: auto !important;
+    max-height: none !important;
+    margin: 0 auto;
+    padding: clamp(12px, 2.2vmin, 22px) !important;
+    gap: clamp(8px, 1.6vmin, 14px) !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+}
+/* cabecalho */
+#roomScreen .roomHeader {
+    border-bottom: 2px solid var(--nb-gold) !important;
+    padding-bottom: clamp(6px, 1.2vmin, 10px) !important;
+    flex-wrap: wrap;
+}
+#roomScreen #roomTitle {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: clamp(15px, 2.4vmin + 4px, 20px) !important;
+    flex: 1 1 140px;
+}
+#roomScreen .roomHeaderActions { display: flex; gap: 8px; flex: 0 0 auto; }
+#roomScreen .roomHeaderActions .btn,
+#roomScreen .roomSideBtn,
+#roomScreen .roomChatForm .btn {
+    background: var(--rm-green) !important;
+    border: 1px solid var(--rm-green-line) !important;
+    color: #fff !important;
+    border-radius: 7px !important;
+    box-shadow: none !important;
+    font-weight: 700;
+    min-height: clamp(34px, 5vmin, 42px);
+    padding: 6px clamp(10px, 1.8vmin, 16px);
+    font-size: clamp(12px, 1.6vmin + 3px, 14px);
+}
+#roomScreen .roomHeaderActions .btn:hover,
+#roomScreen .roomSideBtn:hover,
+#roomScreen .roomChatForm .btn:hover {
+    background: var(--rm-green-2) !important;
+    border-color: var(--nb-gold) !important;
+    color: #fff !important;
+    transform: none;
+}
+/* corpo: coluna de botoes + times */
+#roomScreen .roomBody {
+    display: grid !important;
+    grid-template-columns: clamp(64px, 12%, 92px) minmax(0, 1fr);
+    gap: clamp(8px, 1.6vmin, 14px);
+    align-items: start;
+    min-height: 0;
+}
+#roomScreen .roomSidebar {
+    display: flex !important;
+    flex-direction: column;
+    gap: clamp(6px, 1.2vmin, 10px);
+    flex: none !important;
+    padding-top: 0;
+}
+#roomScreen .roomSideBtn { width: 100%; }
+#roomScreen .roomMain { gap: clamp(8px, 1.4vmin, 12px) !important; min-width: 0; }
+#roomScreen .grid3.roomTeams {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(6px, 1.2vmin, 10px) !important;
+    height: auto !important;
+    min-height: 0 !important;
+    flex: none !important;
+}
+#roomScreen .grid3 .team.team {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 1vmin, 8px);
+    min-width: 0;
+}
+/* cabecalho de cada time: pill + seta */
+#roomScreen .grid3 .team.team h4.teamHead {
+    display: flex !important;
+    align-items: stretch;
+    gap: 6px;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    min-width: 0;
+}
+#roomScreen .teamPill {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: clamp(32px, 5vmin, 40px);
+    padding: 6px 6px;
+    border: 0;
+    border-radius: 6px;
+    color: #fff;
+    font-family: 'Poppins', Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(11px, 1.5vmin + 3px, 14px);
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: filter .12s, transform .12s;
+}
+#roomScreen .teamPill:hover { filter: brightness(1.15); }
+#roomScreen .teamPill:active { transform: translateY(1px); }
+#roomScreen .redTeam .teamPill { background: var(--rm-red); }
+#roomScreen .spectators .teamPill { background: var(--rm-grey); }
+#roomScreen .blueTeam .teamPill { background: var(--rm-blue); }
+#roomScreen .teamArrow {
+    flex: 0 0 clamp(30px, 4.6vmin, 38px);
+    border: 1px solid var(--rm-green-line);
+    border-radius: 6px;
+    background: #17211d;
+    color: #fff;
+    font-size: clamp(10px, 1.4vmin + 2px, 13px);
+    line-height: 1;
+    cursor: pointer;
+    transition: background .12s, border-color .12s;
+}
+#roomScreen .teamArrow:hover { background: var(--rm-green-2); border-color: var(--nb-gold); }
+/* listas pretas */
+#roomScreen .team .roomDrop {
+    flex: none !important;
+    height: clamp(130px, 27vh, 240px);
+    min-height: 0;
+    background: var(--rm-box) !important;
+    border: 1px solid var(--rm-green-line) !important;
+    border-radius: 6px;
+    padding: 4px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+#roomScreen .team .roomDrop.dropOver { border-color: var(--nb-gold) !important; background: rgba(var(--ac2-rgb), .06) !important; }
+#roomScreen .team .roomPlayer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin: 0 0 3px;
+    padding: 6px 8px;
+    border: 0 !important;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .04) !important;
+    font-size: clamp(12px, 1.4vmin + 3px, 14px);
+    font-weight: 600;
+    min-width: 0;
+}
+#roomScreen .team .roomPlayer > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#roomScreen .team .roomPlayer .miniRole { flex: none; font-size: 10px; letter-spacing: .04em; color: var(--nb-muted); }
+#roomScreen .team .roomPlayer.self {
+    background: rgba(var(--ac2-rgb), .13) !important;
+    color: var(--nb-gold) !important;
+}
+#roomScreen .roomTeamHint { display: none !important; }
+/* configuracoes: linhas "rotulo | campo" */
+#roomScreen .roomConfig {
+    display: grid !important;
+    grid-template-columns: auto minmax(90px, 150px);
+    justify-content: center;
+    align-items: center;
+    column-gap: clamp(10px, 2vmin, 18px);
+    row-gap: 6px;
+    padding: 0 !important;
+}
+#roomScreen .roomConfigField { display: contents !important; }
+#roomScreen .roomConfigField label {
+    text-align: left;
+    color: var(--nb-text) !important;
+    font-size: clamp(12px, 1.5vmin + 3px, 14px) !important;
+    font-weight: 500 !important;
+}
+#roomScreen .roomConfigField input,
+#roomScreen .roomConfigField select {
+    width: 100%;
+    box-sizing: border-box;
+    height: clamp(32px, 4.8vmin, 38px) !important;
+    border-radius: 6px !important;
+    background: #0b0f0d !important;
+    border: 1px solid var(--rm-green-line) !important;
+}
+#roomScreen .roomStartWrap { padding: 2px 0 0 !important; }
+#roomScreen #startRoom {
+    min-width: clamp(150px, 30vmin + 40px, 220px) !important;
+    min-height: clamp(38px, 5.6vmin, 46px) !important;
+    border-radius: 999px !important;
+}
+/* chat */
+#roomScreen .roomChat {
+    height: clamp(96px, 17vh, 150px) !important;
+    min-height: 0 !important;
+    border: 1px solid var(--rm-green-line) !important;
+    border-radius: 6px !important;
+    background: var(--rm-box) !important;
+}
+#roomScreen .roomChatHeader {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0 !important; border: 0 !important;
+}
+#roomScreen .roomChat { position: relative; }
+#roomScreen .roomChatForm {
+    display: flex;
+    gap: 6px;
+    padding: 6px !important;
+    background: rgba(255, 255, 255, .03) !important;
+}
+#roomScreen .roomChatForm input { flex: 1 1 auto; min-width: 0; border-radius: 6px !important; }
+#roomScreen .roomChatForm .btn { flex: 0 0 auto; }
+/* barras de rolagem escuras e finas */
+#roomScreen * { scrollbar-width: thin; scrollbar-color: rgba(var(--ac2-rgb), .35) transparent; }
+#roomScreen *::-webkit-scrollbar { width: 8px; height: 8px; }
+#roomScreen *::-webkit-scrollbar-thumb { background: rgba(var(--ac2-rgb), .35); border-radius: 8px; }
+#roomScreen *::-webkit-scrollbar-track { background: transparent; }
+
+/* ----- telas estreitas (celular em pe) ----- */
+@media (max-width: 600px) {
+    #roomScreen .roomBody { grid-template-columns: minmax(0, 1fr); }
+    #roomScreen .roomSidebar { flex-direction: row !important; }
+    #roomScreen .roomSideBtn { flex: 1 1 0; min-width: 0; padding-left: 4px; padding-right: 4px; }
+    #roomScreen .teamArrow { flex-basis: 26px; }
+    #roomScreen .teamPill { padding: 6px 3px; }
+    #roomScreen .team .roomDrop { height: clamp(110px, 24vh, 190px); }
+    #roomScreen .roomConfig { grid-template-columns: auto minmax(0, 1fr); width: 100%; }
+}
+@media (max-width: 360px) {
+    #roomScreen .roomHeaderActions .btn { padding: 6px 8px; }
+    #roomScreen .team .roomPlayer .miniRole { display: none; }
+}
+/* ----- telas baixas (celular deitado, janelas pequenas) ----- */
+@media (max-height: 560px) {
+    #roomScreen .panel.roomPanel { gap: 6px !important; padding: 8px 12px !important; }
+    #roomScreen .team .roomDrop { height: clamp(70px, 24vh, 120px); }
+    #roomScreen .roomChat { height: 72px !important; }
+    #roomScreen .roomConfig {
+        grid-template-columns: repeat(3, auto auto);
+        column-gap: 8px;
+        justify-content: center;
+    }
+    #roomScreen .roomConfigField input, #roomScreen .roomConfigField select { min-width: 60px; }
+}
+@media (max-height: 560px) and (max-width: 700px) {
+    #roomScreen .roomConfig { grid-template-columns: auto minmax(0, 1fr); }
+}
+/* ----- telas grandes ----- */
+@media (min-width: 1500px) and (min-height: 800px) {
+    #roomScreen .panel.roomPanel { width: min(920px, 100%) !important; }
+}
+@media (min-width: 2200px) and (min-height: 1100px) {
+    #roomScreen .panel.roomPanel { width: min(1100px, 100%) !important; }
+    #roomScreen .team .roomDrop { height: clamp(220px, 28vh, 340px); }
+}
+
+/* ================= CRIAR SALA v2: visualizador de mapas ================= */
+#createScreen .createCard { width: min(720px, 100%); }
+#createScreen .mapPicker {
+    display: grid;
+    grid-template-columns: clamp(130px, 24%, 170px) 1fr;
+    gap: clamp(10px, 1.6vw, 16px);
+    height: clamp(170px, 30vh, 230px);
+    margin-bottom: clamp(16px, 2.4vw, 24px);
+}
+#createScreen .mapInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 12px;
+    border: 1px solid var(--nb-line-soft);
+    border-radius: var(--nb-radius-sm);
+    background: rgba(0, 0, 0, .35); /* preto com baixa opacidade */
+    overflow: hidden;
+}
+#createScreen .mapInfoName { font-size: clamp(14px, 2vw, 16px); font-weight: 800; color: var(--nb-gold); line-height: 1.2; }
+#createScreen .mapInfoRow { display: flex; flex-direction: column; font-size: 12px; line-height: 1.25; }
+#createScreen .mapInfoRow span { color: var(--nb-muted); }
+#createScreen .mapInfoRow b { color: var(--nb-text); font-weight: 600; }
+#createScreen .mapViewer {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--nb-line-soft);
+    border-radius: var(--nb-radius-sm);
+    background: rgba(255, 255, 255, .04);
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+}
+#createScreen .mapViewer:active { cursor: grabbing; }
+#createScreen .mapTrack { display: flex; height: calc(100% - 26px); align-items: center; will-change: transform; }
+#createScreen .mapTrack.swap { animation: mapSwap .35s ease; }
+@keyframes mapSwap { from { opacity: 0; filter: blur(3px); } to { opacity: 1; filter: none; } }
+#createScreen .mapSlide {
+    flex: 0 0 auto;
+    height: 100%;
+    padding: 12px 8px 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: .4;
+    transform: scale(.88);
+    transition: opacity .3s, transform .3s;
+}
+#createScreen .mapSlide.active { opacity: 1; transform: none; }
+#createScreen .mapSlide svg { flex: 1; min-height: 0; width: 100%; pointer-events: none; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .45)); }
+#createScreen .mapSlideName { font-size: 12px; font-weight: 700; color: var(--nb-text); }
+#createScreen .mapArrow {
+    position: absolute;
+    top: 44%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .5);
+    color: var(--nb-gold);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+}
+#createScreen .mapArrow:disabled { opacity: .25; cursor: default; }
+#createScreen .mapArrowPrev { left: 6px; }
+#createScreen .mapArrowNext { right: 6px; }
+#createScreen .mapDots { position: absolute; left: 0; right: 0; bottom: 8px; display: flex; justify-content: center; gap: 6px; }
+#createScreen .mapDot { width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .3); cursor: pointer; }
+#createScreen .mapDot.active { background: var(--nb-gold); width: 18px; border-radius: 4px; }
+@media (max-width: 520px) {
+    #createScreen .mapPicker { grid-template-columns: 1fr; height: auto; }
+    #createScreen .mapInfo { flex-direction: row; flex-wrap: wrap; gap: 4px 14px; padding: 10px 12px; }
+    #createScreen .mapInfoName { flex-basis: 100%; }
+    #createScreen .mapInfoRow { flex-direction: row; gap: 5px; }
+    #createScreen .mapViewer { height: 180px; }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+    #createScreen .mapPicker { height: 120px; margin-bottom: 10px; }
+    #createScreen .createGrid { gap: 8px 14px; }
+}
+
+/* Cor da quadra (só Futsal) */
+#createScreen .courtPicker { display: flex; align-items: center; gap: 14px; margin: 0 0 clamp(14px, 2vw, 20px); flex-wrap: wrap; }
+#createScreen .courtLabel { font-size: 14px; font-weight: 700; color: var(--nb-text); }
+#createScreen .courtSwatches { display: flex; gap: 10px; flex-wrap: wrap; }
+#createScreen .courtSwatch {
+    width: 38px; height: 38px; padding: 0; border-radius: 10px; cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, .15);
+    transition: transform .12s, border-color .12s, box-shadow .12s;
+}
+#createScreen .courtSwatch:hover { transform: translateY(-2px); }
+#createScreen .courtSwatch.active { border-color: var(--nb-gold); box-shadow: 0 0 0 3px var(--nb-gold-soft); }

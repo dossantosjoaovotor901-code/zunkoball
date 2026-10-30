@@ -1,0 +1,20 @@
+'use strict';
+const assert = require('assert');
+const { Room } = require('../server/room');
+function conn() { return { buffered: 0, out: [], send(v) { this.out.push(v); }, close() {} }; }
+const owner = conn();
+const room = new Room({ id: 'cfg-test', name: 'Config', mapKey: 'v3', max: 4, scoreLimit: 5, timeLimit: 5 }, {});
+const joined = room.join(owner, { nick: 'Dono', avatar: 'DO', user: { id: 'u1' }, password: '' });
+assert.ok(joined.client, 'dono entrou na sala');
+room.start();
+const before = room.info();
+room.onMessage(joined.client, JSON.stringify({ t: 'config', time: 9, score: 9, map: 'v1' }), false);
+assert.strictEqual(room.timeLimit, before.timeLimit, 'configuração é recusada durante a partida');
+assert.strictEqual(room.scoreLimit, before.scoreLimit, 'gols permanecem protegidos durante a partida');
+room.onMessage(joined.client, JSON.stringify({ t: 'stop' }), false);
+assert.strictEqual(room.started, false, 'o dono consegue parar a partida');
+room.onMessage(joined.client, JSON.stringify({ t: 'config', time: 9, score: 9, map: 'v1' }), false);
+assert.strictEqual(room.timeLimit, 9, 'tempo pode ser alterado depois de parar');
+assert.strictEqual(room.scoreLimit, 9, 'limite de gols pode ser alterado depois de parar');
+assert.strictEqual(room.mapKey, 'v1', 'modalidade pode ser alterada depois de parar');
+console.log('PASS parada libera tempo, gols e modalidade');

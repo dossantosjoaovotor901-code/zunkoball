@@ -1,0 +1,350 @@
+/* Replay do FutHub: barra do player e tela de lista. */
+#game.replayMode .joy,#game.replayMode .kickBtn,#game.replayMode .passBtn,
+#game.replayMode .shoutBtn,#game.replayMode #gameChat,#game.replayMode #perfHud,
+#game.replayMode #settingsBtn,#game.replayMode #pauseGame,#game.replayMode #exit,
+#game.replayMode #pauseOv,#game.replayMode #restartRoomModal,
+#game.replayMode .gameControls,#game.replayMode .mobileControls{display:none!important;}
+#game.replayMode .hud{display:flex!important;}
+
+.replayBar{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);z-index:60;
+  display:flex;align-items:center;gap:10px;padding:8px 14px;border-radius:14px;
+  background:rgba(14,18,26,.86);backdrop-filter:blur(8px);
+  box-shadow:0 6px 22px rgba(0,0,0,.45);color:#eaf0f6;max-width:92vw;}
+.replayBar .rpBtn{display:inline-flex;align-items:center;justify-content:center;
+  width:38px;height:38px;border:0;border-radius:10px;cursor:pointer;
+  background:rgba(255,255,255,.08);color:#eaf0f6;transition:background .15s;}
+.replayBar .rpBtn:hover{background:rgba(93,160,255,.28);}
+.replayBar .rpBtn svg{width:20px;height:20px;fill:currentColor;}
+.replayBar .rpPlay{background:#2f7bed;}
+.replayBar .rpPlay:hover{background:#3d89fb;}
+.replayBar .rpSpeed{width:auto;min-width:48px;padding:0 10px;font-weight:700;font-size:13px;}
+.replayBar .rpTime{font-variant-numeric:tabular-nums;font-size:13px;min-width:40px;text-align:center;opacity:.9;}
+.replayBar .rpSeek{flex:1;min-width:160px;max-width:52vw;accent-color:#2f7bed;cursor:pointer;height:6px;}
+
+#replaysScreen .rkHead .rpHeadBtns{display:flex;gap:8px;}
+.rpList{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;padding:16px;overflow:auto;}
+.rpLoading,.rpEmpty{grid-column:1/-1;text-align:center;opacity:.7;padding:40px 10px;}
+.rpCard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.rpCard.online{border-left:3px solid #2f7bed;}
+.rpCard.local{border-left:3px solid #e0a33a;}
+.rpCardHead{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.rpTag{font-size:11px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:999px;
+  background:rgba(47,123,237,.22);color:#9ec5ff;}
+.rpCard.local .rpTag{background:rgba(224,163,58,.22);color:#f0c877;}
+.rpMap{font-size:12px;opacity:.75;}
+.rpScore{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.rpScore .rpT{flex:1;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rpScore .rpT.red{color:#ff8a8a;text-align:left;}
+.rpScore .rpT.blue{color:#8ab4ff;text-align:right;}
+.rpScore .rpNum{font-weight:800;font-size:18px;font-variant-numeric:tabular-nums;}
+.rpMeta{font-size:11px;opacity:.6;}
+.rpActs{display:flex;gap:8px;}
+.rpAct{flex:1;border:0;border-radius:9px;padding:8px;cursor:pointer;font-weight:700;
+  font-size:12px;background:rgba(255,255,255,.08);color:#eaf0f6;transition:background .15s;}
+.rpAct:hover{background:rgba(255,255,255,.16);}
+.rpAct.play{background:#2f7bed;}.rpAct.play:hover{background:#3d89fb;}
+.rpAct.del{background:rgba(220,70,70,.2);color:#ff9a9a;}
+.rpAct.del:hover{background:rgba(220,70,70,.35);}
+
+/* ===== overhaul: botoes extras, estados e painel lateral ===== */
+.replayBar{flex-wrap:wrap;justify-content:center;row-gap:8px;}
+.replayBar .rpBtn.on{background:#2f7bed;color:#fff;}
+.replayBar .rpBtn.on:hover{background:#3d89fb;}
+.replayBar .rpSep{width:1px;height:26px;background:rgba(255,255,255,.14);margin:0 2px;}
+
+.rpDrawer{position:absolute;top:0;right:0;height:100%;width:360px;max-width:88vw;z-index:65;
+  background:rgba(12,16,24,.94);backdrop-filter:blur(10px);color:#eaf0f6;
+  box-shadow:-8px 0 28px rgba(0,0,0,.5);transform:translateX(104%);
+  transition:transform .26s ease;display:flex;flex-direction:column;}
+.rpDrawer.open{transform:translateX(0);}
+.rpDrawerHead{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.1);font-size:15px;}
+.rpDrawerHead .rpBtn{width:34px;height:34px;border:0;border-radius:9px;cursor:pointer;
+  background:rgba(255,255,255,.08);color:#eaf0f6;display:inline-flex;align-items:center;justify-content:center;}
+.rpDrawerHead .rpBtn svg{width:18px;height:18px;fill:currentColor;}
+.rpDrawerBody{flex:1;overflow:auto;padding:16px;font-size:13px;}
+.rpDrawerBody h4{margin:18px 0 8px;font-size:13px;letter-spacing:.04em;text-transform:uppercase;opacity:.7;}
+.rpDrawerBody p{margin:6px 0;}
+#rpDrawer .rpScore{display:flex;align-items:center;justify-content:center;gap:16px;font-weight:800;font-size:34px;font-variant-numeric:tabular-nums;}
+#rpDrawer .rpScoreR{color:#ff8a8a;}#rpDrawer .rpScoreB{color:#8ab4ff;}
+#rpDrawer .rpScoreX{opacity:.5;font-size:22px;}
+#rpDrawer .rpDur{text-align:center;opacity:.65;font-size:12px;margin-top:2px;}
+.rpNa{opacity:.6;font-style:italic;}
+.rpEst{opacity:.6;font-size:11px;}
+.rpPoss .rpPossBar{display:flex;height:12px;border-radius:7px;overflow:hidden;background:rgba(255,255,255,.08);}
+.rpPoss .rpPossR{background:#e05a5a;}.rpPoss .rpPossB{background:#4b8dff;}
+.rpPoss .rpPossLbl{font-size:12px;opacity:.85;margin-top:5px;text-align:center;}
+.rpTbl{width:100%;border-collapse:collapse;font-size:12px;}
+.rpTbl th,.rpTbl td{padding:6px 4px;text-align:center;border-bottom:1px solid rgba(255,255,255,.07);}
+.rpTbl th:first-child,.rpTbl td:first-child{text-align:left;}
+.rpTbl th{opacity:.6;font-weight:700;font-size:11px;}
+.rpFollow{background:none;border:0;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:7px;font-size:12px;padding:0;}
+.rpFollow:hover{text-decoration:underline;}
+.rpFollow .rpDot{width:9px;height:9px;border-radius:50%;display:inline-block;background:#888;}
+.rpTbl tr.rp-red .rpDot{background:#e05a5a;}.rpTbl tr.rp-blue .rpDot{background:#4b8dff;}
+.rpTimeline{list-style:none;margin:0;padding:0;}
+.rpTimeline li{border-left:3px solid rgba(255,255,255,.18);padding:0;margin:4px 0;}
+.rpTimeline li.rp-red{border-left-color:#e05a5a;}
+.rpTimeline li.rp-blue{border-left-color:#4b8dff;}
+.rpJump{width:100%;text-align:left;background:none;border:0;color:inherit;cursor:pointer;
+  padding:7px 10px;font-size:12px;border-radius:0 8px 8px 0;transition:background .15s;}
+.rpJump:hover{background:rgba(255,255,255,.08);}
+.rpJump .rpTl{font-variant-numeric:tabular-nums;font-weight:800;opacity:.75;margin-right:6px;}
+#rpExport{margin-top:8px;}
+.rpTextBtn{display:block;width:100%;margin:7px 0;padding:10px;border:0;border-radius:10px;cursor:pointer;
+  background:rgba(255,255,255,.08);color:#eaf0f6;font-weight:700;font-size:13px;transition:background .15s;}
+.rpTextBtn:hover{background:rgba(93,160,255,.28);}
+
+@media (max-width:640px){
+  .rpDrawer{width:100%;max-width:100%;}
+  .replayBar{left:0;right:0;transform:none;bottom:8px;border-radius:14px 14px 0 0;
+    max-width:100vw;padding:8px 8px calc(8px + env(safe-area-inset-bottom));gap:6px;}
+  .replayBar .rpBtn{width:34px;height:34px;}
+  .replayBar .rpSeek{min-width:120px;max-width:100%;flex-basis:100%;order:10;}
+  .replayBar .rpTime{min-width:34px;}
+}
+
+/* nada do jogo normal aparece no replay; nada do replay aparece fora dele */
+#game.replayMode .topBtns, #game.replayMode #gameSettingsBtn, #game.replayMode .gameSettingsBtn,
+#game.replayMode #performanceHud, #game.replayMode .performanceHud { display: none !important; }
+#game:not(.replayMode) .replayBar, #game:not(.replayMode) .rpDrawer { display: none !important; }
+
+
+/* ===================== v3: barra do replay (estilo preto + contorno dourado) ===================== */
+#game .replayBar {
+    --rp-gold: var(--ac2, #F6B800); --rp-gold-rgb: var(--ac2-rgb, 246, 184, 0); --rp-ink: var(--ac-ink, #241a00);
+    position: absolute; z-index: 60; left: calc((100% - var(--rpdw, 0px)) / 2); right: auto; top: auto; bottom: max(10px, env(safe-area-inset-bottom));
+    transform: translateX(-50%); width: min(880px, calc(100% - var(--rpdw, 0px) - 24px)); max-width: none; box-sizing: border-box;
+    display: flex; flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; align-items: stretch; gap: 8px; padding: 10px 12px 10px; row-gap: 8px;
+    border-radius: 14px; font-family: inherit; color: #fff;
+    background: rgba(14, 14, 14, .94); border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 8px 26px rgba(0, 0, 0, .55);
+    transition: opacity .25s ease, transform .25s ease;
+}
+#game .replayBar.withDrawer { --rpdw: clamp(290px, 34vw, 380px); }
+#game .replayBar.rpHide { opacity: 0; transform: translate(-50%, 12px); pointer-events: none; }
+
+#game .replayBar .rpRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; row-gap: 6px; }
+#game .replayBar .rpGrp { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; min-width: 0; flex-wrap: wrap; row-gap: 6px; }
+#game .replayBar .rpChips { display: flex; align-items: center; gap: 6px; }
+
+#game .replayBar .rpB {
+    display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; height: 36px; min-width: 40px; padding: 0 12px; box-sizing: border-box;
+    border-radius: 10px; cursor: pointer; font: 700 13px/1 'Poppins', 'Roboto', Arial, sans-serif; white-space: nowrap; color: #fff;
+    background: rgba(0, 0, 0, .35); border: 1.5px solid rgba(var(--rp-gold-rgb), .75); transition: background .15s, color .15s, transform .1s; -webkit-tap-highlight-color: transparent;
+}
+#game .replayBar .rpB svg { width: 18px; height: 18px; fill: currentColor; display: block; }
+#game .replayBar .rpB:hover { background: rgba(var(--rp-gold-rgb), .2); }
+#game .replayBar .rpB:active { transform: scale(.95); }
+#game .replayBar .rpB.on, #game .replayBar .rpChip.on {
+    background: linear-gradient(180deg, #ffe07a, var(--rp-gold)); color: var(--rp-ink); border-color: #1b1405; box-shadow: 0 2px 0 rgba(0, 0, 0, .35);
+}
+#game .replayBar .rpPlay { min-width: 56px; }
+#game .replayBar .rpPlay svg { width: 20px; height: 20px; }
+#game .replayBar .rpIcon { padding: 0; width: 40px; }
+#game .replayBar .rpSpd { display: none; min-width: 46px; color: var(--rp-gold); }
+#game .replayBar .rpClock { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; padding-left: 2px; }
+#game .replayBar .rpClock b { font-weight: 800; }
+#game .replayBar .rpClock span { opacity: .7; }
+
+/* linha do tempo */
+#game .replayBar .rpSeekRow { display: block; }
+#game .replayBar .rpSeekWrap { position: relative; width: 100%; height: 18px; display: flex; align-items: center; }
+#game .replayBar .rpSeek {
+    -webkit-appearance: none; appearance: none; width: 100%; min-width: 0; max-width: none; height: 18px; margin: 0; padding: 0; background: transparent; cursor: pointer; --p: 0%; accent-color: var(--rp-gold); flex: none; order: 0;
+}
+#game .replayBar .rpSeek::-webkit-slider-runnable-track { height: 5px; border-radius: 5px; background: linear-gradient(90deg, var(--rp-gold) var(--p), rgba(255, 255, 255, .22) var(--p)); }
+#game .replayBar .rpSeek::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; margin-top: -5.5px; border-radius: 50%; background: #fff; border: 2px solid var(--rp-gold); box-shadow: 0 1px 4px rgba(0, 0, 0, .6); }
+#game .replayBar .rpSeek::-moz-range-track { height: 5px; border-radius: 5px; background: rgba(255, 255, 255, .22); }
+#game .replayBar .rpSeek::-moz-range-progress { height: 5px; border-radius: 5px; background: var(--rp-gold); }
+#game .replayBar .rpSeek::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--rp-gold); }
+#game .replayBar .rpMarks { position: absolute; inset: 0; pointer-events: none; }
+#game .replayBar .rpMark { position: absolute; top: 50%; width: 4px; height: 12px; margin-left: -2px; transform: translateY(-50%); border-radius: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .55); }
+#game .replayBar .rpMark.rp-red { background: #ff6a6a; } #game .replayBar .rpMark.rp-blue { background: #4eaaff; }
+
+/* menu de ferramentas (⋯) */
+#game .replayBar .rpTools {
+    display: none; position: absolute; right: 10px; bottom: calc(100% + 8px); grid-template-columns: repeat(5, 66px); gap: 6px; padding: 8px; border-radius: 14px;
+    background: rgba(14, 14, 14, .97); border: 1px solid rgba(var(--rp-gold-rgb), .5); box-shadow: 0 10px 28px rgba(0, 0, 0, .6);
+}
+#game .replayBar.moreOpen .rpTools { display: grid; }
+#game .replayBar .rpTool {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 54px; padding: 4px 2px; border-radius: 10px; cursor: pointer; color: #fff;
+    background: rgba(0, 0, 0, .35); border: 1.5px solid rgba(var(--rp-gold-rgb), .45); font: 600 10px/1.1 'Poppins', 'Roboto', Arial, sans-serif; -webkit-tap-highlight-color: transparent;
+}
+#game .replayBar .rpTool svg { width: 18px; height: 18px; fill: currentColor; }
+#game .replayBar .rpTool:hover { background: rgba(var(--rp-gold-rgb), .2); }
+#game .replayBar .rpTool.on { background: linear-gradient(180deg, #ffe07a, var(--rp-gold)); color: var(--rp-ink); border-color: #1b1405; }
+
+/* caixinha de times (canto superior direito) */
+#game .rpInfo {
+    position: absolute; z-index: 40; top: 10px; right: 10px; max-width: min(240px, 34vw); padding: 7px 10px; border-radius: 10px; pointer-events: none;
+    background: rgba(14, 14, 14, .82); border: 1px solid rgba(255, 255, 255, .12); font: 600 11px/1.25 'Poppins', 'Roboto', Arial, sans-serif; color: #fff;
+}
+#game .rpInfoT { font-weight: 800; letter-spacing: .06em; font-size: 10px; margin-top: 2px; } #game .rpInfoT.rpInfoTr { color: #ff8a8a; } #game .rpInfoT.rpInfoTb { color: #8cc4ff; }
+#game .rpInfoN { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#game .rpInfoM { margin-top: 5px; padding-top: 4px; border-top: 1px solid rgba(255, 255, 255, .14); font-weight: 800; font-size: 10px; letter-spacing: .05em; }
+#game:not(.replayMode) .rpInfo { display: none !important; }
+
+/* ---- painel "Resumo da partida" ---- */
+#game .rpDrawer {
+    width: clamp(290px, 34vw, 380px); max-width: 92vw; font-family: inherit; color: #eef2ee;
+    background: linear-gradient(180deg, rgba(20, 27, 23, .97), rgba(8, 12, 10, .98));
+    border-left: 1px solid rgba(var(--ac2-rgb, 246, 184, 0), .3); box-shadow: -10px 0 30px rgba(0, 0, 0, .55);
+}
+#game .rpDrawerHead { padding: 12px 14px; border-bottom: 1px solid rgba(var(--ac2-rgb, 246, 184, 0), .22); font-size: 15px; }
+#game .rpDrawerHead strong { color: #fff; font-weight: 800; letter-spacing: .2px; padding-left: 10px; border-left: 4px solid var(--ac2, #F6B800); line-height: 1.1; }
+#game .rpDrawerHead .rpBtn { width: 34px; height: 34px; border-radius: 10px; background: linear-gradient(180deg, #ffe07a, var(--ac2, #F6B800)); color: var(--ac-ink, #241a00); border: 2px solid #1b1405; }
+#game .rpDrawerBody { padding: 12px 14px 20px; font-size: 13px; }
+#game .rpDrawerBody h4 {
+    display: flex; align-items: center; gap: 8px; margin: 18px 0 8px; font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--ac2, #F6B800); opacity: 1;
+}
+#game .rpDrawerBody h4::after { content: ""; flex: 1; height: 1px; background: rgba(var(--ac2-rgb, 246, 184, 0), .25); }
+#game #rpDrawer .rpScore {
+    padding: 10px 8px; border-radius: 12px; font-size: 36px; background: rgba(255, 255, 255, .05); border: 1px solid rgba(255, 255, 255, .08);
+}
+#game #rpDrawer .rpScoreR { color: #ff6a6a; } #game #rpDrawer .rpScoreB { color: #4eaaff; }
+#game .rpDrawer .rpPoss .rpPossBar { height: 10px; border-radius: 6px; }
+#game .rpDrawer .rpPoss .rpPossR { background: linear-gradient(90deg, #ff6a6a, #ee4747); }
+#game .rpDrawer .rpPoss .rpPossB { background: linear-gradient(90deg, #2f8cf0, #4eaaff); }
+#game .rpDrawer .rpTbl th { color: var(--ac2, #F6B800); opacity: .9; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+#game .rpDrawer .rpTbl td { font-variant-numeric: tabular-nums; }
+#game .rpDrawer .rpTbl tr.rp-red .rpDot { background: #ff6a6a; } #game .rpDrawer .rpTbl tr.rp-blue .rpDot { background: #4eaaff; }
+#game .rpDrawer .rpTimeline li { border-left-width: 3px; margin: 5px 0; background: rgba(255, 255, 255, .035); border-radius: 0 9px 9px 0; }
+#game .rpDrawer .rpTimeline li.rp-red { border-left-color: #ff6a6a; } #game .rpDrawer .rpTimeline li.rp-blue { border-left-color: #4eaaff; }
+#game .rpDrawer .rpJump:hover { background: rgba(var(--ac2-rgb, 246, 184, 0), .14); }
+#game .rpDrawer .rpJump .rpTl { color: var(--ac2, #F6B800); opacity: 1; }
+#game .rpDrawer .rpTextBtn { padding: 11px; border-radius: 11px; background: rgba(255, 255, 255, .06); border: 1px solid rgba(255, 255, 255, .1); color: #eef2ee; font-family: inherit; }
+#game .rpDrawer .rpTextBtn:hover { background: rgba(var(--ac2-rgb, 246, 184, 0), .18); border-color: rgba(var(--ac2-rgb, 246, 184, 0), .5); }
+#game .rpDrawer .rpTextBtn.rpPrimary {
+    background: linear-gradient(180deg, #ffe07a, var(--ac2, #F6B800)); color: var(--ac-ink, #241a00); border: 2px solid #1b1405; box-shadow: 0 2px 0 #7a5a05;
+}
+
+
+/* ---- telas estreitas: velocidades viram um botão só ---- */
+@media (max-width: 760px) {
+    #game .replayBar { width: calc(100% - var(--rpdw, 0px) - 16px); padding: 8px 8px 9px; }
+    #game .replayBar .rpChips { display: none; }
+    #game .replayBar .rpSpd { display: inline-flex; }
+    #game .replayBar .rpTools { grid-template-columns: repeat(3, 66px); }
+}
+@media (max-width: 640px) {
+    #game .rpDrawer { width: 100%; max-width: 100%; }
+    #game .replayBar.withDrawer { opacity: 0; pointer-events: none; }
+}
+/* celular deitado: mais baixo para sobrar campo */
+@media (max-height: 430px) {
+    #game .replayBar { bottom: max(6px, env(safe-area-inset-bottom)); padding: 6px 10px 7px; gap: 4px; row-gap: 4px; }
+    #game .replayBar .rpB { height: 32px; font-size: 12px; padding: 0 10px; }
+    #game .replayBar .rpIcon { width: 36px; padding: 0; }
+    #game .replayBar .rpPlay { min-width: 50px; }
+    #game .replayBar .rpClock { font-size: 13px; }
+    #game .replayBar .rpSeekWrap, #game .replayBar .rpSeek { height: 16px; }
+    #game .rpDrawerHead { padding: 8px 12px; }
+}
+
+/* ===================== v3: tela Replays ===================== */
+html body #replaysScreen.screen.lobby { padding: 0 !important; align-items: stretch; justify-content: stretch; overflow: hidden !important; }
+html body #replaysScreen.screen.lobby.on { display: flex !important; height: 100dvh !important; min-height: 100dvh !important; }
+#replaysScreen { --rp-gold: var(--ac2, #F6B800); --rp-gold-rgb: var(--ac2-rgb, 246, 184, 0); --rp-ink: var(--ac-ink, #241a00); font-family: 'Poppins', 'Roboto', Arial, sans-serif; color: #fff; }
+#replaysScreen .rpPage {
+    position: relative; z-index: 1; width: 100%; max-width: 1100px; height: 100%; margin: 0 auto; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px;
+    padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+/* topo: voltar, título, abas e importar na mesma linha */
+#replaysScreen .rpTop { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; flex-wrap: wrap; row-gap: 6px; }
+#replaysScreen .rpTop h2 { flex: 0 0 auto; margin: 0; font-size: 18px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--rp-gold); }
+#replaysScreen .rpHeadBtns { margin-left: auto; }
+#replaysScreen .rpBack, #replaysScreen .rpGold {
+    height: 36px; border-radius: 10px; cursor: pointer; font: 800 13px/1 'Poppins', 'Roboto', Arial, sans-serif; color: var(--rp-ink) !important;
+    background: linear-gradient(180deg, #ffe07a, var(--rp-gold)) !important; border: 2px solid #1b1405 !important; box-shadow: 0 2px 0 #7a5a05;
+}
+#replaysScreen .rpBack { width: 40px; font-size: 22px; padding: 0 0 3px; }
+#replaysScreen .rpGold { padding: 0 14px; white-space: nowrap; }
+#replaysScreen .rpBack:active, #replaysScreen .rpGold:active { transform: translateY(1px); box-shadow: none; }
+#replaysScreen .rpTabs { display: flex; gap: 6px; flex: 0 1 auto; min-width: 0; }
+#replaysScreen .rpTab {
+    height: 34px; padding: 0 14px; border-radius: 999px; cursor: pointer; font: 700 13px/1 'Poppins', 'Roboto', Arial, sans-serif; color: #fff; white-space: nowrap;
+    background: rgba(0, 0, 0, .55); border: 2px solid rgba(var(--rp-gold-rgb), .55);
+}
+#replaysScreen .rpTab.on { background: linear-gradient(180deg, #ffe07a, var(--rp-gold)); color: var(--rp-ink); border-color: #1b1405; box-shadow: 0 2px 0 #7a5a05; }
+/* filtros: 5 colunas em uma linha */
+#replaysScreen .rpFilters { display: grid; grid-template-columns: 1.25fr 1fr 1.25fr 1fr 1fr; gap: 6px; flex: 0 0 auto; }
+#replaysScreen .rpFilters input, #replaysScreen .rpFilters select {
+    width: 100%; min-width: 0; height: 34px; box-sizing: border-box; padding: 0 10px; border-radius: 10px; font: 500 13px/1 'Poppins', 'Roboto', Arial, sans-serif; color: #fff !important;
+    background: rgba(0, 0, 0, .55) !important; border: 2px solid rgba(var(--rp-gold-rgb), .5) !important; margin: 0; text-overflow: ellipsis;
+}
+#replaysScreen .rpFilters select option { background: #15110a; color: #fff; }
+#replaysScreen .rpFilters input::placeholder { color: rgba(255, 255, 255, .5); }
+#replaysScreen .rpFilters input:focus, #replaysScreen .rpFilters select:focus { outline: 0; border-color: var(--rp-gold) !important; box-shadow: 0 0 0 3px rgba(var(--rp-gold-rgb), .2); }
+/* área rolável: lista + rodapé */
+#replaysScreen .rpScroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 2px 2px 6px; }
+#replaysScreen .rpList { display: grid; gap: 8px; align-content: start; grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr)); overflow: visible; padding: 0; }
+#replaysScreen .rpEmpty, #replaysScreen .rpLoading {
+    grid-column: 1 / -1; text-align: center; padding: 28px 14px; font-size: 14px; line-height: 1.5; color: var(--ac-muted, #d9b85a); opacity: 1; max-width: 560px; margin: 0 auto;
+}
+#replaysScreen .rpFoot { margin: 10px 0 0; font-size: 10.5px; line-height: 1.4; color: var(--ac-muted, #d9b85a); }
+
+/* cada replay = uma linha: [info] [boneco vermelho  placar  boneco azul] [ações] */
+#replaysScreen .rpCard {
+    position: relative; display: grid; grid-template-columns: minmax(120px, 190px) 1fr auto; grid-template-areas: "meta vs acts"; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 12px; overflow: hidden; box-sizing: border-box; min-width: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .03)); border: 1px solid rgba(255, 255, 255, .1);
+    transition: border-color .15s;
+}
+#replaysScreen .rpCard::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; height: auto; background: var(--rp-gold); opacity: .9; }
+#replaysScreen .rpCard.online, #replaysScreen .rpCard.local { border-left: 1px solid rgba(255, 255, 255, .1); }
+#replaysScreen .rpCard:hover { border-color: rgba(var(--rp-gold-rgb), .5); }
+#replaysScreen .rpMetaCol { grid-area: meta; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+#replaysScreen .rpTagLine { display: flex; align-items: center; gap: 6px; min-width: 0; }
+#replaysScreen .rpTag { flex: 0 0 auto; background: rgba(var(--rp-gold-rgb), .18); color: var(--rp-gold); font-size: 10px; }
+#replaysScreen .rpCard.online .rpTag { background: rgba(78, 170, 255, .18); color: #8cc4ff; }
+#replaysScreen .rpMap { font-size: 12px; font-weight: 700; opacity: .9; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#replaysScreen .rpMeta { font-size: 11px; opacity: .6; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#replaysScreen .rpVs { grid-area: vs; display: flex; align-items: center; justify-content: center; gap: 10px; min-width: 0; }
+#replaysScreen .rpNum { flex: 0 0 auto; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: #fff; white-space: nowrap; padding: 0 4px; }
+#replaysScreen .rpAvs { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 6px; }
+#replaysScreen .rpAvs.rpSideR { justify-content: flex-end; }
+#replaysScreen .rpAvs.rpSideB { justify-content: flex-start; flex-direction: row-reverse; }
+#replaysScreen .rpDisks { display: inline-flex; align-items: center; flex: 0 0 auto; }
+#replaysScreen .rpAv {
+    flex: 0 0 auto; width: 30px; height: 30px; margin-left: -9px; border-radius: 50%; display: grid; place-items: center; box-sizing: border-box;
+    font: 800 11px/1 'Poppins', 'Roboto', Arial, sans-serif; color: #fff; border: 2px solid #fff; text-transform: uppercase; box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+    background: #555;
+}
+#replaysScreen .rpDisks .rpAv:first-child { margin-left: 0; }
+#replaysScreen .rpAvR { background: linear-gradient(135deg, #f05656, #a82323); }
+#replaysScreen .rpAvB { background: linear-gradient(135deg, #4aa3ff, #1f5fb4); }
+#replaysScreen .rpAvMore { background: #2b2b2b; font-size: 10px; }
+#replaysScreen .rpAvName { min-width: 0; max-width: 110px; font-size: 12px; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#replaysScreen .rpSideR .rpAvName { text-align: right; }
+#replaysScreen .rpActs { grid-area: acts; display: flex; gap: 6px; align-items: center; }
+#replaysScreen .rpAct {
+    flex: 0 0 auto; height: 34px; padding: 0 12px; border-radius: 10px; font: 700 12px/1 'Poppins', 'Roboto', Arial, sans-serif; cursor: pointer; color: #fff; white-space: nowrap;
+    background: rgba(0, 0, 0, .35); border: 1.5px solid rgba(var(--rp-gold-rgb), .5);
+}
+#replaysScreen .rpAct.ico { width: 34px; padding: 0; font-size: 14px; }
+#replaysScreen .rpAct:hover { background: rgba(var(--rp-gold-rgb), .2); }
+#replaysScreen .rpAct.play { background: linear-gradient(180deg, #ffe07a, var(--rp-gold)); color: var(--rp-ink); border: 2px solid #1b1405; box-shadow: 0 2px 0 #7a5a05; }
+#replaysScreen .rpAct.del { background: rgba(220, 70, 70, .18); border-color: rgba(220, 70, 70, .55); }
+
+/* telas estreitas */
+@media (max-width: 760px) {
+    #replaysScreen .rpFilters { grid-template-columns: 1fr 1fr 1fr; }
+    #replaysScreen .rpTabs { order: 5; flex: 1 1 100%; }
+    #replaysScreen .rpHeadBtns { order: 3; }
+}
+@media (max-width: 640px) {
+    #replaysScreen .rpCard { grid-template-columns: 1fr auto; grid-template-areas: "meta acts" "vs vs"; row-gap: 6px; }
+}
+@media (max-width: 380px) { #replaysScreen .rpFilters { grid-template-columns: 1fr 1fr; } }
+/* celular deitado: tudo mais baixo */
+@media (max-height: 430px) {
+    #replaysScreen .rpPage { gap: 6px; }
+    #replaysScreen .rpBack, #replaysScreen .rpGold { height: 32px; }
+    #replaysScreen .rpTab, #replaysScreen .rpFilters input, #replaysScreen .rpFilters select { height: 32px; }
+    #replaysScreen .rpEmpty { padding: 12px 10px; font-size: 13px; }
+    #replaysScreen .rpCard { padding: 6px 10px; }
+    #replaysScreen .rpAv { width: 28px; height: 28px; }
+}

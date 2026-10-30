@@ -1,0 +1,124 @@
+/* FutHub - tema preto e dourado (cores da logo) para todas as telas. Carregado por ultimo. */
+:root{
+  --fh-gold-1:var(--ac1);--fh-gold-2:var(--ac2);--fh-gold-3:var(--ac3);--fh-ink:#050506;--fh-ink-2:#0e0e11;--fh-edge:var(--ac-edge);--fh-muted:var(--ac-muted);
+  --nb-gold:var(--ac2);--nb-gold-2:var(--ac3);--nb-gold-soft:rgba(var(--ac2-rgb),.16);--nb-ink:#0a0a0c;--nb-ink-2:#0e0e11;
+  --nb-card:rgba(10,10,12,.93);--nb-card-2:rgba(18,17,14,.95);--nb-line:rgba(var(--ac2-rgb),.5);--nb-line-soft:rgba(var(--ac2-rgb),.18);--nb-muted:var(--ac-muted);
+  --m-gold:var(--ac2);--m-gold-2:var(--ac3);--m-gold-soft:rgba(var(--ac2-rgb),.16);--m-line:rgba(var(--ac2-rgb),.5);--m-line-soft:rgba(var(--ac2-rgb),.18);
+  --m-surface:rgba(var(--ac2-rgb),.05);--m-surface-2:rgba(var(--ac2-rgb),.09);--m-panel:rgba(10,10,12,.93);--m-muted:var(--ac-muted)}
+/* ---- fundo de estadio compartilhado ---- */
+#nickScreen.screen.lobby,#createScreen.screen.lobby,#roomScreen.screen.lobby,#settingsScreen.screen.lobby,#lobbyScreen.screen.lobby{
+  position:relative;overflow:hidden;padding:clamp(8px,2vmin,22px)!important;box-sizing:border-box;
+  background:linear-gradient(180deg,#060607 0,color-mix(in srgb,var(--ac2) 8%,#0f0f12) 36%)!important;background-image:linear-gradient(180deg,#060607 0,color-mix(in srgb,var(--ac2) 8%,#0f0f12) 36%)!important}
+#nickScreen.screen.lobby.on,#createScreen.screen.lobby.on,#roomScreen.screen.lobby.on,#settingsScreen.screen.lobby.on{height:100dvh!important;min-height:100dvh!important}
+#nickScreen.screen.lobby::before,#createScreen.screen.lobby::before,#roomScreen.screen.lobby::before,#settingsScreen.screen.lobby::before{content:"";position:absolute;left:0;right:0;top:36%;bottom:0;pointer-events:none;
+  border-top:6px solid var(--ac2);background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 80px,transparent 80px 160px),linear-gradient(#1d4a2a,#0e2a17);z-index:0}
+#nickScreen.screen.lobby::after,#createScreen.screen.lobby::after,#roomScreen.screen.lobby::after,#settingsScreen.screen.lobby::after{content:"";position:absolute;left:0;right:0;top:12%;height:24%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,var(--ac2) 2.2px,transparent 3px) 0 0/22px 18px,radial-gradient(circle,var(--ac1) 2.2px,transparent 3px) 9px 7px/22px 18px,
+  radial-gradient(circle,var(--ac3) 2.2px,transparent 3px) 4px 12px/22px 18px,linear-gradient(color-mix(in srgb,var(--ac2) 10%,#141417),color-mix(in srgb,var(--ac2) 6%,#0c0c0f))}
+#nickScreen>*,#createScreen>*,#roomScreen>*,#settingsScreen>*{position:relative;z-index:1}
+/* ---- paineis ---- */
+#nickScreen .profileCard,#createScreen .createCard,#roomScreen .roomPanel,#settingsScreen .settingsPanel{
+  background:rgba(10,10,12,.985)!important;border:3px solid var(--ac-edge)!important;border-radius:16px!important;
+  box-shadow:0 6px 0 #050506,0 18px 40px rgba(0,0,0,.55),0 0 0 1px rgba(var(--ac2-rgb),.12)!important;color:#fff!important;backdrop-filter:none!important}
+#roomScreen .roomPanel,#settingsScreen .settingsPanel,#createScreen .createCard{width:min(1100px,100%)!important;max-height:100%!important;margin:0 auto}
+.panelTitle,#roomTitle{color:var(--ac2)!important;font-weight:900!important;text-transform:uppercase;letter-spacing:.5px}
+#settingsScreen .settingsHeader,#roomScreen .roomHeader{border-bottom:3px solid var(--ac2)!important}
+/* ---- botoes ---- */
+#nickScreen .btn,#createScreen .createBtn,#roomScreen .btn,#settingsScreen .btn,#roomScreen #startRoom,#uniformScreen .uniformEditor .btn{
+  background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3))!important;color:#1a1200!important;border:3px solid #050506!important;border-radius:12px!important;
+  font-weight:900!important;text-transform:uppercase;letter-spacing:.3px;box-shadow:0 4px 0 #050506!important;transition:transform .1s,filter .1s;text-shadow:none!important}
+#createScreen .createBtnGhost,#roomScreen #roomPause,#roomScreen #leaveRoom,#roomScreen .roomSideBtn,#settingsScreen #settingsDefault,#uniformScreen #uniEdCancel{
+  background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013))!important;color:var(--ac1)!important;border:3px solid var(--ac-edge)!important}
+#nickScreen .btn:hover,#createScreen .createBtn:hover,#roomScreen .btn:hover,#settingsScreen .btn:hover,#roomScreen .roomSideBtn:hover{filter:brightness(1.12)}
+#nickScreen .btn:active,#createScreen .createBtn:active,#roomScreen .btn:active,#settingsScreen .btn:active,#roomScreen .roomSideBtn:active{transform:scale(.96)}
+#roomScreen .roomSideBtn{border-radius:12px!important;font-weight:900;text-transform:uppercase;box-shadow:0 4px 0 #050506}
+/* ---- campos ---- */
+#nickScreen input:not([type=color]):not([type=range]):not([type=checkbox]):not([type=file]):not(.profileAvatar),
+#createScreen input:not([type=color]):not([type=range]):not([type=checkbox]),#createScreen select,
+#roomScreen input:not([type=color]):not([type=range]):not([type=checkbox]),#roomScreen select,
+#settingsScreen input:not([type=color]):not([type=range]):not([type=checkbox]):not([type=file]),#settingsScreen select{
+  background:#050506!important;border:2px solid var(--ac-edge)!important;border-radius:10px!important;color:#fff!important}
+#nickScreen input:focus,#createScreen input:focus,#createScreen select:focus,#roomScreen input:focus,#roomScreen select:focus,#settingsScreen input:focus,#settingsScreen select:focus{
+  border-color:var(--ac2)!important;box-shadow:0 0 0 3px rgba(var(--ac2-rgb),.3)!important;outline:none}
+#createScreen label,#roomScreen label,#settingsScreen label{color:var(--ac1)}
+input[type=range]{accent-color:var(--ac2)}input[type=checkbox]{accent-color:var(--ac2)}
+/* ---- login ---- */
+#nickScreen.screen.lobby.on{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,2vmin,18px)}
+#nickScreen .nbBrand{margin:0;gap:14px}
+#nickScreen .nbBrand img{width:clamp(190px,30vw,440px);height:auto;max-width:80vw}
+#nickScreen .nbBrand span{font-size:clamp(34px,8vmin,60px);font-style:italic;font-weight:900;letter-spacing:1px;color:var(--ac1);text-shadow:0 4px 0 #050506,0 0 20px rgba(var(--ac2-rgb),.4)}
+#nickScreen .profileCard{width:min(440px,92vw)!important;padding:clamp(14px,3vmin,26px)!important;margin:0!important}
+#nickScreen .profileAvatar{border:6px solid var(--ac2)!important;background:#050506!important;color:#fff!important;box-shadow:0 0 0 4px #050506,0 0 26px rgba(var(--ac2-rgb),.45)!important}
+#nickScreen .profileAvatarHint{background:rgba(var(--ac2-rgb),.12)!important;color:var(--ac1)!important;border:1px solid rgba(var(--ac2-rgb),.35)!important}
+#nickScreen .profileField label{color:var(--ac1);text-transform:uppercase;font-weight:900;letter-spacing:.5px}
+#nickScreen .profileFooter{color:var(--ac-muted)!important}
+#nickScreen #play{font-size:clamp(15px,3vmin,20px);padding:clamp(10px,2vmin,14px)}
+/* ---- criar sala ---- */
+#createScreen .mapInfo,#createScreen .mapViewer{background:#050506!important;border:2px solid var(--ac-edge)!important;border-radius:12px!important}
+#createScreen .mapInfo b,#createScreen .mapInfo strong{color:var(--ac2)}
+#createScreen .mapArrow{background:linear-gradient(var(--ac1),var(--ac2))!important;color:#1a1200!important;border:3px solid #050506!important;box-shadow:0 3px 0 #050506}
+#createScreen .createField label{font-weight:900;text-transform:uppercase;font-size:12px;letter-spacing:.5px}
+/* ---- sala ---- */
+#roomScreen .roomDrop,#roomScreen .roomChat,#roomScreen .roomConfigField,#roomScreen .roomField{background:#050506!important;border:2px solid var(--ac-edge)!important;border-radius:12px!important}
+#roomScreen .teamPill{border:3px solid #050506!important;font-weight:900;text-transform:uppercase;box-shadow:0 3px 0 #050506}
+#roomScreen .teamArrow{background:color-mix(in srgb,var(--ac2) 9%,#18181c)!important;color:var(--ac2)!important;border:2px solid var(--ac-edge)!important}
+#roomScreen .roomChatHead,#roomScreen .roomChatTitle{color:var(--ac2)!important;font-weight:900}
+/* ---- configuracoes ---- */
+#settingsScreen .settingsTabs{background:#050506!important;border:2px solid var(--ac-edge)!important;border-radius:14px!important;padding:5px!important;gap:6px!important}
+#settingsScreen .settingsTab{background:color-mix(in srgb,var(--ac2) 7%,#101013)!important;color:var(--ac-muted)!important;border:3px solid transparent!important;border-radius:10px!important;font-weight:900;text-transform:uppercase}
+#settingsScreen .settingsTab.active{background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3))!important;color:#1a1200!important;border-color:#050506!important;box-shadow:0 3px 0 #050506}
+#settingsScreen .settingsTabPanel h3,#settingsScreen .settingsTabPanel h4{color:var(--ac2)!important;font-weight:900}
+/* ---- recolor dos botoes escuros das telas novas ---- */
+#lobbyScreen .lobbyBtn{border-color:var(--ac-edge)!important}
+#lobbyScreen #lobbyHome,#lobbyScreen #refresh{border-color:var(--ac-edge)!important;color:var(--ac1)!important}
+#lobbyScreen #createBtn,#lobbyScreen #join{border-color:#050506!important;color:#1a1200!important}
+#lobbyScreen #createBtn b,#lobbyScreen #createBtn span{color:#1a1200!important}
+#lobbyScreen .lobbyBtn b{color:var(--ac2)!important}
+#lobbyScreen .roomListCols span,#lobbyScreen .roomListHead{color:var(--ac2)}
+#uniformScreen .uniformTabs button{border-color:var(--ac-edge)!important;color:var(--ac1)!important}
+#uniformScreen .uniformTabs button.active,#uniformScreen .uniformCard.active{border-color:#050506!important;color:#1a1200!important}
+#uniformScreen .uniformCard{border-color:var(--ac-edge)!important}
+#uniformScreen .uniformCard.active{border-color:#050506!important}
+#uniformScreen .uniformBackBtn{color:var(--ac1)!important;border-color:var(--ac-edge)!important}
+#uniformScreen .uniTool{border-color:var(--ac-edge)!important;color:var(--ac1)!important}
+#uniformScreen .uniToolMain{border-color:#050506!important;color:#1a1200!important}
+@media (max-height:520px){#roomScreen .roomPanel,#settingsScreen .settingsPanel,#createScreen .createCard{max-height:calc(100dvh - 16px)!important;overflow:auto}}
+
+#nickScreen .profileCard{margin-top:0!important;padding:clamp(14px,3vmin,24px)!important}
+#nickScreen .profileAvatarWrap{position:static!important;transform:none!important;top:auto!important;left:auto!important;margin:0 auto clamp(8px,1.6vmin,14px)!important;display:flex;flex-direction:column;align-items:center}
+#nickScreen .profileAvatar{width:clamp(84px,18vmin,130px)!important;height:clamp(84px,18vmin,130px)!important;border-radius:50%!important;border-width:clamp(6px,1.4vmin,10px)!important;font-size:clamp(28px,6vmin,44px)!important;text-align:center}
+@media (max-height:520px){#nickScreen.screen.lobby.on{flex-direction:row;gap:24px}#nickScreen .nbBrand{flex-direction:column}#nickScreen .profileCard{width:min(420px,56vw)!important}#nickScreen .profileAvatar{width:70px!important;height:70px!important}}
+#nickScreen .nbBrand span{-webkit-text-fill-color:var(--ac1)!important;background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:var(--ac1)!important}
+#nickScreen .profileCard::before{display:none!important}
+/* ---- celular: rolagem por toque nos menus e area segura (notch / barras) ---- */
+.screen.lobby button,.screen.lobby .uniformCard,.screen.lobby select,.screen.lobby input,#homeScreen button{touch-action:manipulation!important}
+#uniformScreen .uniformCard,#uniformScreen .uniformCardWrap,#uniformScreen .uniformList{touch-action:pan-y!important}
+#uniformScreen #uniformPreview{touch-action:none}
+.screen.lobby{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#settingsScreen .settingsTabPanel,#roomScreen .roomBody,#createScreen .createCard,#roomScreen .roomPanel,#settingsScreen .settingsPanel{touch-action:pan-y;-webkit-overflow-scrolling:touch}
+.homeStage,#uniformScreen .uniformLayout,#lobbyScreen .lobbyLayout{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom);box-sizing:border-box}
+/* ---- celular deitado: tudo cabe na tela (criar sala) ---- */
+@media (max-height:520px) and (orientation:landscape){
+  #createScreen.screen.lobby{padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))!important}
+  #createScreen .createCard{padding:8px 12px!important;gap:6px!important;display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);grid-template-rows:auto auto auto;align-content:start;overflow:auto}
+  #createScreen .mapPicker{grid-column:1;grid-row:1/3;min-height:0;display:flex;flex-direction:column;gap:6px}
+  #createScreen .mapInfo{display:none!important}
+  #createScreen .mapViewer{height:clamp(120px,40vh,170px)!important;min-height:0}
+  #createScreen .courtPicker{grid-column:1;grid-row:3;margin:0}
+  #createScreen .createGrid{grid-column:2;grid-row:1/3;gap:6px 10px!important;grid-template-columns:1fr 1fr!important}
+  #createScreen .createField label{font-size:10px}
+  #createScreen .createField input,#createScreen .createField select{height:34px!important;min-height:0!important;padding:0 8px!important;font-size:13px!important}
+  #createScreen .createActions{grid-column:2;grid-row:3;margin:0;gap:8px}
+  #createScreen .createBtn{min-height:38px!important;padding:6px!important;font-size:13px!important}
+  #roomScreen.screen.lobby,#settingsScreen.screen.lobby{padding:max(6px,env(safe-area-inset-top)) max(6px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(6px,env(safe-area-inset-left))!important}
+}
+/* ---- escala dos menus em telas baixas (celular com barra do navegador) ---- */
+#homeScreen,#nickScreen,#lobbyScreen,#createScreen,#roomScreen,#settingsScreen,#uniformScreen{zoom:var(--fh-zoom,1)}
+.fsFloat{position:absolute;right:max(10px,env(safe-area-inset-right));top:max(10px,env(safe-area-inset-top));z-index:5;width:44px;height:44px;border-radius:12px;border:3px solid var(--ac-edge);
+  background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013));color:var(--ac1);font-size:22px;cursor:pointer;box-shadow:0 4px 0 #050506}
+.homeStage .homeFull{right:calc(clamp(8px,1.6vmin,18px) + clamp(40px,7.6vmin,56px) + 8px);font-size:clamp(18px,3.6vmin,26px)}
+@media (max-height:520px){#settingsFull{display:inline-flex}}
+#nickScreen>.fsFloat{position:absolute}
+#nickScreen.screen.lobby.on,#createScreen.screen.lobby.on,#roomScreen.screen.lobby.on,#settingsScreen.screen.lobby.on,#lobbyScreen.screen.lobby.on{
+  height:calc(100dvh / var(--fh-zoom,1))!important;min-height:calc(100dvh / var(--fh-zoom,1))!important}
+@media (max-height:520px){#settingsScreen .settingsTabs{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}#settingsScreen .settingsTab{padding:6px 2px!important;font-size:12px!important}}

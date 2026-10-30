@@ -1,0 +1,55 @@
+/* FutHub - Inventario (uniformes e bolas), mesmo estilo da tela inicial. Carregado por ultimo. */
+#uniformScreen.screen.lobby{padding:0!important;background:#060607!important;align-items:stretch;justify-content:stretch}
+#uniformScreen .uniformLayout{width:100%;height:100%;max-width:none;display:grid;gap:0;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+@media (max-aspect-ratio:6/5){#uniformScreen .uniformLayout{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr)}}
+#uniformScreen .uniformStage{border:0;border-radius:0;box-shadow:none;position:relative;overflow:hidden;
+  background:
+    radial-gradient(60% 50% at 50% 46%,rgba(255,255,255,.16),transparent 70%),
+    linear-gradient(180deg,#060607 0,color-mix(in srgb,var(--ac2) 8%,#0f0f12) 40%,color-mix(in srgb,var(--ac2) 8%,#0f0f12) 41%,#1d4a2a 41%,#0e2a17 100%)}
+#uniformScreen .uniformStage::before{content:"";position:absolute;left:0;right:0;top:24%;height:17%;width:auto;aspect-ratio:auto;transform:none;border:0;border-radius:0;
+  background:
+    radial-gradient(circle,var(--ac2) 2.2px,transparent 3px) 0 0/22px 18px,
+    radial-gradient(circle,var(--ac1) 2.2px,transparent 3px) 9px 7px/22px 18px,
+    radial-gradient(circle,var(--ac3) 2.2px,transparent 3px) 4px 12px/22px 18px,
+    linear-gradient(color-mix(in srgb,var(--ac2) 10%,#141417),color-mix(in srgb,var(--ac2) 6%,#0c0c0f));
+  border-bottom:6px solid var(--ac2)}
+#uniformScreen .uniformStage::after{background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.25))}
+#uniformScreen .uniformBackBtn{left:clamp(8px,1.6vmin,18px);top:clamp(8px,1.6vmin,18px);width:clamp(40px,7.6vmin,54px);height:clamp(40px,7.6vmin,54px);
+  border:3px solid #050506;border-radius:12px;background:linear-gradient(color-mix(in srgb,var(--ac2) 28%,#18181b),color-mix(in srgb,var(--ac2) 18%,#141417));color:#fff;font-size:clamp(20px,4vmin,28px);box-shadow:0 4px 0 #050506}
+#uniformScreen .uniformStageTitle{left:clamp(56px,11vmin,80px);top:clamp(8px,1.6vmin,18px);display:flex;flex-direction:column;justify-content:center;
+  padding:clamp(4px,1vmin,8px) clamp(14px,2.4vmin,22px);background:rgba(10,10,12,.85);border:2px solid var(--ac-edge);border-radius:12px}
+#uniformScreen .uniformStageTitle small{color:var(--ac-muted);font-size:clamp(10px,1.7vmin,12px);letter-spacing:.5px;text-transform:uppercase}
+#uniformScreen .uniformStageTitle b{color:#fff;font-size:clamp(16px,3.2vmin,24px)}
+#uniformScreen .uniformStageHint{background:rgba(10,10,12,.8);color:var(--ac-muted);border:1px solid var(--ac-edge)}
+#uniformScreen .uniTool{border:3px solid #050506;border-radius:12px;background:rgba(10,10,12,.88);color:#fff;font-weight:800;box-shadow:0 4px 0 #050506}
+#uniformScreen .uniToolMain{background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3));color:var(--ac-ink)}
+/* painel de itens */
+#uniformScreen .uniformStrip{border:0;border-left:4px solid #050506;border-radius:0;box-shadow:none;background:linear-gradient(180deg,#0e0e11,#0a0a0c);
+  padding:clamp(8px,1.6vmin,16px);display:flex;flex-direction:column;min-height:0;min-width:0}
+@media (max-aspect-ratio:6/5){#uniformScreen .uniformStrip{border-left:0;border-top:4px solid #050506}}
+#uniformScreen .uniformTabs{gap:10px;margin-bottom:clamp(8px,1.6vmin,14px)}
+#uniformScreen .uniformTabs button{max-width:none;min-height:clamp(38px,7vmin,50px);border:3px solid #050506;border-radius:12px;background:color-mix(in srgb,var(--ac2) 9%,#18181c);color:var(--ac-muted);font-weight:900;font-size:clamp(13px,2.4vmin,17px);text-transform:uppercase;box-shadow:0 4px 0 #050506}
+#uniformScreen .uniformTabs button.active{background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3));color:var(--ac-ink);box-shadow:0 4px 0 #050506,0 0 0 2px #fff}
+#uniformScreen .uniformList{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(clamp(84px,15vmin,116px),1fr));
+  gap:clamp(8px,1.6vmin,14px);align-content:start;overflow-y:auto;overflow-x:hidden;scroll-snap-type:none;padding:6px 4px 12px}
+#uniformScreen .uniformList::-webkit-scrollbar{width:8px;height:auto}
+#uniformScreen .uniformList::-webkit-scrollbar-thumb{background:#4256d8;border-radius:8px}
+#uniformScreen .uniformCardWrap{position:relative;flex:none;scroll-snap-align:none}
+#uniformScreen .uniformCard{width:100%;height:100%;padding:clamp(8px,1.4vmin,12px) 4px 8px;border:3px solid #050506;border-radius:12px;
+  background:linear-gradient(color-mix(in srgb,var(--ac2) 12%,#222226),color-mix(in srgb,var(--ac2) 7%,#101013));color:#fff;box-shadow:0 4px 0 #050506}
+#uniformScreen .uniformCard canvas{width:clamp(52px,10vmin,76px);height:clamp(52px,10vmin,76px)}
+#uniformScreen .uniformCard span{font-size:clamp(10px,1.8vmin,13px);font-weight:800;text-transform:uppercase}
+#uniformScreen .uniformCard:hover{transform:translateY(-2px);border-color:#050506;filter:brightness(1.12)}
+#uniformScreen .uniformCard.active{background:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3));color:var(--ac-ink);border-color:#050506;box-shadow:0 4px 0 #050506,0 0 0 3px #fff;transform:none}
+#uniformScreen .uniformAdd{background:rgba(255,255,255,.06);border:3px dashed var(--ac-edge);color:var(--ac1);box-shadow:none}
+#uniformScreen .uniformAdd:hover{background:rgba(255,255,255,.12)}
+#uniformScreen .uniformDel{background:#e23b4e;border:2px solid #050506;color:#fff}
+@media (max-height:520px){
+  #uniformScreen .uniformStrip{display:flex;flex-direction:column;align-items:stretch;gap:0;padding:6px 8px}
+  #uniformScreen .uniformTabs{flex-direction:row;margin-bottom:8px}
+  #uniformScreen .uniformTabs button{min-height:34px;padding:4px 8px;font-size:12px}
+  #uniformScreen .uniformList{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+  #uniformScreen .uniformCard canvas{width:44px;height:44px}
+}
+#uniformScreen .uniformStageHint{display:none}
+@media (max-height:520px){#uniformScreen .uniformCard span{-webkit-line-clamp:2;font-size:9px}}

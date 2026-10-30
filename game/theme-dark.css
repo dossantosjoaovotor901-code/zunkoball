@@ -1,0 +1,45 @@
+/* theme-dark.css - fundo ondulado + variáveis do tema (cor de destaque, fundo, painéis). Carregado por último.
+   Os valores vêm de theme-custom.js (Configurações > Personalizar > Tema do jogo). */
+:root {
+    --ac1: #FFE98A; --ac2: #F6B800; --ac3: #C98A00; --ac-edge: #6b4d00; --ac-muted: #d9b85a; --ac-ink: #241a00; --ac2-rgb: 246, 184, 0;
+    --bgc: #09090c; --bgc2: #2a2a33; --wave-c: #2a2a33; --wave-a: 1; --panel-a: .9; --wave-img: url("wave-mask.png");
+    color-scheme: dark;
+}
+html { background: var(--bgc) !important; }
+body { background: transparent !important; }
+body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: var(--wave-c); opacity: var(--wave-a);
+    -webkit-mask: var(--wave-img) center / cover no-repeat; mask: var(--wave-img) center / cover no-repeat;
+}
+body[data-bgmode="solid"]::before { display: none; }
+body[data-bgmode="gradient"]::before { background: radial-gradient(ellipse at 50% 0, var(--bgc2) 0, transparent 70%); opacity: 1; -webkit-mask: none; mask: none; }
+html body .screen.lobby:not(#roomScreen.teamWindow) { background: transparent !important; }
+/* tira o campo/pontinhos antigos que ficavam por cima do fundo */
+html body .screen.lobby:not(.teamWindow)::before,
+html body .screen.lobby:not(.teamWindow)::after { display: none !important; }
+html body #roomScreen.screen.lobby.teamWindow { background: rgba(6, 6, 9, .78) !important; }
+/* painéis escuros com opacidade ajustável */
+html body #createScreen .createCard, html body #settingsScreen .settingsPanel, html body #nickScreen .profileCard,
+html body #lobbyScreen .roomListCard, html body #authScreen .authCard { background: rgba(10, 10, 13, var(--panel-a)) !important; }
+html body #roomScreen .rmCol { background: rgba(12, 12, 16, .72); }
+html body #roomScreen .rmRed { background: rgba(120, 28, 28, .38); }
+html body #roomScreen .rmBlue { background: rgba(20, 56, 112, .42); }
+/* tela inicial e uniformes: sem o cenário de estádio */
+html body #homeScreen .homeBg { display: none !important; }
+html body #homeScreen .homeStage, html body #uniformScreen .uniformStage { background: transparent !important; }
+html body #uniformScreen .uniformStage::before, html body #uniformScreen .uniformStage::after { display: none !important; }
+html body #uniformScreen .uniformStrip { background: rgba(10, 10, 13, .88) !important; }
+
+/* ---- bloco "Tema do jogo" em Configurações > Personalizar ---- */
+.themeBox { display: flex; flex-direction: column; gap: 10px; padding: 12px; margin-bottom: 14px; border-radius: 14px; border: 2px solid var(--ac-edge); background: rgba(0, 0, 0, .35); }
+.themeBox h3 { margin: 0; font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: .5px; color: var(--ac2); }
+.themeRow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.themeRow > label, .themeRow > .themeLbl { flex: 0 0 120px; font-size: 12px; font-weight: 700; color: var(--ac-muted); }
+.themeSw { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.themeSw button { width: 34px; height: 34px; border-radius: 10px; border: 2px solid rgba(255,255,255,.25); cursor: pointer; padding: 0; }
+.themeSw button.on { border-color: #fff; box-shadow: 0 0 0 3px rgba(var(--ac2-rgb), .45); }
+.themeBox input[type=color] { width: 44px; height: 34px; padding: 0; border: 2px solid var(--ac-edge); border-radius: 8px; background: transparent; cursor: pointer; }
+.themeBox input[type=range] { flex: 1 1 140px; min-width: 120px; accent-color: var(--ac2); }
+.themeBox select { height: 36px; padding: 0 8px; border-radius: 8px; min-width: 150px; }
+.themeReset { align-self: flex-start; height: 36px; padding: 0 14px; border-radius: 10px; font-weight: 800; cursor: pointer; background: rgba(0,0,0,.5); color: #fff; border: 1px solid var(--ac-edge); }

@@ -1,0 +1,1011 @@
+/* ============================================================
+   FutHub - Menus v4  (carregado POR ULTIMO, depois de redesign.css)
+   Refaz: Lista de salas, Sala (lobby) e Configuracoes/Personalizar.
+   Tudo alinhado em grid, fluido (clamp) e sem rolagem dupla.
+   ============================================================ */
+
+:root {
+    --m-gold: var(--ac2);
+    --m-gold-2: #e0a419;
+    --m-gold-soft: rgba(var(--ac2-rgb), .14);
+    --m-line: rgba(var(--ac2-rgb), .26);
+    --m-line-soft: rgba(255, 255, 255, .08);
+    --m-surface: rgba(255, 255, 255, .035);
+    --m-surface-2: rgba(255, 255, 255, .06);
+    --m-panel: rgba(16, 23, 20, .88);
+    --m-text: #eef2ee;
+    --m-muted: #93a69b;
+    --m-red: #c8465c;
+    --m-blue: #4a78bd;
+    --m-pad: clamp(14px, 2.2vw, 26px);
+    --m-gap: clamp(10px, 1.5vw, 16px);
+    --m-r: clamp(14px, 1.8vw, 20px);
+    --m-r-sm: clamp(9px, 1.2vw, 12px);
+}
+
+/* ---------- base comum das 3 telas ---------- */
+#lobbyScreen.screen.lobby,
+#roomScreen.screen.lobby,
+#settingsScreen.screen.lobby {
+    padding: clamp(10px, 2.4vmin, 28px) !important;
+    overflow: hidden !important;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-family: 'Poppins', 'Clash Display', Arial, sans-serif;
+}
+
+#lobbyScreen *, #roomScreen *, #settingsScreen * { box-sizing: border-box; }
+
+/* barras de rolagem finas e douradas */
+#lobbyScreen *, #roomScreen *, #settingsScreen * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--ac2-rgb), .45) transparent;
+}
+#roomScreen ::-webkit-scrollbar, #settingsScreen ::-webkit-scrollbar, #lobbyScreen ::-webkit-scrollbar { width: 8px; height: 8px; }
+#roomScreen ::-webkit-scrollbar-thumb, #settingsScreen ::-webkit-scrollbar-thumb, #lobbyScreen ::-webkit-scrollbar-thumb {
+    background: rgba(var(--ac2-rgb), .4); border-radius: 8px;
+}
+#roomScreen ::-webkit-scrollbar-track, #settingsScreen ::-webkit-scrollbar-track, #lobbyScreen ::-webkit-scrollbar-track { background: transparent; }
+
+/* botao padrao dourado/verde usado nas 3 telas */
+#roomScreen .btn, #settingsScreen .btn {
+    min-height: 38px;
+    padding: 8px 18px !important;
+    border-radius: var(--m-r-sm) !important;
+    border: 1px solid var(--m-line) !important;
+    background: var(--m-surface-2) !important;
+    color: var(--m-text) !important;
+    font: 600 clamp(12px, 1.3vw, 14px)/1 'Poppins', sans-serif !important;
+    cursor: pointer;
+    box-shadow: none !important;
+    transition: transform .12s, background .15s, border-color .15s, color .15s;
+}
+#roomScreen .btn:hover, #settingsScreen .btn:hover {
+    border-color: var(--m-gold) !important; color: var(--m-gold) !important; transform: translateY(-1px);
+}
+#settingsScreen #applySettings,
+#settingsScreen #settingsBack,
+#roomScreen #startRoom {
+    background: linear-gradient(180deg, var(--ac1), var(--ac3)) !important;
+    border-color: transparent !important;
+    color: var(--ac-ink) !important;
+    font-weight: 700 !important;
+    box-shadow: 0 6px 18px rgba(224, 164, 25, .28) !important;
+}
+#settingsScreen #applySettings:hover,
+#settingsScreen #settingsBack:hover,
+#roomScreen #startRoom:hover { color: var(--ac-ink) !important; filter: brightness(1.07); }
+
+/* ============================================================
+   1) LISTA DE SALAS
+   ============================================================ */
+#lobbyScreen .lobbyLayout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--m-gap);
+    width: min(1080px, 100%);
+    height: min(640px, 100%);
+    max-height: 100%;
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+#lobbyScreen .roomListCard {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    padding: var(--m-pad);
+    border: 1px solid var(--m-line) !important;
+    border-radius: calc(var(--m-r) + 4px) !important;
+    background: var(--m-panel) !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+#lobbyScreen .roomListHead {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 0 0 6px !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+#lobbyScreen .roomListTitle {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+    margin: 0 !important;
+    font: 800 clamp(20px, 2.8vw, 28px)/1.1 'Clash Display', 'Poppins', sans-serif !important;
+    color: var(--m-text) !important;
+    letter-spacing: .01em;
+}
+#lobbyScreen .roomTitleLogo {
+    width: clamp(28px, 3.6vw, 38px) !important;
+    height: clamp(28px, 3.6vw, 38px) !important;
+    filter: drop-shadow(0 2px 8px rgba(var(--ac2-rgb), .5));
+}
+#lobbyScreen #roomCount {
+    padding: 6px 14px;
+    border: 1px solid var(--m-line-soft);
+    border-radius: 999px;
+    background: var(--m-surface);
+    color: var(--m-muted) !important;
+    font: 600 clamp(11px, 1.2vw, 13px)/1 'Poppins', sans-serif;
+    white-space: nowrap;
+}
+#lobbyScreen .roomListTip {
+    margin: 0 0 var(--m-gap) !important;
+    padding: 0 0 12px !important;
+    border-bottom: 1px solid var(--m-line-soft) !important;
+    color: var(--m-muted) !important;
+    font-size: clamp(11px, 1.25vw, 13px) !important;
+}
+
+/* tabela: cabecalho e linhas usam a MESMA grade -> colunas alinhadas */
+#lobbyScreen .roomListCols,
+#lobbyScreen .roomListBody > .roomItem,
+#lobbyScreen .roomListBody > .roomRow,
+#lobbyScreen .roomListBody > .room {
+    display: grid !important;
+    grid-template-columns: minmax(0, 2.4fr) .8fr .9fr 1fr 1fr;
+    align-items: center;
+    column-gap: 10px;
+    padding: 0 clamp(12px, 1.6vw, 18px) !important;
+}
+#lobbyScreen .roomListCols {
+    flex: 0 0 auto;
+    height: 42px;
+    border: 1px solid var(--m-line) !important;
+    border-bottom: 0 !important;
+    border-radius: var(--m-r-sm) var(--m-r-sm) 0 0 !important;
+    background: linear-gradient(180deg, rgba(var(--ac2-rgb), .2), rgba(var(--ac2-rgb), .08)) !important;
+}
+#lobbyScreen .roomListCols span {
+    color: var(--m-gold) !important;
+    font: 700 clamp(10px, 1.1vw, 12px)/1 'Poppins', sans-serif !important;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+#lobbyScreen .roomListBody {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    border: 1px solid var(--m-line) !important;
+    border-radius: 0 0 var(--m-r-sm) var(--m-r-sm) !important;
+    background: rgba(0, 0, 0, .28) !important;
+}
+#lobbyScreen .roomListBody > .roomItem,
+#lobbyScreen .roomListBody > .roomRow,
+#lobbyScreen .roomListBody > .room {
+    height: 46px;
+    border-bottom: 1px solid var(--m-line-soft);
+    color: var(--m-text);
+    font-size: clamp(12px, 1.3vw, 14px);
+    cursor: pointer;
+    transition: background .12s;
+}
+#lobbyScreen .roomListBody > .roomItem:hover,
+#lobbyScreen .roomListBody > .roomRow:hover,
+#lobbyScreen .roomListBody > .room:hover { background: var(--m-gold-soft); }
+#lobbyScreen .roomListBody > .selected,
+#lobbyScreen .roomListBody > .active { background: rgba(var(--ac2-rgb), .2) !important; box-shadow: inset 3px 0 0 var(--m-gold); }
+
+#lobbyScreen .roomListBody .empty {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 100%;
+    min-height: 140px;
+    color: var(--m-muted) !important;
+    font: 500 clamp(12px, 1.4vw, 14px)/1.3 'Poppins', sans-serif;
+}
+#lobbyScreen .roomListBody .empty::before {
+    content: "⚽";
+    display: grid;
+    place-items: center;
+    width: 54px; height: 54px;
+    border: 1px dashed var(--m-line);
+    border-radius: 50%;
+    background: var(--m-surface);
+    font-size: 24px;
+    opacity: .8;
+}
+
+/* coluna de botoes laterais: todos do mesmo tamanho e alinhados */
+#lobbyScreen .lobbySide {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: space-between;
+    justify-content: stretch;
+    gap: var(--m-gap);
+    width: clamp(78px, 9.5vw, 104px);
+    padding: 0 !important;
+    min-height: 0;
+}
+#lobbyScreen .lobbySideGroup {
+    display: flex !important;
+    flex-direction: column;
+    gap: clamp(6px, 1vh, 12px);
+    flex: 1 1 0;
+    min-height: 0;
+    padding: clamp(6px, 1vh, 10px);
+    border: 1px solid var(--m-line-soft);
+    border-radius: var(--m-r);
+    background: var(--m-panel);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+#lobbyScreen .lobbyBtn {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100% !important;
+    flex: 1 1 0;
+    min-height: 0 !important;
+    max-height: 92px;
+    padding: 4px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: var(--m-r-sm) !important;
+    background: var(--m-surface) !important;
+    color: var(--m-text) !important;
+    cursor: pointer;
+    transition: transform .12s, border-color .15s, background .15s;
+}
+#lobbyScreen .lobbyBtn b {
+    display: grid; place-items: center;
+    width: clamp(26px, 4.4vh, 38px); height: clamp(26px, 4.4vh, 38px);
+    border-radius: 50%;
+    background: var(--m-gold-soft);
+    color: var(--m-gold);
+    font-size: clamp(16px, 2vw, 20px);
+    line-height: 1;
+}
+#lobbyScreen .lobbyBtn span {
+    font: 600 clamp(9.5px, 1.1vw, 11.5px)/1.1 'Poppins', sans-serif;
+    text-align: center;
+    color: var(--m-text);
+}
+#lobbyScreen .lobbyBtn:hover:not(:disabled) {
+    transform: translateY(-2px); border-color: var(--m-gold) !important; background: var(--m-gold-soft) !important;
+}
+#lobbyScreen .lobbyBtn:disabled { opacity: .38; cursor: not-allowed; }
+#lobbyScreen #createBtn { border-color: var(--m-line) !important; }
+#lobbyScreen #createBtn b { background: linear-gradient(180deg, var(--ac1), var(--ac3)); color: var(--ac-ink); }
+
+@media (max-width: 640px) {
+    #lobbyScreen .lobbyLayout { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr) auto; height: 100%; }
+    #lobbyScreen .lobbySide { flex-direction: row; width: 100%; }
+    #lobbyScreen .lobbySideGroup { flex-direction: row; flex: 1; }
+    #lobbyScreen .lobbyBtn { padding: 8px 4px !important; }
+    #lobbyScreen .roomListCols, #lobbyScreen .roomListBody > * { grid-template-columns: minmax(0, 2fr) .7fr .8fr .9fr .9fr; }
+}
+
+/* ============================================================
+   2) SALA (lobby da partida)
+   ============================================================ */
+#roomScreen .panel.roomPanel {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) clamp(96px, 16vh, 170px);
+    gap: var(--m-gap) !important;
+    width: min(1040px, 100%) !important;
+    height: min(780px, 100%) !important;
+    max-height: 100% !important;
+    padding: var(--m-pad) !important;
+    border: 1px solid var(--m-line) !important;
+    border-radius: calc(var(--m-r) + 4px) !important;
+    background: var(--m-panel) !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden !important;
+}
+
+/* cabecalho */
+#roomScreen .roomHeader {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 !important;
+    padding: 0 0 12px !important;
+    border-bottom: 1px solid var(--m-line) !important;
+}
+#roomScreen #roomTitle {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--m-gold) !important;
+    font: 800 clamp(16px, 2.2vw, 22px)/1.1 'Clash Display', 'Poppins', sans-serif !important;
+}
+#roomScreen .roomHeaderActions { display: flex; gap: 8px; flex: 0 0 auto; }
+
+/* corpo: sidebar + conteudo */
+#roomScreen .roomBody {
+    display: grid !important;
+    grid-template-columns: clamp(70px, 9vw, 92px) minmax(0, 1fr);
+    gap: var(--m-gap) !important;
+    min-height: 0;
+    overflow-y: auto;
+}
+#roomScreen .roomSidebar {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    align-self: start;
+    padding: 0 !important;
+}
+#roomScreen .roomSideBtn {
+    width: 100%;
+    height: 42px;
+    padding: 0 !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: var(--m-r-sm) !important;
+    background: var(--m-surface-2) !important;
+    color: var(--m-text) !important;
+    font: 600 clamp(12px, 1.3vw, 14px)/1 'Poppins', sans-serif !important;
+    cursor: pointer;
+    transition: all .14s;
+}
+#roomScreen .roomSideBtn:hover { border-color: var(--m-gold) !important; color: var(--m-gold) !important; background: var(--m-gold-soft) !important; }
+
+#roomScreen .roomMain {
+    display: flex !important;
+    flex-direction: column;
+    gap: var(--m-gap) !important;
+    min-width: 0;
+    min-height: 0;
+}
+
+/* times: 3 colunas iguais, cabecalhos do mesmo tamanho */
+#roomScreen .grid3.roomTeams {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 1.2vw, 14px) !important;
+    flex: 1 1 auto;
+    min-height: clamp(100px, 16vh, 260px) !important;
+}
+#roomScreen .team {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    min-height: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: 0 !important;
+    background: none !important;
+}
+#roomScreen .teamHead {
+    display: flex !important;
+    align-items: stretch;
+    gap: 6px;
+    height: 40px;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+#roomScreen .teamPill {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 10px !important;
+    border: 0 !important;
+    border-radius: var(--m-r-sm) !important;
+    color: #fff !important;
+    font: 700 clamp(12px, 1.4vw, 14px)/1 'Poppins', sans-serif !important;
+    cursor: pointer;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .35);
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18);
+    transition: filter .14s, transform .12s;
+}
+#roomScreen .teamPill:hover { filter: brightness(1.12); transform: translateY(-1px); }
+#roomScreen .redTeam .teamPill { background: linear-gradient(180deg, #d4566b, #b53a50) !important; }
+#roomScreen .blueTeam .teamPill { background: linear-gradient(180deg, #5b8bd1, #3f69a8) !important; }
+#roomScreen .spectators .teamPill { background: linear-gradient(180deg, #5d6c64, #46544d) !important; }
+#roomScreen .teamArrow {
+    flex: 0 0 40px;
+    width: 40px;
+    padding: 0 !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: var(--m-r-sm) !important;
+    background: var(--m-surface-2) !important;
+    color: var(--m-text) !important;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .14s;
+}
+#roomScreen .teamArrow:hover { border-color: var(--m-gold) !important; color: var(--m-gold) !important; }
+
+#roomScreen .team .roomDrop {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto !important;
+    padding: 8px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: var(--m-r-sm) !important;
+    background: rgba(0, 0, 0, .34) !important;
+    transition: border-color .15s, background .15s;
+}
+#roomScreen .redTeam .roomDrop { border-top: 2px solid rgba(212, 86, 107, .6) !important; }
+#roomScreen .blueTeam .roomDrop { border-top: 2px solid rgba(91, 139, 209, .6) !important; }
+#roomScreen .spectators .roomDrop { border-top: 2px solid rgba(140, 158, 148, .5) !important; }
+#roomScreen .team .roomDrop.dropOver { border-color: var(--m-gold) !important; background: rgba(var(--ac2-rgb), .07) !important; }
+
+#roomScreen .roomPlayer {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 6px 10px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: 9px !important;
+    background: var(--m-surface-2) !important;
+    color: var(--m-text) !important;
+    font: 600 clamp(12px, 1.3vw, 13px)/1.1 'Poppins', sans-serif;
+    cursor: grab;
+    user-select: none;
+}
+#roomScreen .roomPlayer > span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#roomScreen .roomPlayer.red { border-left: 3px solid #d4566b !important; }
+#roomScreen .roomPlayer.blue { border-left: 3px solid #5b8bd1 !important; }
+#roomScreen .roomPlayer.self { background: var(--m-gold-soft) !important; border-color: var(--m-line) !important; color: var(--m-gold) !important; }
+#roomScreen .roomPlayer .miniRole {
+    flex: 0 0 auto;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .35);
+    color: var(--m-muted);
+    font: 700 9px/1 'Poppins', sans-serif;
+    letter-spacing: .08em;
+}
+#roomScreen .roomPlayer .miniRole:empty { display: none; }
+
+#roomScreen .roomTeamHint {
+    margin: 0 !important;
+    color: var(--m-muted) !important;
+    font-size: clamp(10.5px, 1.15vw, 12px) !important;
+    text-align: center;
+}
+
+/* configuracoes da partida: 3 cartoes lado a lado, rotulo em cima */
+#roomScreen .roomConfig {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: clamp(8px, 1.2vw, 14px) !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+#roomScreen .roomConfigField {
+    display: flex !important;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--m-line-soft);
+    border-radius: var(--m-r-sm);
+    background: var(--m-surface);
+}
+#roomScreen .roomConfigField label {
+    margin: 0 !important;
+    color: var(--m-muted) !important;
+    font: 700 10.5px/1 'Poppins', sans-serif !important;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+#roomScreen .roomConfigField input,
+#roomScreen .roomConfigField select {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 38px;
+    padding: 0 10px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: 9px !important;
+    background: rgba(0, 0, 0, .35) !important;
+    color: var(--m-text) !important;
+    font: 600 14px/1 'Poppins', sans-serif !important;
+}
+#roomScreen .roomConfigField input:focus,
+#roomScreen .roomConfigField select:focus { outline: 0; border-color: var(--m-gold) !important; box-shadow: 0 0 0 3px var(--m-gold-soft); }
+#roomScreen .roomConfigField select option, #roomScreen .roomConfigField select optgroup { background: #16211c; color: var(--m-text); }
+
+#roomScreen .roomStartWrap { display: flex; justify-content: center; margin: 0 !important; padding: 2px 0 4px !important; }
+#roomScreen #startRoom {
+    min-width: clamp(200px, 30vw, 280px);
+    min-height: 48px;
+    font-size: clamp(14px, 1.6vw, 16px) !important;
+    border-radius: 999px !important;
+}
+
+/* chat */
+#roomScreen .roomChat {
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    min-height: 0;
+    margin: 0 !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: var(--m-r-sm) !important;
+    background: rgba(0, 0, 0, .34) !important;
+    overflow: hidden;
+}
+#roomScreen .roomChatHeader {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--m-line-soft);
+    color: var(--m-gold);
+    font: 700 11px/1 'Poppins', sans-serif;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+#roomScreen .roomChatMessages {
+    min-height: 0;
+    padding: 8px 14px !important;
+    overflow-y: auto;
+    border: 0 !important;
+    background: transparent !important;
+    font-size: 13px;
+}
+#roomScreen .roomChatMessage { margin: 0 0 4px; color: var(--m-text); }
+#roomScreen .roomChatMessage strong { margin-right: 6px; color: var(--m-gold); }
+#roomScreen .roomChatMessage strong.red { color: #ff8a9c; }
+#roomScreen .roomChatMessage strong.blue { color: #8db6ff; }
+#roomScreen .roomChatForm {
+    display: flex !important;
+    gap: 8px;
+    padding: 8px !important;
+    border-top: 1px solid var(--m-line-soft);
+    background: rgba(255, 255, 255, .02);
+}
+#roomScreen .roomChatForm input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 38px;
+    padding: 0 12px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: 9px !important;
+    background: rgba(0, 0, 0, .4) !important;
+    color: var(--m-text) !important;
+    font: 500 13px/1 'Poppins', sans-serif !important;
+}
+#roomScreen .roomChatForm input:focus { outline: 0; border-color: var(--m-gold) !important; box-shadow: 0 0 0 3px var(--m-gold-soft); }
+#roomScreen .roomChatForm .btn { flex: 0 0 auto; min-height: 38px; }
+
+@media (max-width: 760px) {
+    #roomScreen .roomBody { grid-template-columns: minmax(0, 1fr); }
+    #roomScreen .roomSidebar { flex-direction: row; }
+    #roomScreen .roomSideBtn { flex: 1; }
+    #roomScreen .roomConfig { grid-template-columns: 1fr !important; }
+}
+@media (max-height: 560px) {
+    #roomScreen .panel.roomPanel { grid-template-rows: auto minmax(0, 1fr) 90px; }
+    #roomScreen .roomTeamHint { display: none; }
+}
+
+/* ============================================================
+   3) CONFIGURACOES / PERSONALIZAR
+   ============================================================ */
+#settingsScreen .panel.settingsPanel {
+    display: flex !important;
+    flex-direction: column;
+    gap: 14px;
+    width: min(980px, 100%) !important;
+    height: min(820px, 100%) !important;
+    max-height: 100% !important;
+    padding: var(--m-pad) !important;
+    border: 1px solid var(--m-line) !important;
+    border-radius: calc(var(--m-r) + 4px) !important;
+    background: var(--m-panel) !important;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .05) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    overflow: hidden !important;
+}
+
+/* cabecalho: titulo e Voltar na mesma linha, centralizados */
+#settingsScreen .settingsHeader {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 0 0 12px !important;
+    border-bottom: 1px solid var(--m-line);
+}
+#settingsScreen .panelTitle {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    color: var(--m-gold) !important;
+    font: 800 clamp(18px, 2.4vw, 24px)/1.1 'Clash Display', 'Poppins', sans-serif !important;
+}
+
+/* abas: controle segmentado, 4 iguais */
+#settingsScreen .settingsTabs {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 4px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: calc(var(--m-r-sm) + 4px);
+    background: rgba(0, 0, 0, .3);
+}
+#settingsScreen .settingsTab {
+    height: 38px;
+    padding: 0 8px !important;
+    border: 0 !important;
+    border-radius: var(--m-r-sm) !important;
+    background: transparent !important;
+    color: var(--m-muted) !important;
+    font: 600 clamp(12px, 1.4vw, 14px)/1 'Poppins', sans-serif !important;
+    cursor: pointer;
+    transition: all .14s;
+}
+#settingsScreen .settingsTab:hover { color: var(--m-text) !important; background: var(--m-surface) !important; }
+#settingsScreen .settingsTab.active {
+    background: linear-gradient(180deg, rgba(var(--ac2-rgb), .26), rgba(var(--ac2-rgb), .12)) !important;
+    color: var(--m-gold) !important;
+    box-shadow: inset 0 0 0 1px var(--m-line);
+}
+
+/* area de conteudo rola SOZINHA; cabecalho, abas e rodape ficam fixos */
+#settingsScreen .settingsTabPanel {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 2px 6px 6px 2px;
+}
+#settingsScreen .settingsTabPanel[hidden] { display: none !important; }
+
+#settingsScreen .settingsGrid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 26vw, 280px), 1fr)) !important;
+    gap: var(--m-gap) !important;
+    align-items: start;
+    margin: 0 0 var(--m-gap) !important;
+}
+#settingsScreen .personalizationBasics { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+
+/* cartoes */
+#settingsScreen .setting {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    margin: 0 !important;
+    padding: clamp(12px, 1.6vw, 16px) !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: var(--m-r-sm) !important;
+    background: var(--m-surface) !important;
+    box-shadow: none !important;
+}
+#settingsScreen .setting > label,
+#settingsScreen .personalizationSetting > label {
+    margin: 0 !important;
+    color: var(--m-text) !important;
+    font: 600 clamp(12px, 1.3vw, 13px)/1.2 'Poppins', sans-serif !important;
+}
+#settingsScreen .setting select,
+#settingsScreen .setting input[type=text],
+#settingsScreen .setting input[type=number] {
+    width: 100% !important;
+    height: 40px;
+    padding: 0 10px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: 9px !important;
+    background: rgba(0, 0, 0, .35) !important;
+    color: var(--m-text) !important;
+    font: 500 13px/1 'Poppins', sans-serif !important;
+}
+#settingsScreen select:focus, #settingsScreen input:focus { outline: 0; border-color: var(--m-gold) !important; box-shadow: 0 0 0 3px var(--m-gold-soft); }
+
+/* sliders */
+#settingsScreen input[type=range] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 6px; margin: 2px 0 8px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .14);
+    outline: 0;
+}
+#settingsScreen input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--m-gold); border: 2px solid #1b1503;
+    box-shadow: 0 0 0 1px var(--m-gold), 0 2px 6px rgba(0, 0, 0, .5);
+    cursor: pointer;
+}
+#settingsScreen input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--m-gold); border: 2px solid #1b1503; cursor: pointer;
+}
+
+/* checkbox */
+#settingsScreen .settingsCheck {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    margin: 0 !important;
+    color: var(--m-text) !important;
+    font: 600 13px/1.2 'Poppins', sans-serif !important;
+    cursor: pointer;
+}
+#settingsScreen input[type=checkbox] { width: 18px; height: 18px; margin: 0; accent-color: var(--m-gold); flex: 0 0 auto; }
+
+/* cores: rotulo a esquerda, amostra a direita, mesma altura */
+#settingsScreen input[type=color] {
+    width: 44px; height: 30px; padding: 2px !important; margin: 0;
+    border: 1px solid var(--m-line) !important;
+    border-radius: 8px !important;
+    background: rgba(0, 0, 0, .35) !important;
+    cursor: pointer;
+}
+#settingsScreen .colorPickerRow {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 0 !important;
+}
+#settingsScreen .colorPickerRow label { margin: 0 !important; font: 600 13px/1.2 'Poppins', sans-serif !important; color: var(--m-text) !important; }
+
+/* a aba Personalizar tem cores soltas dentro de .setting: alinha cada par */
+#settingsScreen .personalizationSetting > label[for="customThemeColor"],
+#settingsScreen .personalizationSetting > label[for="customLineColor"] { margin-top: 4px !important; }
+
+/* previa do campo */
+#settingsScreen .personalizationField { margin: 0 0 var(--m-gap) !important; }
+#settingsScreen .personalizationLabel {
+    margin: 0 0 8px !important;
+    color: var(--m-gold) !important;
+    font: 700 11px/1 'Poppins', sans-serif !important;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+#settingsScreen .customizationPreview {
+    width: 100% !important;
+    max-height: clamp(130px, 24vh, 220px);
+    border: 1px solid var(--m-line) !important;
+    border-radius: var(--m-r-sm) !important;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+}
+
+/* 3 cartoes de personalizacao com a mesma altura */
+#settingsScreen .personalizationGrid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: var(--m-gap) !important;
+    align-items: stretch;
+}
+#settingsScreen .personalizationSetting { height: 100%; }
+#settingsScreen .customizationUpload { width: 100% !important; }
+#settingsScreen .customizationRemove {
+    width: 100% !important;
+    margin-top: auto !important;
+    border-color: rgba(255, 110, 110, .35) !important;
+    color: #ff9c9c !important;
+    background: rgba(255, 90, 90, .08) !important;
+}
+#settingsScreen .customizationRemove:hover { border-color: #ff8a8a !important; color: #ffb4b4 !important; }
+#settingsScreen .customizationFile { display: none !important; }
+
+/* textos de apoio */
+#settingsScreen .settingsSectionTitle {
+    margin: 4px 0 8px !important;
+    color: var(--m-gold) !important;
+    font: 700 12px/1 'Poppins', sans-serif !important;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+}
+#settingsScreen .graphicsHint, #settingsScreen .hudMode, #settingsScreen .keyBindingHint { color: var(--m-muted) !important; font-size: 12px; }
+#settingsScreen output { color: var(--m-gold); font: 700 12px/1 'Poppins', sans-serif; }
+
+/* rodape fixo: Padrao / Aplicar */
+#settingsScreen .settingsActions {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between !important;
+    flex: 0 0 auto;
+    margin: 0 !important;
+    padding: 12px 0 0 !important;
+    border-top: 1px solid var(--m-line);
+}
+#settingsScreen .settingsActions .btn { min-width: clamp(110px, 16vw, 150px); }
+
+@media (max-width: 760px) {
+    #settingsScreen .personalizationBasics,
+    #settingsScreen .personalizationGrid { grid-template-columns: 1fr !important; }
+    #settingsScreen .settingsTabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 761px) and (max-width: 900px) {
+    #settingsScreen .personalizationGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+
+/* sobrescreve botoes verdes antigos (mesma especificidade do redesign.css, vem depois) */
+#roomScreen .roomHeaderActions .btn,
+#roomScreen .roomChatForm .btn {
+    background: var(--m-surface-2) !important;
+    border: 1px solid var(--m-line) !important;
+    color: var(--m-text) !important;
+    border-radius: var(--m-r-sm) !important;
+    min-height: 38px;
+    padding: 8px 18px;
+    font-weight: 600;
+    font-size: clamp(12px, 1.3vw, 14px);
+}
+#roomScreen .roomHeaderActions .btn:hover,
+#roomScreen .roomChatForm .btn:hover {
+    background: var(--m-gold-soft) !important;
+    border-color: var(--m-gold) !important;
+    color: var(--m-gold) !important;
+}
+#roomScreen .roomChatForm .btn {
+    background: linear-gradient(180deg, var(--ac1), var(--ac3)) !important;
+    border-color: transparent !important;
+    color: var(--ac-ink) !important;
+    font-weight: 700;
+}
+#roomScreen .roomChatForm .btn:hover { color: var(--ac-ink) !important; filter: brightness(1.07); }
+#roomScreen .roomSideBtn {
+    background: var(--m-surface-2) !important;
+    border: 1px solid var(--m-line-soft) !important;
+    color: var(--m-text) !important;
+    border-radius: var(--m-r-sm) !important;
+    min-height: 42px;
+    padding: 0;
+}
+#roomScreen .roomSideBtn:hover { background: var(--m-gold-soft) !important; border-color: var(--m-gold) !important; color: var(--m-gold) !important; }
+#roomScreen .roomChatHeader {
+    position: static !important;
+    width: auto !important; height: auto !important;
+    clip: auto !important; overflow: visible !important;
+    padding: 8px 14px !important;
+    border-bottom: 1px solid var(--m-line-soft) !important;
+    background: rgba(var(--ac2-rgb), .08) !important;
+    color: var(--m-gold) !important;
+}
+
+/* os times ocupam so o espaco que sobra; configuracoes e botao Iniciar sempre visiveis */
+#roomScreen .roomMain { height: 100%; }
+#roomScreen .grid3.roomTeams {
+    flex: 1 1 0 !important;
+    height: auto !important;
+    min-height: clamp(100px, 16vh, 260px) !important;
+    max-height: none !important;
+}
+#roomScreen .roomConfig, #roomScreen .roomStartWrap, #roomScreen .roomTeamHint { flex: 0 0 auto; }
+@media (max-height: 640px) {
+    #roomScreen .roomConfigField { padding: 6px 10px; gap: 4px; }
+    #roomScreen .roomConfigField input, #roomScreen .roomConfigField select { height: 32px; }
+    #roomScreen #startRoom { min-height: 40px; }
+}
+
+#roomScreen .team { overflow: hidden; }
+#roomScreen .team .roomDrop {
+    flex: 1 1 0 !important;
+    height: 0 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+}
+#roomScreen .grid3.roomTeams { overflow: hidden; }
+
+/* rotulos sempre a esquerda e previa mais compacta */
+#settingsScreen .setting, #settingsScreen .setting > label, #settingsScreen .personalizationSetting > label,
+#settingsScreen .settingsSectionTitle { text-align: left !important; }
+#settingsScreen .setting > label { align-self: flex-start; width: 100%; }
+#settingsScreen .customizationPreview {
+    height: clamp(100px, 20vh, 200px) !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+}
+
+#settingsScreen .btn.customizationRemove,
+#settingsScreen .setting .customizationRemove {
+    background: rgba(255, 90, 90, .08) !important;
+    border: 1px solid rgba(255, 110, 110, .35) !important;
+    color: #ff9c9c !important;
+}
+#settingsScreen .btn.customizationRemove:hover { border-color: #ff8a8a !important; color: #ffb4b4 !important; }
+#settingsScreen .btn.customizationUpload, #settingsScreen .setting .customizationUpload {
+    background: var(--m-gold-soft) !important;
+    border: 1px solid var(--m-line) !important;
+    color: var(--m-gold) !important;
+}
+
+/* ============================================================
+   LISTA DE SALAS - estilo HaxBall (tabela compacta + botoes largos)
+   ============================================================ */
+#lobbyScreen .lobbyLayout {
+    grid-template-columns: minmax(0, 1fr) clamp(150px, 19vw, 200px);
+    width: min(940px, 100%);
+    height: min(620px, 100%);
+    align-items: stretch;
+}
+#lobbyScreen .roomListCard { padding: clamp(12px, 1.8vw, 18px) !important; border-radius: var(--m-r) !important; }
+#lobbyScreen .roomListHead {
+    padding-bottom: 8px !important;
+    margin-bottom: 10px !important;
+    border-bottom: 2px solid var(--m-gold) !important;
+}
+#lobbyScreen .roomListTitle { font-size: clamp(18px, 2.4vw, 24px) !important; }
+#lobbyScreen #roomCount { padding: 0; border: 0; background: none; font-size: clamp(11px, 1.3vw, 14px); color: var(--m-text) !important; }
+#lobbyScreen .roomListTip { border: 0 !important; padding: 0 !important; margin: 0 0 8px !important; }
+
+#lobbyScreen .roomListCols {
+    height: 30px;
+    border: 0 !important;
+    border-bottom: 1px solid var(--m-line) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    grid-template-columns: minmax(0, 3fr) .8fr .7fr 1fr 1fr;
+}
+#lobbyScreen .roomListCols span { color: var(--m-text) !important; font-size: clamp(11px, 1.2vw, 13px) !important; letter-spacing: 0; text-transform: none; font-weight: 700 !important; }
+#lobbyScreen .roomListBody { border: 0 !important; border-radius: 0 !important; background: transparent !important; }
+#lobbyScreen .roomListBody > .roomItem,
+#lobbyScreen .roomListBody > .roomRow,
+#lobbyScreen .roomListBody > .room {
+    height: 30px;
+    grid-template-columns: minmax(0, 3fr) .8fr .7fr 1fr 1fr;
+    border-bottom: 0;
+    border-radius: 6px;
+    font-size: clamp(12px, 1.3vw, 14px);
+}
+#lobbyScreen .roomListBody > .roomItem:nth-child(even),
+#lobbyScreen .roomListBody > .roomRow:nth-child(even),
+#lobbyScreen .roomListBody > .room:nth-child(even) { background: rgba(255, 255, 255, .03); }
+
+/* botoes laterais: largos, horizontais, em azul-esverdeado como no HaxBall */
+#lobbyScreen .lobbySide { width: auto; justify-content: space-between; gap: 12px; }
+#lobbyScreen .lobbySideGroup {
+    flex: 0 0 auto;
+    gap: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+#lobbyScreen .lobbyBtn {
+    flex-direction: row !important;
+    justify-content: flex-start;
+    gap: 12px;
+    flex: 0 0 auto;
+    height: 40px;
+    max-height: none;
+    padding: 0 14px !important;
+    border: 1px solid var(--m-line-soft) !important;
+    border-radius: 8px !important;
+    background: linear-gradient(180deg, #25403a, #1b312c) !important;
+    box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .25);
+}
+#lobbyScreen .lobbyBtn b { width: 22px; height: 22px; flex: 0 0 22px; background: none; font-size: 17px; color: var(--m-gold); }
+#lobbyScreen .lobbyBtn span { font-size: clamp(12px, 1.3vw, 14px); text-align: left; font-weight: 700; }
+#lobbyScreen .lobbyBtn:hover:not(:disabled) { background: linear-gradient(180deg, #2f5249, #234038) !important; transform: none; }
+#lobbyScreen #createBtn { border-color: var(--m-line-soft) !important; }
+#lobbyScreen #createBtn b { background: none; color: var(--m-gold); }
+#lobbyScreen #join:disabled { background: linear-gradient(180deg, #2b312f, #222726) !important; }
+
+@media (max-width: 640px) {
+    #lobbyScreen .lobbyLayout { grid-template-columns: 1fr; }
+    #lobbyScreen .lobbySide { flex-direction: column; width: 100%; }
+    #lobbyScreen .lobbySideGroup { flex-direction: row; flex-wrap: wrap; }
+    #lobbyScreen .lobbyBtn { flex: 1 1 120px; }
+}
+

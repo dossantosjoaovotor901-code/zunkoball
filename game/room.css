@@ -1,0 +1,241 @@
+/* room.css - tela da SALA (espera) no estilo "três colunas": Vermelho | Espectadores | Azul.
+   Carregado por último; usa as classes novas rm* e só os IDs/atributos que o game.js/online.js já usam. */
+html body #roomScreen [hidden] { display: none !important; }
+html body #roomScreen.screen.lobby {
+    padding: 0 !important; align-items: stretch; justify-content: stretch; overflow: hidden !important;
+    background: radial-gradient(ellipse at 50% 35%, #226232 0, #0f3319 58%, #06130a 100%) !important;
+    font-family: 'Roboto', 'Poppins', Arial, sans-serif; color: #fff;
+}
+html body #roomScreen.screen.lobby.on { display: flex !important; height: 100dvh !important; min-height: 100dvh !important; }
+html body #roomScreen.screen.lobby::before {
+    content: ""; position: absolute; inset: 0; top: 0; bottom: 0; border: 0; pointer-events: none; z-index: 0;
+    background: repeating-linear-gradient(90deg, rgba(255,255,255,.045) 0 72px, transparent 72px 144px);
+}
+html body #roomScreen.screen.lobby::after { display: none !important; }
+/* aberta por cima da partida (botão "sala" no jogo): campo aparece por trás */
+html body #roomScreen.screen.lobby.teamWindow { background: rgba(4, 10, 6, .72) !important; backdrop-filter: blur(3px); }
+html body #roomScreen.screen.lobby.teamWindow::before { display: none; }
+
+html body #roomScreen .rmWrap {
+    position: relative; z-index: 1; width: 100%; max-width: 1100px; height: 100%; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 8px; box-sizing: border-box;
+    padding: max(8px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+/* ---- barra superior ---- */
+html body #roomScreen .rmBar { display: flex; align-items: center; gap: 10px; min-height: 44px; flex: 0 0 auto; }
+html body #roomScreen .rmLeave {
+    background: transparent !important; border: 0 !important; color: #fff !important; font: 800 15px/1 'Roboto', Arial, sans-serif;
+    letter-spacing: .5px; text-transform: uppercase; padding: 8px 6px; cursor: pointer; white-space: nowrap;
+}
+html body #roomScreen #roomTitle {
+    flex: 1 1 auto; min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: #fff !important; font-size: 18px !important; font-weight: 600 !important; text-shadow: 0 1px 3px rgba(0,0,0,.6);
+}
+html body #roomScreen .rmPill {
+    flex: 0 0 auto; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.18);
+    font-size: 13px; font-weight: 700; color: #eaf3ec; white-space: nowrap;
+}
+html body #roomScreen .rmBarBtns { display: flex; gap: 8px; flex: 0 0 auto; }
+html body #roomScreen .rmIcon {
+    position: relative; width: 42px; height: 38px; border-radius: 10px; border: 2px solid #1b1405 !important; cursor: pointer;
+    background: linear-gradient(180deg, var(--ac1), var(--ac2)) !important; color: var(--ac-ink) !important; font-size: 19px; line-height: 1; padding: 0;
+    box-shadow: 0 2px 0 var(--ac-edge);
+}
+html body #roomScreen .rmIcon:active { transform: translateY(1px); box-shadow: none; }
+html body #roomScreen .rmDot { position: absolute; top: -4px; right: -4px; width: 12px; height: 12px; border-radius: 50%; background: #ff3b30; border: 2px solid #fff; }
+
+/* ---- colunas ---- */
+html body #roomScreen .rmTeams { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: 1fr .86fr 1fr; gap: 10px; }
+html body #roomScreen .rmCol {
+    display: flex; flex-direction: column; min-width: 0; min-height: 0; border-radius: 9px; overflow: hidden;
+    background: rgba(0,0,0,.42); box-shadow: 0 4px 14px rgba(0,0,0,.35);
+}
+html body #roomScreen .rmRed { background: rgba(110, 24, 24, .42); }
+html body #roomScreen .rmBlue { background: rgba(16, 52, 104, .46); }
+html body #roomScreen .rmHead { display: flex; align-items: center; flex: 0 0 auto; height: 38px; color: #fff; }
+html body #roomScreen .rmRed .rmHead { background: linear-gradient(180deg, #ff6a6a, #ee4747); }
+html body #roomScreen .rmBlue .rmHead { background: linear-gradient(180deg, #4eaaff, #2f8cf0); }
+html body #roomScreen .rmSpec .rmHead { background: linear-gradient(180deg, #ffffff, #dedede); color: #222; }
+html body #roomScreen .rmTeamBtn {
+    flex: 1 1 auto; height: 100%; min-width: 0; background: transparent !important; border: 0 !important; color: inherit !important;
+    font: 800 15px/1 'Roboto', Arial, sans-serif; cursor: pointer; padding: 0 8px; text-shadow: none; transform: none !important; filter: none !important;
+}
+html body #roomScreen .rmSpec .rmTeamBtn { color: #222 !important; }
+html body #roomScreen .rmArrow {
+    flex: 0 0 34px; height: 100%; background: rgba(0,0,0,.14) !important; border: 0 !important; color: inherit !important; font-size: 13px; cursor: pointer; padding: 0;
+}
+html body #roomScreen .rmList {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 6px; display: flex; flex-direction: column; gap: 5px;
+    border: 2px solid transparent !important; background: transparent !important; box-sizing: border-box;
+}
+html body #roomScreen .rmList.dropOver { border-color: var(--ac2) !important; background: rgba(var(--ac2-rgb),.10) !important; }
+html body #roomScreen .rmList:empty::after {
+    content: "Arraste um jogador aqui"; display: block; padding: 16px 6px; text-align: center; font-size: 12px; color: rgba(255,255,255,.38);
+}
+html body #roomScreen .rmCard {
+    display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 5px 8px; border-radius: 8px; box-sizing: border-box;
+    background: rgba(0,0,0,.34); border: 1px solid rgba(255,255,255,.08); color: #fff; cursor: grab; user-select: none; -webkit-user-select: none;
+}
+html body #roomScreen .rmCard.self { background: rgba(var(--ac2-rgb),.16); border-color: var(--ac2); }
+html body #roomScreen .rpAv {
+    flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 800 11px/1 'Roboto', Arial, sans-serif;
+    color: #fff; border: 2px solid rgba(255,255,255,.85); background: #555;
+}
+html body #roomScreen .rmCard.red .rpAv { background: linear-gradient(135deg, #e04848, #9c2323); }
+html body #roomScreen .rmCard.blue .rpAv { background: linear-gradient(135deg, #3f93f0, #1f5fb4); }
+html body #roomScreen .rpNick { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; font-weight: 600; }
+html body #roomScreen .rmCard .miniRole { flex: 0 0 auto; font-size: 9px; font-weight: 800; letter-spacing: .4px; color: var(--ac2) !important; background: none !important; border: 0 !important; padding: 0; }
+html body #roomScreen .rpPing { flex: 0 0 auto; min-width: 30px; text-align: right; font-size: 9px; line-height: 1.1; color: rgba(255,255,255,.6); text-transform: uppercase; }
+html body #roomScreen .rpPing b { display: block; font-size: 13px; font-weight: 800; text-transform: none; color: #6fe35a; }
+html body #roomScreen .rpPing b[data-q="mid"] { color: #ffd84a; }
+html body #roomScreen .rpPing b[data-q="bad"] { color: #ff6b5e; }
+
+/* ---- rodapé: organizar, configurar, iniciar ---- */
+html body #roomScreen .rmFoot { display: flex; align-items: flex-end; gap: 10px; flex: 0 0 auto; flex-wrap: wrap; }
+html body #roomScreen .rmTools { display: flex; gap: 6px; flex: 0 0 auto; }
+html body #roomScreen .rmTool {
+    height: 36px; padding: 0 12px; border-radius: 9px; cursor: pointer; font: 700 12px/1 'Roboto', Arial, sans-serif; color: #fff !important;
+    background: rgba(0,0,0,.5) !important; border: 1px solid rgba(var(--ac2-rgb),.55) !important;
+}
+html body #roomScreen .rmTool:active { background: rgba(var(--ac2-rgb),.25) !important; }
+html body #roomScreen .rmCfg { display: flex; gap: 8px; flex: 1 1 260px; min-width: 0; }
+html body #roomScreen .rmField { display: flex; flex-direction: column; gap: 2px; flex: 0 0 84px; min-width: 0; }
+html body #roomScreen .rmFieldWide { flex: 1 1 120px; }
+html body #roomScreen .rmField span { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: rgba(255,255,255,.7); }
+html body #roomScreen .rmField input, html body #roomScreen .rmField select {
+    height: 34px; width: 100%; box-sizing: border-box; padding: 0 8px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    color: #fff !important; background: rgba(0,0,0,.55) !important; border: 1px solid rgba(255,255,255,.22) !important; margin: 0;
+}
+html body #roomScreen .rmField select option, html body #roomScreen .rmField select optgroup { background: #17201a; color: #fff; }
+html body #roomScreen .rmField input:disabled, html body #roomScreen .rmField select:disabled { opacity: .55; }
+html body #roomScreen #stopRoom { border-color: #e15c5c !important; color: #ff9c9c !important; background: rgba(120,20,25,.45) !important; }
+html body #roomScreen #startRoom {
+    flex: 0 0 auto; min-width: 140px; height: 46px; padding: 0 22px; border-radius: 26px; cursor: pointer; margin-left: auto;
+    font: 800 16px/1 'Roboto', Arial, sans-serif; letter-spacing: .6px; text-transform: uppercase; color: #fff !important;
+    background: linear-gradient(180deg, #8be046, #4aa51a) !important; border: 2px solid #1d4d0a !important;
+    box-shadow: 0 3px 0 #2d6d10, 0 6px 14px rgba(0,0,0,.4) !important; text-shadow: 0 1px 2px rgba(0,0,0,.45);
+}
+html body #roomScreen #startRoom:active { transform: translateY(2px); box-shadow: 0 1px 0 #2d6d10 !important; }
+html body #roomScreen #startRoom:disabled { filter: grayscale(.8); opacity: .5; cursor: not-allowed; }
+
+/* ---- chat recolhível ---- */
+html body #roomScreen .rmChat {
+    position: absolute; z-index: 5; left: max(12px, env(safe-area-inset-left)); bottom: 70px; width: min(440px, calc(100% - 24px)); height: min(48%, 210px);
+    display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; background: rgba(6, 12, 8, .95);
+    border: 1px solid rgba(var(--ac2-rgb),.55); box-shadow: 0 10px 30px rgba(0,0,0,.55);
+}
+html body #roomScreen .rmMsgs { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 10px; font-size: 13px; color: #fff; }
+html body #roomScreen .roomChatMessage { margin: 0 0 4px; color: #fff; word-break: break-word; }
+html body #roomScreen .roomChatMessage strong { margin-right: 6px; color: var(--ac2); background: none !important; border-radius: 0 !important; }   /* .red/.blue globais do placar pintam fundo */
+html body #roomScreen .roomChatMessage strong.red { color: #ff8a8a; }
+html body #roomScreen .roomChatMessage strong.blue { color: #8cc4ff; }
+html body #roomScreen .rmChatForm { display: flex; gap: 6px; padding: 6px; border-top: 1px solid rgba(255,255,255,.12); }
+html body #roomScreen .rmChatForm input {
+    flex: 1 1 auto; min-width: 0; height: 36px; padding: 0 10px; border-radius: 8px; font-size: 14px; color: #fff !important;
+    background: rgba(255,255,255,.08) !important; border: 1px solid rgba(255,255,255,.2) !important;
+}
+html body #roomScreen .rmSend {
+    flex: 0 0 auto; height: 36px; padding: 0 14px; border-radius: 8px; border: 0 !important; cursor: pointer; font-weight: 800; font-size: 12px;
+    background: linear-gradient(180deg, var(--ac1), var(--ac2)) !important; color: var(--ac-ink) !important; text-transform: uppercase;
+}
+
+/* ---- telas baixas (celular deitado) ---- */
+@media (max-height: 430px) {
+    html body #roomScreen .rmWrap { gap: 6px; padding-top: max(4px, env(safe-area-inset-top)); padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+    html body #roomScreen .rmBar { min-height: 36px; }
+    html body #roomScreen #roomTitle { font-size: 15px !important; }
+    html body #roomScreen .rmIcon { height: 32px; width: 38px; font-size: 16px; }
+    html body #roomScreen .rmHead { height: 32px; }
+    html body #roomScreen .rmTeamBtn { font-size: 13px; }
+    html body #roomScreen .rmCard { min-height: 34px; padding: 3px 7px; }
+    html body #roomScreen .rpAv { width: 24px; height: 24px; font-size: 10px; }
+    html body #roomScreen .rpNick { font-size: 13px; }
+    html body #roomScreen .rmTool { height: 32px; padding: 0 9px; }
+    html body #roomScreen .rmField input, html body #roomScreen .rmField select { height: 32px; }
+    html body #roomScreen #startRoom { height: 40px; min-width: 120px; font-size: 14px; }
+    html body #roomScreen .rmChat { bottom: 56px; height: min(52%, 150px); }
+}
+/* ---- celular em pé ---- */
+@media (orientation: portrait) and (max-width: 560px) {
+    html body #roomScreen .rmTeams { gap: 6px; }
+    html body #roomScreen .rpPing, html body #roomScreen .rmCard .miniRole { display: none; }
+    html body #roomScreen .rmTeamBtn { font-size: 12px; }
+    html body #roomScreen .rmArrow { flex-basis: 26px; }
+    html body #roomScreen .rmCfg { flex-basis: 100%; order: 3; }
+    html body #roomScreen #startRoom { margin-left: auto; }
+    html body #roomScreen .rmChat { bottom: 120px; }
+}
+
+
+/* ======================================================================
+   AJUSTES: tela da sala preenche tudo, arrastar no toque, iniciar verde
+   ====================================================================== */
+/* sem o zoom dos outros menus (ele deixava a sala menor que a tela) e fixa em tela cheia */
+html body #roomScreen.screen.lobby { zoom: 1 !important; position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; width: 100% !important; z-index: 900; }
+html body #roomScreen.screen.lobby.on { height: 100dvh !important; min-height: 100dvh !important; max-height: none !important; }
+html body #roomScreen .rmWrap { max-width: none !important; width: 100% !important; height: 100% !important; gap: 10px; }
+html body #roomScreen .rmTeams { gap: 12px; }
+html body #roomScreen .rmCol { height: 100%; }
+html body #roomScreen .rmList { align-content: flex-start; }
+html body #roomScreen .rmFoot { align-items: flex-end; flex-wrap: nowrap; }
+
+/* cards arrastáveis no toque: impede o navegador de roubar o gesto para rolar a lista */
+html body #roomScreen .rmCard { touch-action: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+html body #roomScreen .rmCard.dragging { opacity: .35; }
+html body #roomScreen .rmList.dropOver { box-shadow: inset 0 0 0 2px var(--ac2); background: rgba(var(--ac2-rgb),.14) !important; }
+.rmGhost {
+    position: fixed !important; left: 0; top: 0; z-index: 100001; pointer-events: none; margin: 0 !important;
+    display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 5px 8px; border-radius: 8px; box-sizing: border-box;
+    background: rgba(30, 30, 30, .94); border: 2px solid var(--ac2); color: #fff; font: 600 14px/1 'Roboto', Arial, sans-serif;
+    box-shadow: 0 8px 22px rgba(0,0,0,.55); opacity: .96;
+}
+.rmGhost .rpAv { flex: 0 0 auto; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 800 11px/1 Arial, sans-serif; border: 2px solid rgba(255,255,255,.85); background: #555; }
+.rmGhost .rpNick { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rmGhost .rpPing, .rmGhost .miniRole { display: none; }
+
+/* botão de começar (e "Voltar à partida"): sempre verde */
+html body #roomScreen #startRoom, html body #roomScreen button.rmStart {
+    background: linear-gradient(180deg, #5ee34a 0, #2fb21f 100%) !important; border: 2px solid #14570c !important; color: #fff !important;
+    min-width: 190px; height: 50px; border-radius: 14px; text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    box-shadow: 0 4px 0 #1b7a10, 0 8px 18px rgba(0,0,0,.4) !important;
+}
+html body #roomScreen #startRoom:hover { color: #fff !important; filter: brightness(1.08); }
+html body #roomScreen #startRoom:active { transform: translateY(3px); box-shadow: 0 1px 0 #1b7a10 !important; }
+html body #roomScreen #startRoom:disabled { filter: saturate(.55) brightness(.9); opacity: .65; }
+@media (max-height: 430px) {
+    html body #roomScreen #startRoom { height: 44px; min-width: 150px; }
+}
+@media (orientation: portrait) and (max-width: 560px) {
+    html body #roomScreen .rmFoot { flex-wrap: wrap; }
+}
+
+/* menu do jogador (duplo toque / botão direito) */
+.fhPlayerMenu{position:fixed;z-index:99999;min-width:190px;padding:6px;border-radius:12px;background:rgba(14,16,20,.97);border:2px solid var(--ac-edge,#6d4bd6);box-shadow:0 10px 30px rgba(0,0,0,.55);display:flex;flex-direction:column;gap:4px;font-family:'Poppins',Arial,sans-serif}
+.fhPlayerMenu .fpmTitle{padding:4px 8px 6px;font-weight:800;font-size:13px;color:#fff;opacity:.8;border-bottom:1px solid rgba(255,255,255,.12);margin-bottom:2px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fhPlayerMenu button{height:38px;padding:0 10px;border:0;border-radius:8px;background:rgba(255,255,255,.07);color:#fff;font:700 14px 'Poppins',Arial,sans-serif;text-align:left}
+.fhPlayerMenu button:active{background:rgba(255,255,255,.18)}
+.fhPlayerMenu button.danger{color:#ff8a8a}
+
+/* banco de reservas (colunas dos times) */
+html body #roomScreen .rmBench{flex:0 0 auto;min-height:40px;max-height:30%;overflow:auto;margin-top:6px;padding:20px 6px 6px;position:relative;border-radius:12px;border:2px dashed rgba(255,255,255,.25);background:rgba(0,0,0,.22);display:flex;flex-direction:column;gap:4px}
+html body #roomScreen .rmBench::before{content:'🪑 Banco';position:absolute;top:3px;left:9px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;opacity:.75;color:#fff}
+html body #roomScreen .rmBench.dropOver{border-color:var(--ac2);background:rgba(var(--ac2-rgb),.16)}
+html body #roomScreen .rmBench:empty::after{content:'Arraste um jogador aqui';font-size:11px;opacity:.5;color:#fff}
+html body #roomScreen .rmCard.benched{opacity:.85;transform:scale(.96)}
+/* gaveta lateral durante a partida */
+.benchDrawer{position:absolute;left:0;top:88px;z-index:60;display:flex;align-items:flex-start;pointer-events:none}
+.benchDrawer>*{pointer-events:auto}
+.benchHandle{height:44px;min-width:40px;padding:0 8px 0 6px;border:2px solid var(--ac-edge,#6d4bd6);border-left:0;border-radius:0 12px 12px 0;background:rgba(14,16,20,.88);color:#fff;font-size:18px;display:flex;align-items:center;gap:4px}
+.benchHandle b{font-size:12px;background:#fff;color:#111;border-radius:9px;padding:0 6px}
+.benchPanel{margin-left:0;max-width:60vw;max-height:60vh;overflow:auto;padding:8px;border-radius:0 12px 12px 0;background:rgba(14,16,20,.94);border:2px solid var(--ac-edge,#6d4bd6);border-left:0;display:flex;gap:10px}
+.benchPanel[hidden]{display:none}
+.benchCol{min-width:90px}
+.benchCol h4{margin:0 0 4px;font:800 11px 'Poppins',Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em}
+.benchRed h4{color:#ff7b7b}.benchBlue h4{color:#6db3ff}
+.benchItem{display:block;width:100%;margin:0 0 4px;padding:5px 8px;border:0;border-radius:8px;background:rgba(255,255,255,.1);color:#fff;font:700 12px 'Poppins',Arial,sans-serif;text-align:left;white-space:nowrap}
+.benchEmpty{opacity:.4;color:#fff;font-size:12px;padding:0 6px}
+/* a lista dos times cede espaço ao banco (style.css força min-height:270px nas .roomDrop) */
+html body #roomScreen .rmCol .rmList { min-height: 0 !important; }
+
+.benchPanel .benchCol{background:none!important;border-radius:0!important;width:auto!important;height:auto!important}
+.benchPanel h4{background:none!important}

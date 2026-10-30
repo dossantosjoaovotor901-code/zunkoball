@@ -1,0 +1,715 @@
+{
+ "comparacao": [
+  {
+   "cenario": "rede baixa (ping ~20 ms)",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 167,
+    "p95": 167,
+    "n": 23,
+    "descartadas": 0
+   },
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30,
+   "kbps_por_cliente": 1.75,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2,
+   "tick_servidor_us": {
+    "media": 36,
+    "p99": 157,
+    "max": 6704
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.8
+  },
+  {
+   "cenario": "rede baixa (ping ~20 ms)",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 33,
+    "p95": 34,
+    "n": 9,
+    "descartadas": 8
+   },
+   "erro_predicao_m": {
+    "media": 0.002,
+    "p95": 0,
+    "max": 0.246
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.195,
+    "max": 1.224
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30,
+   "kbps_por_cliente": 1.61,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2,
+   "tick_servidor_us": {
+    "media": 16,
+    "p99": 79,
+    "max": 5365
+   },
+   "placar_servidor": "0x8",
+   "placar_ok": true,
+   "heap_delta_MB": 0.5
+  },
+  {
+   "cenario": "rede média (ping ~80 ms)",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 233,
+    "p95": 250,
+    "n": 23,
+    "descartadas": 0
+   },
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 29.5,
+   "kbps_por_cliente": 0.94,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 0,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 13,
+    "p99": 72,
+    "max": 5533
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.4
+  },
+  {
+   "cenario": "rede média (ping ~80 ms)",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 37,
+    "p95": 66,
+    "n": 9,
+    "descartadas": 8
+   },
+   "erro_predicao_m": {
+    "media": 0.003,
+    "p95": 0,
+    "max": 1.274
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.329,
+    "max": 2.949
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30.5,
+   "kbps_por_cliente": 1.62,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 0,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 14,
+    "p99": 41,
+    "max": 9047
+   },
+   "placar_servidor": "0x8",
+   "placar_ok": true,
+   "heap_delta_MB": 0.4
+  },
+  {
+   "cenario": "rede alta (ping ~240 ms)",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 393,
+    "p95": 417,
+    "n": 21,
+    "descartadas": 0
+   },
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30,
+   "kbps_por_cliente": 1.98,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 3,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 14,
+    "p99": 57,
+    "max": 4584
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3
+  },
+  {
+   "cenario": "rede alta (ping ~240 ms)",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 22,
+    "p95": 34,
+    "n": 9,
+    "descartadas": 8
+   },
+   "erro_predicao_m": {
+    "media": 0.002,
+    "p95": 0,
+    "max": 1.122
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.389,
+    "max": 2.953
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30.5,
+   "kbps_por_cliente": 1.64,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 3,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 7,
+    "p99": 43,
+    "max": 197
+   },
+   "placar_servidor": "0x8",
+   "placar_ok": true,
+   "heap_delta_MB": 0.2
+  },
+  {
+   "cenario": "pico de latência (+400 ms por 1,5 s)",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 233,
+    "p95": 250,
+    "n": 21,
+    "descartadas": 1
+   },
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 29.5,
+   "kbps_por_cliente": 1.69,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 44,
+   "entradas_descartadas_trim": 48,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 10,
+    "p99": 43,
+    "max": 4948
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3
+  },
+  {
+   "cenario": "pico de latência (+400 ms por 1,5 s)",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 26,
+    "p95": 66,
+    "n": 9,
+    "descartadas": 8
+   },
+   "erro_predicao_m": {
+    "media": 0.002,
+    "p95": 0,
+    "max": 1.187
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.383,
+    "max": 2.949
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30,
+   "kbps_por_cliente": 1.69,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 44,
+   "entradas_descartadas_trim": 49,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 13,
+    "p99": 59,
+    "max": 4075
+   },
+   "placar_servidor": "0x8",
+   "placar_ok": true,
+   "heap_delta_MB": 0.4
+  },
+  {
+   "cenario": "perda de pacotes 5 %",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 320,
+    "p95": 400,
+    "n": 22,
+    "descartadas": 0
+   },
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 30.5,
+   "kbps_por_cliente": 1.63,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1664,
+   "entradas_descartadas_trim": 1530,
+   "fila_servidor_media": 0,
+   "tick_servidor_us": {
+    "media": 12,
+    "p99": 67,
+    "max": 4314
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3
+  },
+  {
+   "cenario": "perda de pacotes 5 %",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 21,
+    "p95": 33,
+    "n": 8,
+    "descartadas": 8
+   },
+   "erro_predicao_m": {
+    "media": 0.003,
+    "p95": 0,
+    "max": 1.117
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.817,
+    "max": 2.477
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 31.5,
+   "kbps_por_cliente": 1.98,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1570,
+   "entradas_descartadas_trim": 1436,
+   "fila_servidor_media": 3,
+   "tick_servidor_us": {
+    "media": 14,
+    "p99": 57,
+    "max": 5728
+   },
+   "placar_servidor": "0x8",
+   "placar_ok": true,
+   "heap_delta_MB": 0.4
+  },
+  {
+   "cenario": "cliente com FPS baixo (20 FPS, jitter de quadro)",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 279,
+    "p95": 313,
+    "n": 22,
+    "descartadas": 0
+   },
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 29.9,
+   "kbps_por_cliente": 1.72,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 1.5,
+   "tick_servidor_us": {
+    "media": 7,
+    "p99": 37,
+    "max": 6117
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3
+  },
+  {
+   "cenario": "cliente com FPS baixo (20 FPS, jitter de quadro)",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": {
+    "media": 52,
+    "p95": 64,
+    "n": 9,
+    "descartadas": 8
+   },
+   "erro_predicao_m": {
+    "media": 0.002,
+    "p95": 0,
+    "max": 1.125
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.336,
+    "max": 2.191
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 1078
+   },
+   "snapshots_por_s": 29.9,
+   "kbps_por_cliente": 1.8,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2,
+   "tick_servidor_us": {
+    "media": 10,
+    "p99": 47,
+    "max": 3664
+   },
+   "placar_servidor": "0x8",
+   "placar_ok": true,
+   "heap_delta_MB": 0.1
+  },
+  {
+   "cenario": "disputa de bola, rede ruim (1x1, ping 240 ms vs 40 ms, perda 5 %)",
+   "predicao": false,
+   "clientes": 2,
+   "latencia_input_ms": null,
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 678
+   },
+   "snapshots_por_s": 29,
+   "kbps_por_cliente": 0.92,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1389,
+   "entradas_descartadas_trim": 1402,
+   "fila_servidor_media": 4.5,
+   "tick_servidor_us": {
+    "media": 21,
+    "p99": 69,
+    "max": 4277
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3
+  },
+  {
+   "cenario": "disputa de bola, rede ruim (1x1, ping 240 ms vs 40 ms, perda 5 %)",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": null,
+   "erro_predicao_m": {
+    "media": 0.014,
+    "p95": 0.22,
+    "max": 0.439
+   },
+   "correcao_suavizada_m": {
+    "p95": 1.756,
+    "max": 2.948
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 678
+   },
+   "snapshots_por_s": 28.5,
+   "kbps_por_cliente": 2.37,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1363,
+   "entradas_descartadas_trim": 1384,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 9,
+    "p99": 43,
+    "max": 4323
+   },
+   "placar_servidor": "0x4",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3
+  },
+  {
+   "cenario": "20 jogadores (10x10) no campo 3v3, ping 80 ms",
+   "predicao": false,
+   "clientes": 20,
+   "latencia_input_ms": null,
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 2780
+   },
+   "snapshots_por_s": 20,
+   "kbps_por_cliente": 1.43,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 8,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.4,
+   "tick_servidor_us": {
+    "media": 92,
+    "p99": 495,
+    "max": 12606
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 6.2
+  },
+  {
+   "cenario": "20 jogadores (10x10) no campo 3v3, ping 80 ms",
+   "predicao": true,
+   "clientes": 20,
+   "latencia_input_ms": null,
+   "erro_predicao_m": {
+    "media": 0.027,
+    "p95": 0.214,
+    "max": 0.577
+   },
+   "correcao_suavizada_m": {
+    "p95": 1.456,
+    "max": 4.705
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 2780
+   },
+   "snapshots_por_s": 20,
+   "kbps_por_cliente": 9.93,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 8,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 99,
+    "p99": 487,
+    "max": 1994
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 7
+  },
+  {
+   "cenario": "22 jogadores (11x11) Real Soccer, redes mistas",
+   "predicao": false,
+   "clientes": 22,
+   "latencia_input_ms": null,
+   "erro_predicao_m": null,
+   "correcao_suavizada_m": null,
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 3058
+   },
+   "snapshots_por_s": 19.7,
+   "kbps_por_cliente": 1.41,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1392,
+   "entradas_descartadas_trim": 1285,
+   "fila_servidor_media": 2.6,
+   "tick_servidor_us": {
+    "media": 132,
+    "p99": 1259,
+    "max": 10672
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 7.4
+  },
+  {
+   "cenario": "22 jogadores (11x11) Real Soccer, redes mistas",
+   "predicao": true,
+   "clientes": 22,
+   "latencia_input_ms": null,
+   "erro_predicao_m": {
+    "media": 0.014,
+    "p95": 0.02,
+    "max": 0.875
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.831,
+    "max": 5.715
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 3058
+   },
+   "snapshots_por_s": 20,
+   "kbps_por_cliente": 10.77,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 1322,
+   "entradas_descartadas_trim": 1194,
+   "fila_servidor_media": 2.7,
+   "tick_servidor_us": {
+    "media": 165,
+    "p99": 1162,
+    "max": 7024
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 8.3
+  }
+ ],
+ "estabilidade": [
+  {
+   "cenario": "servidor parado por 5 s e retomado",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": null,
+   "erro_predicao_m": {
+    "media": 0.024,
+    "p95": 0.226,
+    "max": 0.246
+   },
+   "correcao_suavizada_m": {
+    "p95": 1.737,
+    "max": 2.579
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 478
+   },
+   "snapshots_por_s": 30,
+   "kbps_por_cliente": 3.27,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 0,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.5,
+   "tick_servidor_us": {
+    "media": 15,
+    "p99": 71,
+    "max": 4096
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.3,
+   "extra": {
+    "pendentes_cliente": [
+     8,
+     9
+    ],
+    "tick_cliente_menos_servidor": [
+     5,
+     6
+    ]
+   }
+  },
+  {
+   "cenario": "entra/sai jogador + dono cai (migração)",
+   "predicao": true,
+   "clientes": 4,
+   "latencia_input_ms": null,
+   "erro_predicao_m": {
+    "media": 0.005,
+    "p95": 0.01,
+    "max": 0.246
+   },
+   "correcao_suavizada_m": {
+    "p95": 0.872,
+    "max": 3.421
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 816
+   },
+   "snapshots_por_s": 29.3,
+   "kbps_por_cliente": 3.48,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 2,
+   "entradas_descartadas_trim": 0,
+   "fila_servidor_media": 2.3,
+   "tick_servidor_us": {
+    "media": 26,
+    "p99": 119,
+    "max": 4123
+   },
+   "placar_servidor": "0x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.8,
+   "extra": {
+    "dono_atual": "P1",
+    "jogadores_na_sala": 3,
+    "erros_servidor": 0
+   }
+  },
+  {
+   "cenario": "cliente cai por 3 s e reconecta",
+   "predicao": true,
+   "clientes": 2,
+   "latencia_input_ms": null,
+   "erro_predicao_m": {
+    "media": 0.019,
+    "p95": 0.22,
+    "max": 0.246
+   },
+   "correcao_suavizada_m": {
+    "p95": 1.524,
+    "max": 2.661
+   },
+   "divergencia_autoritativa_m": {
+    "max": 0,
+    "amostras": 348
+   },
+   "snapshots_por_s": 29.5,
+   "kbps_por_cliente": 3.05,
+   "lacunas_snapshot": 0,
+   "entradas_repetidas_starved": 0,
+   "entradas_descartadas_trim": 114,
+   "fila_servidor_media": 2,
+   "tick_servidor_us": {
+    "media": 12,
+    "p99": 40,
+    "max": 6624
+   },
+   "placar_servidor": "1x0",
+   "placar_ok": true,
+   "heap_delta_MB": 0.2,
+   "extra": {
+    "vaga_apos_reconectar": 1,
+    "estado_ok": true
+   }
+  }
+ ]
+}

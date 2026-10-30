@@ -1,0 +1,41 @@
+/* create.css - tela "Criar sala" preenchendo a tela toda (carregado por último). */
+html body #createScreen.screen.lobby {
+    zoom: 1 !important; position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; width: 100% !important; z-index: 900;
+    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left)) !important;
+    align-items: stretch; justify-content: stretch;
+}
+html body #createScreen.screen.lobby.on { height: 100dvh !important; min-height: 100dvh !important; max-height: none !important; }
+html body #createScreen .createCard {
+    width: 100% !important; max-width: none !important; height: 100% !important; max-height: none !important; margin: 0 !important;
+    display: grid !important; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto;
+    gap: 10px 16px !important; padding: 12px 16px !important; overflow: hidden; box-sizing: border-box;
+}
+/* coluna esquerda: mapa grande + cor da quadra */
+html body #createScreen .mapPicker { grid-column: 1; grid-row: 1; display: flex !important; flex-direction: column; height: auto !important; min-height: 0; margin: 0 !important; gap: 0; }
+html body #createScreen .mapInfo { display: none !important; }
+html body #createScreen .mapViewer { flex: 1 1 auto; height: auto !important; min-height: 0; }
+html body #createScreen .courtPicker { grid-column: 1; grid-row: 2; margin: 0 !important; flex-wrap: nowrap; align-self: end; }
+html body #createScreen .courtSwatches { flex-wrap: nowrap; }
+/* coluna direita: campos + botões */
+html body #createScreen .createGrid {
+    grid-column: 2; grid-row: 1; min-height: 0; display: grid !important; grid-template-columns: 1fr 1fr !important;
+    gap: 18px 14px !important; align-content: start;
+}
+html body #createScreen .createField { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+html body #createScreen .createField label { font-size: 12px; }
+html body #createScreen .createField input, html body #createScreen .createField select { height: 44px !important; min-height: 0 !important; width: 100%; font-size: 15px !important; box-sizing: border-box; }
+html body #createScreen .createActions { grid-column: 2; grid-row: 2; display: flex !important; gap: 12px; margin: 0 !important; align-self: end; }
+html body #createScreen .createBtn { flex: 1 1 0; min-height: 52px !important; height: 52px; font-size: 15px !important; padding: 0 10px !important; }
+/* telas baixas (celular deitado) */
+@media (max-height: 430px) {
+    html body #createScreen .createCard { padding: 8px 12px !important; gap: 6px 12px !important; }
+    html body #createScreen .createField input, html body #createScreen .createField select { height: 38px !important; font-size: 14px !important; }
+    html body #createScreen .createField label { font-size: 11px; }
+    html body #createScreen .createBtn { min-height: 44px !important; height: 44px; }
+    html body #createScreen .courtSwatch { width: 40px !important; height: 40px !important; }
+    html body #createScreen .courtLabel { font-size: 13px; }
+}
+html body #createScreen .createField select { padding-left: 10px !important; padding-right: 26px !important; text-overflow: ellipsis; }
+@media (max-height: 430px) { html body #createScreen .createField select { font-size: 12.5px !important; } }
+@media (max-height: 430px) { html body #createScreen .createField select { font-size: 11.5px !important; padding-left: 8px !important; padding-right: 20px !important; background-position: right 6px center !important; } }
+@media (max-height: 520px) { html body #createScreen .createGrid { gap: 10px 12px !important; align-content: space-between; } }

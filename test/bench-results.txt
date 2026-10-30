@@ -1,0 +1,70 @@
+
+=== COMPARAÇÃO sem predição × com predição ===
+
+# rede baixa (ping ~20 ms)
+  latência de input (ms)  sem: 167 (p95 167)   com: 33 (p95 34)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.002,"p95":0,"max":0.246}   correção suavizada na tela (m): {"p95":0.195,"max":1.224}
+  rede: 30 snap/s, 1.61 KB/s por cliente, lacunas 0, starved 1, trim 0, fila 2
+  servidor: tick {"media":16,"p99":79,"max":5365} µs, heap Δ 0.5 MB, placar 0x8 ok=true
+
+# rede média (ping ~80 ms)
+  latência de input (ms)  sem: 233 (p95 250)   com: 37 (p95 66)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.003,"p95":0,"max":1.274}   correção suavizada na tela (m): {"p95":0.329,"max":2.949}
+  rede: 30.5 snap/s, 1.62 KB/s por cliente, lacunas 0, starved 0, trim 0, fila 2.5
+  servidor: tick {"media":14,"p99":41,"max":9047} µs, heap Δ 0.4 MB, placar 0x8 ok=true
+
+# rede alta (ping ~240 ms)
+  latência de input (ms)  sem: 393 (p95 417)   com: 22 (p95 34)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.002,"p95":0,"max":1.122}   correção suavizada na tela (m): {"p95":0.389,"max":2.953}
+  rede: 30.5 snap/s, 1.64 KB/s por cliente, lacunas 0, starved 3, trim 0, fila 2.5
+  servidor: tick {"media":7,"p99":43,"max":197} µs, heap Δ 0.2 MB, placar 0x8 ok=true
+
+# pico de latência (+400 ms por 1,5 s)
+  latência de input (ms)  sem: 233 (p95 250)   com: 26 (p95 66)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.002,"p95":0,"max":1.187}   correção suavizada na tela (m): {"p95":0.383,"max":2.949}
+  rede: 30 snap/s, 1.69 KB/s por cliente, lacunas 0, starved 44, trim 49, fila 2.5
+  servidor: tick {"media":13,"p99":59,"max":4075} µs, heap Δ 0.4 MB, placar 0x8 ok=true
+
+# perda de pacotes 5 %
+  latência de input (ms)  sem: 320 (p95 400)   com: 21 (p95 33)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.003,"p95":0,"max":1.117}   correção suavizada na tela (m): {"p95":0.817,"max":2.477}
+  rede: 31.5 snap/s, 1.98 KB/s por cliente, lacunas 0, starved 1570, trim 1436, fila 3
+  servidor: tick {"media":14,"p99":57,"max":5728} µs, heap Δ 0.4 MB, placar 0x8 ok=true
+
+# cliente com FPS baixo (20 FPS, jitter de quadro)
+  latência de input (ms)  sem: 279 (p95 313)   com: 52 (p95 64)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.002,"p95":0,"max":1.125}   correção suavizada na tela (m): {"p95":0.336,"max":2.191}
+  rede: 29.9 snap/s, 1.8 KB/s por cliente, lacunas 0, starved 1, trim 0, fila 2
+  servidor: tick {"media":10,"p99":47,"max":3664} µs, heap Δ 0.1 MB, placar 0x8 ok=true
+
+# disputa de bola, rede ruim (1x1, ping 240 ms vs 40 ms, perda 5 %)
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.014,"p95":0.22,"max":0.439}   correção suavizada na tela (m): {"p95":1.756,"max":2.948}
+  rede: 28.5 snap/s, 2.37 KB/s por cliente, lacunas 0, starved 1363, trim 1384, fila 2.5
+  servidor: tick {"media":9,"p99":43,"max":4323} µs, heap Δ 0.3 MB, placar 0x4 ok=true
+
+# 20 jogadores (10x10) no campo 3v3, ping 80 ms
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.027,"p95":0.214,"max":0.577}   correção suavizada na tela (m): {"p95":1.456,"max":4.705}
+  rede: 20 snap/s, 9.93 KB/s por cliente, lacunas 0, starved 8, trim 0, fila 2.5
+  servidor: tick {"media":99,"p99":487,"max":1994} µs, heap Δ 7 MB, placar 0x0 ok=true
+
+# 22 jogadores (11x11) Real Soccer, redes mistas
+  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem 0 m | com 0 m
+  erro de predição (m): {"media":0.014,"p95":0.02,"max":0.875}   correção suavizada na tela (m): {"p95":0.831,"max":5.715}
+  rede: 20 snap/s, 10.77 KB/s por cliente, lacunas 0, starved 1322, trim 1194, fila 2.7
+  servidor: tick {"media":165,"p99":1162,"max":7024} µs, heap Δ 8.3 MB, placar 0x0 ok=true
+
+=== ESTABILIDADE ===
+# servidor parado por 5 s e retomado
+  {"erro":{"media":0.024,"p95":0.226,"max":0.246},"extra":{"pendentes_cliente":[8,9],"tick_cliente_menos_servidor":[5,6]},"starved":0,"trim":0,"placar_ok":true}
+# entra/sai jogador + dono cai (migração)
+  {"erro":{"media":0.005,"p95":0.01,"max":0.246},"extra":{"dono_atual":"P1","jogadores_na_sala":3,"erros_servidor":0},"starved":2,"trim":0,"placar_ok":true}
+# cliente cai por 3 s e reconecta
+  {"erro":{"media":0.019,"p95":0.22,"max":0.246},"extra":{"vaga_apos_reconectar":1,"estado_ok":true},"starved":0,"trim":114,"placar_ok":true}

@@ -1,0 +1,159 @@
+/* FutHub - menu lateral da partida + modo de edição do HUD (estilo cliente de HaxBall) */
+#game{
+  --gm-panel:#0a0a0c;
+  --gm-item:linear-gradient(#2a2620,#14120e);
+  --gm-item-hi:linear-gradient(#3a3428,color-mix(in srgb,var(--ac2) 7%,#101013));
+  --gm-line:var(--ac2);
+  --gm-edge:var(--ac-edge);
+  --gm-ink:#050506;
+  --gm-text:#fff;
+  --gm-dim:var(--ac-muted);
+  --gm-gold:linear-gradient(var(--ac1),var(--ac2) 60%,var(--ac3));
+  --gm-edit:var(--ac2);
+  --gm-sel:var(--ac1);
+}
+
+/* ---------- escala/opacidade por controle (usadas pelo modo de edição) ---------- */
+#joy,#kick,#pass,#gameChat{scale:var(--fh-s,1)}
+#gameChat{transform-origin:top left}
+#kick,#pass,#joy{opacity:calc(var(--hud-opacity,1) * var(--fh-o,1))!important}
+#gameChat{opacity:calc(var(--game-chat-opacity,.76) * var(--fh-o,1))!important}
+#gameChat.fhPos{left:var(--fh-cx)!important;top:var(--fh-cy)!important;right:auto!important;bottom:auto!important}
+
+/* ---------- botão que abre o menu ---------- */
+.topBtns button,.gameSettingsBtn{background:linear-gradient(#2a2620,#14120e)!important;border:2px solid var(--gm-edge)!important;color:var(--ac1)!important;border-radius:12px!important;box-shadow:0 3px 0 var(--gm-ink)!important}
+#gameChatToggle{background:linear-gradient(#2a2620,#14120e)!important;border:2px solid var(--gm-edge)!important;color:var(--ac1)!important;border-radius:10px!important;font-weight:800}
+.gameChatPanel{background:rgba(10,10,12,.94)!important;border:2px solid var(--gm-edge)!important;border-radius:10px!important}
+
+/* ---------- gaveta ---------- */
+#game .gameSettings{
+  position:absolute;top:0;right:0;bottom:0;left:auto;z-index:130;
+  display:flex;flex-direction:column;box-sizing:border-box;
+  width:min(88vw,380px);max-height:none;padding:0;margin:0;
+  background:var(--gm-panel)!important;color:var(--gm-text)!important;
+  border:0!important;border-radius:0;box-shadow:-8px 0 28px rgba(0,0,0,.55);border-left:3px solid var(--gm-edge)!important;
+  backdrop-filter:none;opacity:1!important;
+  font-family:'Poppins',Arial,sans-serif;font-size:15px;
+  transform:translateX(0);transition:transform .2s ease,visibility 0s linear 0s;
+  padding-right:env(safe-area-inset-right,0px);
+}
+@media (orientation:landscape){#game .gameSettings{width:clamp(280px,36vw,400px)}}
+#game .gameSettings.hidden{display:flex;transform:translateX(104%);visibility:hidden;pointer-events:none;transition:transform .2s ease,visibility 0s linear .2s}
+@media (prefers-reduced-motion:reduce){#game .gameSettings,#game .gameSettings.hidden{transition:none}}
+
+.gmHead{display:flex;align-items:center;gap:10px;padding:max(10px,env(safe-area-inset-top,0px)) 12px 10px 16px;border-bottom:3px solid var(--gm-line);flex:none;background:linear-gradient(#17150f,#0a0a0c)}
+.gmHead h2{flex:1;margin:0;font-size:20px;font-weight:900;line-height:1.1;letter-spacing:.5px;text-transform:uppercase;color:var(--ac2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#game .gmIconBtn{width:44px;height:44px;flex:none;padding:0;border:3px solid var(--gm-ink);border-radius:12px;background:var(--gm-gold);color:#1a1200;display:flex;align-items:center;justify-content:center;cursor:pointer;margin:0;box-shadow:0 3px 0 var(--gm-ink)}
+#game .gmIconBtn:hover{filter:brightness(1.1)}
+#game .gmIconBtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--gm-ink)}
+#game .gmIconBtn[hidden]{display:none}
+.gmIconBtn svg{width:24px;height:24px;fill:currentColor}
+
+.gmBody{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:14px 12px calc(14px + env(safe-area-inset-bottom,0px)) 16px;scrollbar-width:thin;scrollbar-color:var(--ac-edge) transparent}
+.gmView[hidden]{display:none}
+.gmView{display:flex;flex-direction:column;gap:10px}
+
+#game .gmItem{display:flex;align-items:center;gap:14px;width:100%;min-height:52px;padding:0 14px;margin:0;border:2px solid var(--gm-edge);border-radius:12px;background:var(--gm-item);color:#fff;font:inherit;font-weight:700;text-align:left;cursor:pointer;box-shadow:0 3px 0 var(--gm-ink)}
+#game .gmItem:hover,#game .gmItem:focus-visible{background:var(--gm-item-hi);border-color:var(--ac2)}
+#game .gmItem:active{transform:translateY(2px);box-shadow:0 1px 0 var(--gm-ink)}
+#game .gmItem[hidden]{display:none}
+.gmIco{display:flex;width:26px;flex:none;color:var(--ac2)}
+.gmIco svg,.gmNext svg{width:24px;height:24px;fill:currentColor}
+.gmLbl{flex:1}
+.gmNext{display:flex;color:var(--ac2)}
+
+.gmField{background:var(--gm-item);border:2px solid var(--gm-edge);border-radius:12px;padding:10px 14px 12px}
+#game .gameSettings .gmField label{display:block;margin:0 0 6px;font-size:13px;font-weight:700;color:var(--ac1)}
+#game .gmField input[type=range]{display:block;width:100%;height:28px;margin:0;accent-color:var(--ac2)}
+#game .gmField select{width:100%;height:40px;padding:0 10px;border:2px solid var(--gm-edge);border-radius:8px;background:#050506;color:#fff;font:inherit;font-weight:600}
+.gmSwitchRow{display:flex;align-items:center;justify-content:space-between;padding:12px 14px}
+#game .gmSwitchRow label{margin:0}
+#game .gmSwitch{appearance:none;-webkit-appearance:none;position:relative;flex:none;width:46px;height:26px;margin:0;border-radius:13px;background:#050506;border:2px solid var(--gm-edge);box-sizing:border-box;cursor:pointer;transition:background .15s}
+.gmSwitch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#8a7a4a;transition:transform .15s,background .15s}
+.gmSwitch:checked{background:var(--ac-edge);border-color:var(--ac2)}
+.gmSwitch:checked::after{transform:translateX(20px);background:var(--ac1)}
+.gmNote{margin:2px 2px 0;font-size:12px;line-height:1.35;color:var(--gm-dim)}
+#game .gameSettings :focus-visible{outline:2px solid var(--ac1);outline-offset:2px}
+
+/* ---------- modo de edição ---------- */
+.fhEditing .hud,.fhEditing .topBtns,.fhEditing .gameSettingsBtn,.fhEditing .gameSettings{visibility:hidden!important;pointer-events:none!important}
+.fhEditing .performanceHud{opacity:.45;pointer-events:none}
+.fhEditing #joy,.fhEditing #kick,.fhEditing #pass,.fhEditing #gameChat{z-index:59;pointer-events:none!important;
+  opacity:max(.4,calc(var(--hud-opacity,1) * var(--fh-o,1)))!important}
+.fhEditing #gameChat{opacity:max(.4,calc(var(--game-chat-opacity,.76) * var(--fh-o,1)))!important}
+
+#fhEdit{position:absolute;inset:0;z-index:60;display:none;pointer-events:none;touch-action:none;font-family:'Poppins',Arial,sans-serif;color:#fff;user-select:none;-webkit-user-select:none}
+#fhEdit.on{display:block}
+.fhDim{position:absolute;inset:0;background:rgba(5,5,6,.45);pointer-events:auto}
+
+.fhBox{position:absolute;box-sizing:border-box;border:2px dashed var(--gm-edit);background:rgba(var(--ac2-rgb),.07);pointer-events:auto;cursor:grab;touch-action:none}
+.fhBox:active{cursor:grabbing}
+.fhBox.sel{border:3px solid var(--gm-sel);background:rgba(var(--ac2-rgb),.16);box-shadow:0 0 0 5px rgba(var(--ac2-rgb),.22)}
+.fhBox[hidden]{display:none}
+.fhTag{position:absolute;left:-2px;bottom:100%;margin-bottom:3px;padding:2px 8px;border-radius:6px;background:#0a0a0c;border:1px solid var(--gm-edge);color:var(--ac1);font-size:11px;font-weight:800;white-space:nowrap;pointer-events:none}
+.fhBox.sel .fhTag{background:var(--gm-gold);color:#1a1200;border-color:var(--gm-ink)}
+.fhBox.tagIn .fhTag{bottom:auto;top:3px;left:3px;margin:0}
+
+.fhBtn{position:absolute;width:46px;height:46px;padding:0;border:2px solid var(--gm-edge);border-radius:12px;background:linear-gradient(#2a2620,#14120e);color:var(--ac1);display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;box-shadow:0 3px 0 var(--gm-ink)}
+.fhBtn:hover{filter:brightness(1.15)}
+.fhBtn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--gm-ink)}
+.fhBtn svg{width:26px;height:26px;fill:currentColor}
+.fhBtn.ok{background:var(--gm-gold);color:#1a1200;border-color:var(--gm-ink)}
+.fhBtn:focus-visible{outline:2px solid var(--ac1);outline-offset:2px}
+.fhSave{left:max(10px,env(safe-area-inset-left,0px));top:max(10px,env(safe-area-inset-top,0px))}
+.fhReset{left:max(10px,env(safe-area-inset-left,0px));top:calc(max(10px,env(safe-area-inset-top,0px)) + 56px)}
+.fhOk{right:calc(max(10px,env(safe-area-inset-right,0px)) + 56px);top:max(10px,env(safe-area-inset-top,0px))}
+.fhCancel{right:max(10px,env(safe-area-inset-right,0px));top:max(10px,env(safe-area-inset-top,0px))}
+
+.fhToast,.fhPanel{position:absolute;left:50%;transform:translateX(-50%);box-sizing:border-box;max-width:calc(100% - 140px);border-radius:12px;background:rgba(10,10,12,.96);border:3px solid var(--gm-edge);box-shadow:0 4px 0 var(--gm-ink);pointer-events:none}
+.fhToast{top:max(14px,env(safe-area-inset-top,0px));padding:9px 16px;font-size:13px;font-weight:700;color:var(--ac1);text-align:center;line-height:1.3;width:max-content}
+.fhPanel{top:max(10px,env(safe-area-inset-top,0px));width:min(400px,calc(100% - 140px));padding:10px 14px 12px;pointer-events:auto}
+.fhPanel.low{top:auto;bottom:max(10px,env(safe-area-inset-bottom,0px))}
+.fhPanel[hidden],.fhToast[hidden]{display:none}
+.fhPanelHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+.fhPanelHead b{font-size:14px;color:var(--ac2);text-transform:uppercase;letter-spacing:.4px}
+.fhPanelHead button{padding:4px 10px;border:2px solid var(--gm-edge);border-radius:8px;background:linear-gradient(#2a2620,#14120e);color:var(--ac1);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+.fhRow{display:grid;grid-template-columns:84px 1fr 44px;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--ac1)}
+.fhRow input{width:100%;min-width:0;height:28px;margin:0;accent-color:var(--ac2)}
+.fhRow output{text-align:right;color:#fff}
+
+/* ---------- visual dos controles (analógico, chute, passe) ---------- */
+#game #joy{
+  border-radius:50%;box-sizing:border-box;
+  background:
+    radial-gradient(circle at 50% 50%,transparent 0 56%,rgba(var(--ac2-rgb),.28) 56.5% 58%,transparent 58.5%),
+    radial-gradient(circle at 50% 38%,#26231b 0,#0e0e11 70%)!important;
+  border:3px solid var(--ac-edge)!important;
+  box-shadow:0 5px 0 #050506,0 10px 22px rgba(0,0,0,.55),inset 0 0 0 4px rgba(0,0,0,.45),inset 0 0 22px rgba(var(--ac2-rgb),.14)!important}
+#game #joy::before{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;opacity:.7;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='%23F6B800'%3E%3Cpath d='M50 9l6.5 9h-13z'/%3E%3Cpath d='M50 91l6.5-9h-13z'/%3E%3Cpath d='M9 50l9-6.5v13z'/%3E%3Cpath d='M91 50l-9-6.5v13z'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat}
+#game #joy .knob{
+  background:radial-gradient(circle at 35% 28%,#FFF3B8 0,var(--ac2) 45%,var(--ac3) 100%)!important;
+  border:3px solid #050506!important;border-radius:50%!important;
+  box-shadow:0 4px 0 #050506,0 8px 14px rgba(0,0,0,.55),inset 0 -4px 6px rgba(120,70,0,.45)!important}
+#game #joy .knob::after{content:"";position:absolute;inset:22%;border-radius:50%;border:2px solid rgba(90,55,0,.35)}
+
+#game #kick,#game #pass{
+  display:flex;align-items:center;justify-content:center;box-sizing:border-box;padding:0;
+  border:4px solid #050506!important;border-radius:50%!important;
+  box-shadow:0 6px 0 #050506,0 12px 22px rgba(0,0,0,.5),inset 0 0 0 3px rgba(255,255,255,.12);
+  transition:filter .08s}
+#game #kick{background:radial-gradient(circle at 35% 25%,#FFF3B8 0,var(--ac2) 48%,var(--ac3) 100%)!important;color:#1a1200!important;text-shadow:none}
+#game #pass{background:radial-gradient(circle at 35% 25%,#3b352a 0,#1a1812 60%,#0a0a0c 100%)!important;color:var(--ac2)!important;
+  border-color:var(--ac-edge)!important;box-shadow:0 6px 0 #050506,0 12px 22px rgba(0,0,0,.5),inset 0 0 0 3px rgba(var(--ac2-rgb),.16)}
+#game #kick span,#game #pass span{display:flex;align-items:center;justify-content:center;width:52%;height:52%;pointer-events:none}
+#game .hudIco{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+#game #pass .hudIco{stroke-width:2.2}
+#game #pass .hudIco circle{fill:currentColor}
+#game #kick:active,#game #pass:active,#game #kick.pressed,#game #pass.pressed{filter:brightness(.85)}
+
+/* ---------- zona do analógico ---------- */
+.joyZone{position:absolute;z-index:4;box-sizing:border-box;border-radius:28px;border:2px dashed transparent;touch-action:none;pointer-events:auto;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.joyZone[hidden]{display:none}
+.joyZone.vis{border-color:rgba(var(--ac2-rgb),.4);background:rgba(var(--ac2-rgb),.05)}
+#game #joy{z-index:5}
+#game #joy.joyGhost{opacity:0!important;pointer-events:none!important}
+.fhEditing .joyZone{pointer-events:none;z-index:58;border-color:rgba(var(--ac2-rgb),.35)}
+#game.teamWindowOpen .joyZone{pointer-events:none}
+.gmGroup{margin:6px 2px 0;font-size:13px;font-weight:900;color:var(--ac2);text-transform:uppercase;letter-spacing:.4px}
+.fhRow[hidden]{display:none}
