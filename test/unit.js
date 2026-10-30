@@ -1,8 +1,10 @@
 'use strict';
 /* Testes unitários/robustez do multiplayer (sem rede real). Rodar: node test/unit.js */
 const Sim = require('../game/sim.js'), Proto = require('../game/proto.js');
+const { EventEmitter } = require('events');
 const { Client } = require('../game/netclient.js');
 const { Room, MAPS } = require('../server/room.js');
+const { WSConn } = require('../server/ws.js');
 const { NetSim } = require('./netsim.js');
 let fail = 0, n = 0;
 const ok = (c, m) => { n++; if (!c) { fail++; console.log('FAIL ' + m); } else console.log('PASS ' + m); };
@@ -53,6 +55,14 @@ const inp = (seq, x, y, kick) => Proto.encodeInputs([{ seq, x, y, kick: kick ? 1
   const mk = () => ({ present: false, team: 0, x: -100, y: -100, vx: 0, vy: 0, kickBuf: 0, passBuf: 0, lock: 0, lastAct: 0, ix: 0, iy: 0 });
   const meta = Proto.decodeSnapshot(f, auth, mk);
   ok(meta.full && meta.ack === 7 && auth.players[0].x === w.s.players[0].x && auth.ball.vx === w.s.ball.vx && auth.red === w.s.red, 'snapshot completo: ida e volta sem perda (float32 exato)');
+  const authBeforeBad = JSON.stringify(auth); let truncatedSafe = true;
+  for (let len = 0; len < f.length; len++) {
+    try { if (Proto.decodeSnapshot(f.subarray(0, len), auth, mk) !== null || JSON.stringify(auth) !== authBeforeBad) truncatedSafe = false; }
+    catch (e) { truncatedSafe = false; }
+  }
+  ok(truncatedSafe, 'prefixos truncados do snapshot são rejeitados sem exceção nem mutação parcial');
+  const badNaN = f.slice(); new DataView(badNaN.buffer).setFloat32(34, NaN);
+  ok(Proto.decodeSnapshot(badNaN, auth, mk) === null && JSON.stringify(auth) === authBeforeBad, 'snapshot com coordenada não finita é rejeitado sem contaminar o estado');
   const noAck = Proto.encodeSnapshot(w.s, -1, 0, {}, true);
   const noAckMeta = Proto.decodeSnapshot(noAck, Sim.cloneState(Sim.create(MAPS.MAPS.v3, {}).s), mk);
   ok(noAckMeta.ack === -1, 'ACK inicial -1 preservado como sentinela (não vira 4294967295)');
@@ -64,6 +74,60 @@ const inp = (seq, x, y, kick) => Proto.encodeInputs([{ seq, x, y, kick: kick ? 1
   let threw = false; try { for (let i = 0; i < 20000; i++) { const b = new Uint8Array(1 + (Math.random() * 60 | 0)).map(() => Math.random() * 256); b[0] = Math.random() < .5 ? 1 : (Math.random() * 6 | 0); Proto.decodeInputs(b); } } catch (e) { threw = true; }
   ok(!threw, 'decodeInputs nunca lança com bytes aleatórios (fuzz 20 mil)');
   ok(Proto.decodeInputs(new Uint8Array([1, 2, 0, 0, 0, 1, 0, 0, 0])) === null, 'pacote de entrada com tamanho errado é rejeitado');
+}
+// 3b. buffer de renderização: clientes preditivos não guardam snapshots que não usam; espectadores interpolam
+{
+  const ns = new NetSim({ map: 'v1' });
+  const active = ns.addClient({ profile: { oneWay: 10, jitter: 1 }, predict: true, behavior: 'idle' });
+  const spectator = ns.addClient({ profile: { oneWay: 10, jitter: 1 }, predict: true, team: 0, behavior: 'idle' });
+  ns.room.start(); ns.run(1800);
+  const render = spectator.net.getRender();
+  ok(active.net.hasBase && active.net.snapBuf.length === 0, 'cliente ativo preditivo reconcilia sem reter buffer de interpolação');
+  ok(spectator.net.slot < 0 && spectator.net.snapBuf.length > 0 && render && render.pos.length >= 2, 'espectador mantém snapshots e produz posição interpolada');
+  const local = active.net.getRender();
+  ok(local && local.pos.length === 2 + active.net.w.s.players.length * 2 && local.pos.every(Number.isFinite), 'render preditivo mantém formato e posições finitas');
+  const net = spectator.net, now = ns.t, lastAt = now - 1000 / 120;
+  const history = omitBeforeJoin => {
+    const out = [];
+    for (let tick = 1; tick <= 8; tick++) {
+      const ents = [{ x: 0, y: 0 }];
+      if (!omitBeforeJoin || tick >= 3) ents.push({ x: tick >= 3 ? 12 : -100, y: tick >= 3 ? -4 : -100, present: tick >= 3, team: tick >= 3 ? 1 : 0 });
+      out.push({ tick, at: lastAt - (8 - tick) * (1000 / 60), ents, st: { players: [{ present: true }] } });
+    }
+    return out;
+  };
+  net.snapBuf = history(true);
+  const joined = net.getRender();
+  ok(joined && joined.pos.length === 4 && joined.pos[2] === 12 && joined.pos[3] === -4, 'jogador recém-adicionado recebe posição definida no buffer do espectador');
+  net.snapBuf = history(false);
+  const toggled = net.getRender();
+  ok(toggled && toggled.pos[2] === 12 && toggled.pos[3] === -4, 'entrada de jogador não interpola a partir do sentinela fora de campo');
+  ns.close();
+}
+// 3c. WebSocket: o limite de payload também vale para a mensagem fragmentada inteira
+{
+  class FakeSocket extends EventEmitter {
+    constructor() { super(); this.writes = []; this.writableLength = 0; }
+    setNoDelay() {} setTimeout() {} write(b) { this.writes.push(Buffer.from(b)); return true; }
+    end() {} destroy() {}
+  }
+  const makeFrame = (fin, opcode, text) => {
+    const payload = Buffer.from(text), mask = Buffer.from([3, 7, 11, 19]);
+    const frame = Buffer.alloc(2 + 4 + payload.length);
+    frame[0] = (fin ? 0x80 : 0) | opcode; frame[1] = 0x80 | payload.length; mask.copy(frame, 2);
+    for (let i = 0; i < payload.length; i++) frame[6 + i] = payload[i] ^ mask[i & 3];
+    return frame;
+  };
+  const socket = new FakeSocket(), ws = new WSConn(socket, 5), received = [];
+  ws.on('message', (data, bin) => received.push({ data, bin }));
+  ws._onData(makeFrame(false, 1, 'ab')); ws._onData(makeFrame(true, 0, 'cde'));
+  ok(received.length === 1 && received[0].data === 'abcde' && !received[0].bin && ws.fragBytes === 0, 'mensagem fragmentada dentro do limite é remontada');
+  const badSocket = new FakeSocket(), bad = new WSConn(badSocket, 5);
+  bad._onData(makeFrame(false, 1, '12345')); bad._onData(makeFrame(true, 0, 'x'));
+  const closeFrame = badSocket.writes[badSocket.writes.length - 1];
+  ok(!bad.open && bad.frag === null && bad.fragBytes === 0 && closeFrame[0] === 0x88 && closeFrame.readUInt16BE(2) === 1009,
+    'payload fragmentado acima do limite encerra com 1009 e libera os fragmentos');
+  ws.close(1000);
 }
 // 4. sala: validação
 {

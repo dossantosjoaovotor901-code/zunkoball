@@ -323,7 +323,7 @@ class Room {
   tick() {
     const t0 = process.hrtime.bigint(), now = Date.now(), w = this.world, s = w.s;
     // vigia de inatividade e de ranqueada
-    for (const c of [...this.clients.values()]) if (now - c.lastMsg > IDLE_MS) this._drop(c, 'Sem resposta.');
+    for (const c of this.clients.values()) if (now - c.lastMsg > IDLE_MS) this._drop(c, 'Sem resposta.');
     if (this.ranked && !this.result) {
       if (!this.started) {
         const present = new Set([...this.clients.values()].map(c => c.uid));

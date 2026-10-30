@@ -89,10 +89,51 @@
     return b.subarray(0, o);
   }
 
+  function validSnapshot(u8) {
+    if (!(u8 instanceof Uint8Array) || u8.length < 30 || u8[0] !== T.SNAP) return false;
+    const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength), flags = u8[1];
+    if (flags & ~3 || u8[11] > 3 || u8[28] > 1) return false;
+    const full = !!(flags & 1), hasR = !!(flags & 2);
+    let o = 29;
+    if (hasR) {
+      if (o + 12 > u8.length) return false;
+      if (u8[o] < 1 || u8[o] > 3 || u8[o + 1] < 1 || u8[o + 1] > 2 ||
+          !Number.isFinite(dv.getFloat32(o + 2)) || !Number.isFinite(dv.getFloat32(o + 6))) return false;
+      o += 12;
+    }
+    if (o >= u8.length) return false;
+    const n = u8[o++];
+    if (n > 30 || o + n > u8.length) return false;
+    const roster = o;
+    for (let i = 0; i < n; i++) {
+      const v = u8[roster + i], team = v >> 1;
+      if ((v & ~7) || team > 2 || ((v & 1) && team === 0)) return false;
+    }
+    o += n;
+    const maskLen = (n + 1 + 7) >> 3;
+    if (o + maskLen > u8.length) return false;
+    const mo = o;
+    for (let e = n + 1; e < maskLen * 8; e++) if (u8[mo + (e >> 3)] & (1 << (e & 7))) return false;
+    const has = e => !!(u8[mo + (e >> 3)] & (1 << (e & 7)));
+    if (full) {
+      if (!has(0)) return false;
+      for (let i = 0; i < n; i++) if ((u8[roster + i] & 1) && !has(i + 1)) return false;
+    }
+    o += maskLen;
+    for (let e = 0; e <= n; e++) {
+      if (!has(e)) continue;
+      const size = e === 0 ? 16 : 22;
+      if (o + size > u8.length) return false;
+      for (let k = 0; k < 4; k++) if (!Number.isFinite(dv.getFloat32(o + k * 4))) return false;
+      o += size;
+    }
+    return o === u8.length;
+  }
+
   // Decodifica e aplica sobre "auth" (estado autoritativo acumulado no cliente). Retorna metadados.
   // auth: { players:[...], ball:{}, restart, ... } (mesma forma de FHSim state). make: cria jogador vazio.
   function decodeSnapshot(u8, auth, makePlayer) {
-    if (u8[0] !== T.SNAP) return null;
+    if (!validSnapshot(u8)) return null;
     const dv = new DataView(u8.buffer, u8.byteOffset, u8.byteLength);
     let o = 1;
     const flags = u8[o++], full = !!(flags & 1), hasR = !!(flags & 2);

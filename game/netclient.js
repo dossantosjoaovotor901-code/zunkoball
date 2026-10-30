@@ -128,11 +128,15 @@
       // controle de ritmo: mantém a fila do servidor perto de qTarget
       const q = meta.qlen, tgt = q >= 5 ? 0.94 : q >= 4 ? 0.98 : q <= 0 ? 1.04 : q <= 1 && this.qTarget >= 2 ? 1.015 : 1;
       this.rate += (tgt - this.rate) * 0.25;
-      // buffer de interpolação (espectador / sem predição)
-      const ents = [{ x: this.auth.ball.x, y: this.auth.ball.y }];
-      for (const p of this.auth.players) ents.push({ x: p.x, y: p.y, present: p.present, team: p.team });
-      this.snapBuf.push({ tick: this.auth.tick, at: now, ents, red: this.auth.red, blue: this.auth.blue, st: Sim.cloneState(this.auth) });
-      if (this.snapBuf.length > 40) this.snapBuf.shift();
+      // Só espectadores e a linha de base sem predição interpolam snapshots. Um jogador ativo
+      // preditivo renderiza w.s e reconcilia auth; manter até 40 cópias completas aqui era inútil.
+      const needsInterp = !this.predict || this.slot < 0 || !this.started || !this.w;
+      if (needsInterp) {
+        const ents = [{ x: this.auth.ball.x, y: this.auth.ball.y }];
+        for (const p of this.auth.players) ents.push({ x: p.x, y: p.y, present: p.present, team: p.team });
+        this.snapBuf.push({ tick: this.auth.tick, at: now, ents, red: this.auth.red, blue: this.auth.blue, st: Sim.cloneState(this.auth) });
+        if (this.snapBuf.length > 40) this.snapBuf.shift();
+      }
       if (this.predict && this.slot >= 0 && this.started) this._reconcile(meta, now);
     }
 
@@ -165,10 +169,15 @@
       if (before && after) {
         const n = Math.min(before.pos.length, after.pos.length);
         let jump = false;
-        const dx = [];
-        for (let i = 0; i < n; i++) { dx[i] = before.pos[i] - after.pos[i]; if (Math.abs(dx[i]) > 3) jump = true; }
-        this.off = jump ? [] : dx.map((v, i) => (this.off[i] || 0) * 0 + v);
-        let m = 0; for (let i = 0; i < n; i += 2) m = Math.max(m, Math.abs(dx[i]) + Math.abs(dx[i + 1]));
+        let m = 0;
+        for (let i = 0; i < n; i++) if (Math.abs(before.pos[i] - after.pos[i]) > 3) jump = true;
+        for (let i = 0; i < n; i += 2) m = Math.max(m,
+          Math.abs(before.pos[i] - after.pos[i]) + Math.abs(before.pos[i + 1] - after.pos[i + 1]));
+        if (jump) this.off.length = 0;
+        else {
+          this.off.length = n;
+          for (let i = 0; i < n; i++) this.off[i] = before.pos[i] - after.pos[i];
+        }
         s.corr = jump ? 0 : m;
       }
     }
@@ -236,9 +245,17 @@
     // devolve { pos:[bx,by,p0x,p0y,...], s: estado base, phase, red, blue, time }
     getRender(noOffset) {
       if (this.predict && this.slot >= 0 && this.w && this.started && this.hasBase) {
-        const cur = this._entPositions(this.w.s), prev = this.prevPos || cur, a = Math.max(0, Math.min(1, this.acc / DT));
-        const pos = cur.map((v, i) => prev[i] + (v - prev[i]) * a + (noOffset ? 0 : (this.off[i] || 0)));
-        return { pos, s: this.w.s };
+        const st = this.w.s, prev = this.prevPos, a = Math.max(0, Math.min(1, this.acc / DT));
+        const pos = new Array(2 + st.players.length * 2), off = noOffset ? null : this.off;
+        const ball = st.ball;
+        pos[0] = (prev ? prev[0] + (ball.x - prev[0]) * a : ball.x) + (off ? off[0] || 0 : 0);
+        pos[1] = (prev ? prev[1] + (ball.y - prev[1]) * a : ball.y) + (off ? off[1] || 0 : 0);
+        for (let i = 0; i < st.players.length; i++) {
+          const p = st.players[i], j = 2 + i * 2;
+          pos[j] = (prev ? prev[j] + (p.x - prev[j]) * a : p.x) + (off ? off[j] || 0 : 0);
+          pos[j + 1] = (prev ? prev[j + 1] + (p.y - prev[j + 1]) * a : p.y) + (off ? off[j + 1] || 0 : 0);
+        }
+        return { pos, s: st };
       }
       return this._interp();
     }
@@ -250,9 +267,14 @@
       const A = b[i], B = b[Math.min(i + 1, b.length - 1)];
       const f = B.tick === A.tick ? 0 : Math.max(0, Math.min(1, (target - A.tick) / (B.tick - A.tick)));
       const pos = [];
-      const ne = Math.min(A.ents.length, B.ents.length);
+      const ne = B.ents.length;
       for (let k = 0; k < ne; k++) {
         const ea = A.ents[k], eb = B.ents[k];
+        if (!ea || !eb || ea.present !== eb.present || ea.team !== eb.team) {
+          const snap = eb && eb.present === false ? (ea || eb) : (eb || ea);
+          pos.push(snap.x, snap.y);
+          continue;
+        }
         const x = ea.x + (eb.x - ea.x) * f, y = ea.y + (eb.y - ea.y) * f;
         pos.push(x, y);
       }

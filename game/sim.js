@@ -118,7 +118,9 @@
   /* ---------- colisões ---------- */
   function collide(a, b, rest) {
     const dx = b.x - a.x, dy = b.y - a.y;
-    const d = len(dx, dy) || 0.0001, min = a.r + b.r;
+    const min = a.r + b.r;
+    if (Math.abs(dx) >= min || Math.abs(dy) >= min) return;
+    const d = len(dx, dy) || 0.0001;
     if (d >= min) return;
     const nx = dx / d, ny = dy / d, pen = min - d;
     a.x -= nx * pen * (b.mass / (a.mass + b.mass)); a.y -= ny * pen * (b.mass / (a.mass + b.mass));
@@ -131,7 +133,9 @@
   }
   function collideStatic(b, cx, cy, cr, rest) {
     const dx = b.x - cx, dy = b.y - cy;
-    const d = len(dx, dy) || 0.0001, min = b.r + cr;
+    const min = b.r + cr;
+    if (Math.abs(dx) >= min || Math.abs(dy) >= min) return false;
+    const d = len(dx, dy) || 0.0001;
     if (d >= min) return false;
     const nx = dx / d, ny = dy / d;
     b.x = cx + nx * min; b.y = cy + ny * min;

@@ -54,7 +54,7 @@ function run(name, o, predict) {
     correcao_suavizada_m: predict ? { p95: +pct(corrs, .95).toFixed(3), max: +Math.max(0, ...corrs).toFixed(3) } : null,
     divergencia_autoritativa_m: { max: +Math.max(0, ...adiv).toFixed(6), amostras: adiv.length },
     snapshots_por_s: +avg(live.map(c => c.net.st.snapHz)).toFixed(1),
-    kbps_por_cliente: +avg(live.map(c => c.net.st.bps / 1024)).toFixed(2),
+    kib_s_por_cliente: +avg(live.map(c => c.net.st.bps / 1024)).toFixed(2),
     lacunas_snapshot: live.reduce((a, c) => a + c.net.st.gaps, 0),
     entradas_repetidas_starved: r.m.starved, entradas_descartadas_trim: r.m.trimmed,
     fila_servidor_media: +avg(live.map(c => c.net.st.qlen)).toFixed(1),
@@ -113,7 +113,7 @@ for (let i = 0; i < out.length; i += 2) {
   if (a.latencia_input_ms) console.log('  latência de input (ms)  sem: ' + a.latencia_input_ms.media + ' (p95 ' + a.latencia_input_ms.p95 + ')   com: ' + b.latencia_input_ms.media + ' (p95 ' + b.latencia_input_ms.p95 + ')');
   console.log('  divergência autoritativa (cliente decodificado x servidor, mesmo tick): sem ' + a.divergencia_autoritativa_m.max + ' m | com ' + b.divergencia_autoritativa_m.max + ' m');
   console.log('  erro de predição (m): ' + fmt(b.erro_predicao_m) + '   correção suavizada na tela (m): ' + fmt(b.correcao_suavizada_m));
-  console.log('  rede: ' + b.snapshots_por_s + ' snap/s, ' + b.kbps_por_cliente + ' KB/s por cliente, lacunas ' + b.lacunas_snapshot + ', starved ' + b.entradas_repetidas_starved + ', trim ' + b.entradas_descartadas_trim + ', fila ' + b.fila_servidor_media);
+  console.log('  rede: ' + b.snapshots_por_s + ' snap/s, ' + b.kib_s_por_cliente + ' KiB/s por cliente, lacunas ' + b.lacunas_snapshot + ', starved ' + b.entradas_repetidas_starved + ', trim ' + b.entradas_descartadas_trim + ', fila ' + b.fila_servidor_media);
   console.log('  servidor: tick ' + fmt(b.tick_servidor_us) + ' µs, heap Δ ' + b.heap_delta_MB + ' MB, placar ' + b.placar_servidor + ' ok=' + b.placar_ok);
 }
 console.log('\n=== ESTABILIDADE ===');

@@ -9,7 +9,7 @@ class WSConn extends EventEmitter {
   constructor(socket, maxPayload) {
     super();
     this.socket = socket; this.maxPayload = maxPayload; this.open = true;
-    this.buf = Buffer.alloc(0); this.frag = null; this.fragBin = false;
+    this.buf = Buffer.alloc(0); this.frag = null; this.fragBytes = 0; this.fragBin = false;
     this.bytesIn = 0; this.bytesOut = 0; this.msgsIn = 0;
     socket.setNoDelay(true); socket.setTimeout(0);
     socket.on('data', d => this._onData(d));
@@ -17,7 +17,7 @@ class WSConn extends EventEmitter {
     socket.on('error', () => this._closed());
   }
   get buffered() { return this.socket.writableLength; }   // bytes ainda não enviados (contrapressão)
-  _closed() { if (!this.open) return; this.open = false; this.emit('close'); }
+  _closed() { if (!this.open) return; this.open = false; this.buf = Buffer.alloc(0); this.frag = null; this.fragBytes = 0; this.emit('close'); }
   _onData(d) {
     this.bytesIn += d.length;
     this.buf = this.buf.length ? Buffer.concat([this.buf, d]) : d;
@@ -42,10 +42,12 @@ class WSConn extends EventEmitter {
       return true;
     }
     if (op === 0 && this.frag) {
+      if (this.fragBytes + n > this.maxPayload) { this.close(1009); return false; }
       this.frag.push(payload);
-      if (fin) { const p = Buffer.concat(this.frag); this.frag = null; this._msg(p, this.fragBin); }
+      this.fragBytes += n;
+      if (fin) { const p = Buffer.concat(this.frag), bin = this.fragBin; this.frag = null; this.fragBytes = 0; this._msg(p, bin); }
     } else if (op === 1 || op === 2) {
-      if (fin) this._msg(payload, op === 2); else { this.frag = [payload]; this.fragBin = op === 2; }
+      if (fin) this._msg(payload, op === 2); else { this.frag = [payload]; this.fragBytes = n; this.fragBin = op === 2; }
     } else throw new Error('opcode');
     return true;
   }
